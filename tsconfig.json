@@ -4,13 +4,23 @@
     "module": "esnext",
     "jsx": "react",
     "strict": true,
+    "allowJs": true,
+    "noEmit": true,
     "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "removeComments": true,
     "moduleResolution": "node",
     "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "paths": {
       "@/*": [
         "src/*"

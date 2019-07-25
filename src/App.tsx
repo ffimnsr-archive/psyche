@@ -1,7 +1,14 @@
 import * as React from "react";
+import { ConnectedRouter } from "connected-react-router";
+import { History } from "history";
+import { Router } from "@/Router";
 
-export class Hello extends React.Component {
-  render() {
-    return <h1>Hello</h1>;
-  }
+interface AppProps {
+  history: History;
 }
+
+export const App = ({ history }: AppProps) => (
+  <ConnectedRouter history={history}>
+    <Router />
+  </ConnectedRouter>
+);

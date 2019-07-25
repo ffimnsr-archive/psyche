@@ -1,0 +1,122 @@
+import * as React from "react";
+import styled from "styled-components";
+import {
+  Button,
+  Intent,
+  FormGroup,
+  Tooltip,
+  Switch,
+  InputGroup
+} from "@blueprintjs/core";
+
+import bgPattern from "@/assets/images/pattern.svg";
+
+const Container = styled.main`
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+`;
+
+const ContainerDesign = styled.div`
+  flex: 1 1 auto;
+  background-size: auto !important;
+  background-color: #434959;
+  background-image: url(${bgPattern});
+`;
+
+const ContainerSidePane = styled.div`
+  flex: 0.2 0 auto;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ContainerForm = styled.div`
+  flex: 1 1 auto;
+  align-self: center;
+  padding: 0 2em;
+`;
+
+export interface ILoginProps {}
+
+export interface ILoginState {
+  showPassword: boolean;
+}
+
+class Login extends React.PureComponent<ILoginProps, ILoginState> {
+  public state: ILoginState = {
+    showPassword: false
+  };
+
+  private handleLockClick = () =>
+    this.setState({ showPassword: !this.state.showPassword });
+
+  render() {
+    const { showPassword } = this.state;
+
+    const lockButton = (
+      <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`}>
+        <Button
+          icon={showPassword ? "unlock" : "lock"}
+          intent={Intent.WARNING}
+          minimal={true}
+          onClick={this.handleLockClick}
+        />
+      </Tooltip>
+    );
+
+    return (
+      <Container>
+        <ContainerDesign />
+        <ContainerSidePane>
+          <ContainerForm>
+            <form>
+              <FormGroup
+                label="Email"
+                labelFor="email"
+              >
+                <InputGroup
+                  id="email"
+                  placeholder="Enter your email..."
+                  large={true}
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup
+                label="Password"
+                labelFor="password"
+              >
+                <InputGroup
+                  id="password"
+                  placeholder="Enter your password..."
+                  rightElement={lockButton}
+                  large={true}
+                  type={showPassword ? "text" : "password"}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Switch
+                  label="Remember Me?"
+                  defaultChecked={false}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Button
+                  intent={Intent.PRIMARY}
+                  large={true}
+                >
+                  Login
+                </Button>
+              </FormGroup>
+            </form>
+          </ContainerForm>
+        </ContainerSidePane>
+      </Container>
+    );
+  }
+}
+
+export default Login;

@@ -2,8 +2,9 @@ import webpack from "webpack";
 import path from "path";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
-const config: webpack.Configuration = {
+const config = {
   entry: {
     psyche: path.resolve(__dirname, "src/Main.tsx")
   },
@@ -27,10 +28,10 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.[tj]sx?$/,
         include: path.resolve(__dirname, "src"),
         use: {
-          loader: "ts-loader"
+          loader: "babel-loader"
         }
       },
       {
@@ -44,29 +45,30 @@ const config: webpack.Configuration = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"]
       },
       {
-        test: /\.(png|jpg|gif)$/,
-        include: [path.resolve(__dirname, "static/images")],
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]"
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(eot|ttf|otf|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        test: /\.(png|svg|jpg|gif)$/,
         use: [
           {
             loader: "file-loader",
             options: {
               name: "[name].[ext]",
-              outputPath: "../fonts/",
-              publicPath: "../fonts/"
+              outputPath: "assets/images/",
+              publicPath: "assets/images/"
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(eot|ttf|otf|woff(2)?)(\?[a-z0-9]+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "assets/fonts/",
+              publicPath: "assets/fonts/"
             }
           }
         ]
@@ -74,14 +76,18 @@ const config: webpack.Configuration = {
     ]
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
+    alias: {
+      "@": path.resolve(__dirname, "src")
+    }
   },
   output: {
     filename: "[name].bundle.js",
     chunkFilename: "[name].bundle.js",
-    path: path.resolve(__dirname, "./dist/"),
+    path: path.resolve(__dirname, "./dist/")
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundle.css"
     }),
