@@ -4,7 +4,6 @@ import {
   Button,
   Intent,
   FormGroup,
-  Switch,
   InputGroup
 } from "@blueprintjs/core";
 

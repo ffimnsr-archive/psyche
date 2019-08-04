@@ -93,6 +93,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       template: "src/templates/index.html",
+      favicon: "src/assets/images/favicon.ico",
       minify: true
     }),
     new webpack.BannerPlugin("Open Sesame")

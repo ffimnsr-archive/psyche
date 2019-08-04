@@ -1,20 +1,24 @@
 import * as React from "react";
+import styled from "styled-components";
 import {
   Alignment,
   AnchorButton,
-  Classes,
   Navbar,
   NavbarGroup,
   NavbarHeading,
   NavbarDivider
 } from "@blueprintjs/core";
 
+const NoShadowNavbar = styled(Navbar)`
+  box-shadow: none;
+`;
+
 export interface NavigationHeaderProps {}
 
 export class NavigationHeader extends React.PureComponent<NavigationHeaderProps> {
   render() {
     return (
-      <Navbar className={Classes.DARK}>
+      <NoShadowNavbar>
         <NavbarGroup align={Alignment.LEFT}>
           <NavbarHeading>Open Sesame</NavbarHeading>
           <NavbarDivider />
@@ -22,11 +26,18 @@ export class NavigationHeader extends React.PureComponent<NavigationHeaderProps>
             href="/"
             text="Docs"
             target="_blank"
-            minimal
+            minimal={true}
             rightIcon="share"
           />
         </NavbarGroup>
-      </Navbar>
+        <NavbarGroup align={Alignment.RIGHT}>
+          <AnchorButton
+            href="/"
+            minimal={true}
+            rightIcon="user"
+          />
+        </NavbarGroup>
+      </NoShadowNavbar>
     );
   }
 }

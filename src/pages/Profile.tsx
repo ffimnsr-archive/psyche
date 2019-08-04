@@ -37,18 +37,18 @@ const NewsFeed = styled.div`
   background-color: #fff;
 
   & > div.bp3-card:not(:last-child) {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
   }
 `;
 
-class Home extends React.Component {
+class Profile extends React.Component {
   render() {
     return (
       <Container>
         <Helmet
           titleTemplate="%s | Open Sesame"
         >
-          <title>Home</title>
+          <title>Profile</title>
         </Helmet>
         <Sidebar />
         <ContainerMain>
@@ -73,4 +73,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default Profile;

@@ -1,18 +1,54 @@
 import * as React from "react";
-import { NonIdealState } from "@blueprintjs/core";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import styled from "styled-components";
+import { Helmet } from "react-helmet";
+import { NonIdealState, Intent } from "@blueprintjs/core";
+import { HapButton } from "@/components/HapButton";
+
+const Container = styled.main`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+`;
 
 const NoMatch = () => {
+  const description = (
+    <div>
+      Is probably the most annoying thing to look at, on a screen.
+      This is a page nobody wants to land into.
+      For the longest time this page echoed the words "disappointment"
+      and had always been notoriously referred to as the
+      "last page of the internet".
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
   return (
-    <main>
-      <NavigationHeader />
+    <Container>
+      <Helmet
+        titleTemplate="%s | Open Sesame"
+      >
+        <title>Page Not Found</title>
+      </Helmet>
       <NonIdealState
-        icon="search"
+        icon="path-search"
         title="Page Not Found"
-        description={undefined}
-        action={undefined}
+        description={description}
+        action={action}
       />
-    </main>
+    </Container>
   );
 };
 
