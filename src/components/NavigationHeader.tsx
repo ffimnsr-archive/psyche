@@ -1,22 +1,44 @@
 import * as React from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import { RouteComponentProps } from "react-router";
 import {
   Alignment,
   AnchorButton,
   Navbar,
   NavbarGroup,
   NavbarHeading,
-  NavbarDivider
+  NavbarDivider,
+  Button,
+  Menu,
+  MenuItem,
+  MenuDivider,
+  Popover,
+  Position
 } from "@blueprintjs/core";
 
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
 
-export interface NavigationHeaderProps {}
+export interface NavigationHeaderProps extends RouteComponentProps<any> {}
 
-export class NavigationHeader extends React.PureComponent<NavigationHeaderProps> {
+class NavigationHeaderImpl extends React.PureComponent<NavigationHeaderProps> {
+
+  routeChange = (r: string) => () => this.props.history.push(r);
+
   render() {
+    const userMenu = (
+      <Menu>
+        <MenuItem onClick={this.routeChange("/profile")} icon="person" text="My Profile" />
+        <MenuItem icon="graph" text="Graph" />
+        <MenuDivider />
+        <MenuItem icon="settings" text="Settings" />
+        <MenuDivider />
+        <MenuItem icon="log-out" text="Logout" />
+      </Menu>
+    );
+
     return (
       <NoShadowNavbar>
         <NavbarGroup align={Alignment.LEFT}>
@@ -31,13 +53,19 @@ export class NavigationHeader extends React.PureComponent<NavigationHeaderProps>
           />
         </NavbarGroup>
         <NavbarGroup align={Alignment.RIGHT}>
-          <AnchorButton
-            href="/"
-            minimal={true}
-            rightIcon="user"
-          />
+          <Popover
+            content={userMenu}
+            position={Position.BOTTOM}
+          >
+            <Button
+              minimal={true}
+              rightIcon="user"
+            />
+          </Popover>
         </NavbarGroup>
       </NoShadowNavbar>
     );
   }
 }
+
+export const NavigationHeader = withRouter(NavigationHeaderImpl);

@@ -1,14 +1,18 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   Colors,
   Alignment,
   ButtonGroup,
-  Button,
   Position,
+  Button,
+  Menu,
+  MenuItem,
+  Popover,
   Tooltip
 } from "@blueprintjs/core";
-import { IconName } from "@blueprintjs/icons";
+import { IconName } from "@blueprintjs/icons"
+import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
 
 const ContainerSidebar = styled.div`
@@ -33,36 +37,56 @@ const Spacer = styled.div`
   height: 20px;
 `;
 
-const PaleWhiteButton = styled(Button)`
+const SharedCss = css`
   & > span > svg {
     fill: ${Colors.WHITE} !important;
   }
 `;
 
+const PaleWhiteHapButton = styled(HapButton)`
+  ${SharedCss}
+`;
+
+const PaleWhiteButton = styled(Button)`
+  ${SharedCss};
+`;
+
 interface ISidebarNavigator {
   icon: IconName | JSX.Element | false | null | undefined;
   display: string;
+  to: string;
 }
 
 export const Sidebar = () => {
-  let navs: ISidebarNavigator[] = [
-    { icon: "home", display: "Home" },
-    { icon: "notifications", display: "Notifications" },
-    { icon: "envelope", display: "Messages" },
-    { icon: "calendar", display: "Schedules" },
-    { icon: "settings", display: "Settings" },
-    { icon: "more", display: "More" }
+  const navs: ISidebarNavigator[] = [
+    { icon: "home", display: "Home", to: "/" },
+    { icon: "notifications", display: "Notifications", to: "notifications" },
+    { icon: "envelope", display: "Messages", to: "/messages" },
+    { icon: "calendar", display: "Schedules", to: "/schedules" },
+    { icon: "settings", display: "Settings", to: "/settings" }
   ];
 
-  let navButtons = navs.map((v: ISidebarNavigator, i: number) => (
+  const navButtons = navs.map((v: ISidebarNavigator, i: number) => (
     <Tooltip
       key={i}
       content={<span>{v.display}</span>}
       position={Position.RIGHT}
     >
-      <PaleWhiteButton icon={v.icon} />
+      <PaleWhiteHapButton to={v.to} icon={v.icon} />
     </Tooltip>
   ));
+
+  const moreMenu = (
+    <Menu>
+      <MenuItem icon="graph" text="Graph" />
+    </Menu>
+  );
+
+  const moreButton = (
+    <Popover content={moreMenu} position={Position.LEFT}>
+      <PaleWhiteButton icon="more" />
+    </Popover>
+  );
 
   return (
     <ContainerSidebar>
@@ -78,6 +102,7 @@ export const Sidebar = () => {
           large={true}
         >
           {navButtons}
+          {moreButton}
         </ButtonGroup>
       </ContainerNav>
     </ContainerSidebar>
