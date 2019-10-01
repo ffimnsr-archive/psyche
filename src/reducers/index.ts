@@ -1,14 +1,14 @@
 import { History } from "history";
 import { combineReducers } from "redux";
-import { combineEpics } from "redux-observable";
 import { connectRouter } from "connected-react-router";
-import { pingEpic, pingReducer } from "./ping";
+import { pingReducer, PingState } from "./ping";
 
-export const rootEpic = combineEpics(
-  pingEpic
-);
+export type RootState = {
+  ping: PingState,
+  router: any,
+};
 
 export const createRootReducer = (history: History) => combineReducers({
-  pingReducer,
+  ping: pingReducer,
   router: connectRouter(history)
 });

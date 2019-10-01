@@ -1,26 +1,22 @@
-import { Observable } from "rxjs";
-import { filter, mapTo } from "rxjs/operators";
+import { ActionType, getType } from "typesafe-actions";
+import * as actions from "@/actions";
 
-export const pingEpic = (action$: Observable<any>) =>
-  action$.pipe(
-    filter(action => action.type === "PING"),
-    mapTo({ type: "PONG" })
-  );
+type Action = ActionType<typeof actions>;
 
-interface PingState {
-  isPinging: boolean;
+export interface PingState {
+  readonly isPinging: boolean;
 }
 
 const initialState: PingState = {
   isPinging: false
 };
 
-export const pingReducer = (state: PingState = initialState, action: any): PingState => {
+export const pingReducer = (state: PingState = initialState, action: Action): PingState => {
   switch (action.type) {
-    case "PING":
-      return { isPinging: true };
-    case "PONG":
-      return { isPinging: false };
+    case getType(actions.sesamePing):
+      return Object.assign({}, state, { isPinging: true });
+    case getType(actions.sesamePong):
+      return Object.assign({}, state, { isPinging: false });
     default:
       return state;
   }

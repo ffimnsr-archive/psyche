@@ -3,7 +3,8 @@ import { createEpicMiddleware } from "redux-observable";
 import { createLogger } from "redux-logger";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import { rootEpic, createRootReducer } from "@/reducers";
+import { createRootReducer } from "@/reducers";
+import { createRootEpic } from "@/epics";
 
 export const history = createBrowserHistory();
 
@@ -43,7 +44,7 @@ export default function configureStore(preloadedState?: any) {
     });
   }
 
-  epicMiddleware.run(rootEpic);
+  epicMiddleware.run(createRootEpic());
 
   return store;
 }

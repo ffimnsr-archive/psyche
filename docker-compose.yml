@@ -1,0 +1,21 @@
+version: '3'
+services:
+  psyche-server:
+    build:
+      context: .
+      dockerfile: ./docker/staging/Dockerfile
+    image: psyche
+    container_name: psyche-server
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    dns: 8.8.8.8
+    network_mode: "bridge"
+    ports:
+      - 8080:8080
+    command: npm start
+
+networks:
+  default:
+    external:
+      name: sesame_default
