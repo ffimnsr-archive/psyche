@@ -3,13 +3,17 @@ import { createEpicMiddleware } from "redux-observable";
 import { createLogger } from "redux-logger";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
-import { createRootReducer } from "@/reducers";
-import { createRootEpic } from "@/epics";
+import { ActionType } from "typesafe-actions";
+import { createRootReducer, RootState } from "@/reducers";
+import { rootEpic } from "@/epics";
+import * as actions from "@/actions";
+
+type Action = ActionType<typeof actions>;
 
 export const history = createBrowserHistory();
 
 const routeMiddleware = routerMiddleware(history);
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<Action, Action, RootState>();
 const loggerMiddleware = createLogger();
 
 function getMiddleware() {
@@ -31,7 +35,7 @@ function getMiddleware() {
 export const store = configureStore();
 
 export default function configureStore(preloadedState?: any) {
-  const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancer = (window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
   const store = createStore(
     createRootReducer(history),
     preloadedState,
@@ -44,7 +48,7 @@ export default function configureStore(preloadedState?: any) {
     });
   }
 
-  epicMiddleware.run(createRootEpic());
+  epicMiddleware.run(rootEpic);
 
   return store;
 }

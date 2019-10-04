@@ -1,11 +1,11 @@
 import { History } from "history";
 import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+import { connectRouter, RouterState } from "connected-react-router";
 import { pingReducer, PingState } from "./ping";
 
 export type RootState = {
   ping: PingState,
-  router: any,
+  router: RouterState,
 };
 
 export const createRootReducer = (history: History) => combineReducers({
