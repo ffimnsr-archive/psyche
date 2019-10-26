@@ -8,8 +8,15 @@ import {
   Switch,
   InputGroup
 } from "@blueprintjs/core";
-
+import { Formik } from "formik";
+import { ActionType } from "typesafe-actions";
+import { SessionState } from "@/reducers/session";
 import bgPattern from "@/assets/images/pattern.svg";
+import { withRouter } from "react-router";
+import { IAuthContext, withAuthProvider } from "@/components/AuthProvider";
+import * as actions from "@/actions";
+
+type Action = ActionType<typeof actions>;
 
 const Container = styled.main`
   height: 100vh;
@@ -42,17 +49,42 @@ const ContainerForm = styled.div`
 
 export interface ILoginProps {}
 
-export interface ILoginState {
+export interface ILoginActionProps {
+  signIn: (email: string, password: string) => Action;
+}
+
+interface ILoginState {
   showPassword: boolean;
 }
 
-class Login extends React.PureComponent<ILoginProps, ILoginState> {
+interface FormState {
+  email?: string;
+  password?: string;
+}
+
+@withRouter
+@withAuthProvider
+class Login extends React.Component<IAuthContext & ILoginProps & ILoginActionProps, ILoginState> {
   public state: ILoginState = {
     showPassword: false
   };
 
   private handleLockClick = () =>
     this.setState({ showPassword: !this.state.showPassword });
+
+  componentDidMount() {
+    const { isAuthenticated } = this.props;
+    if (isAuthenticated) {
+      console.log("auth#############");
+    }
+  }
+
+  componentDidUpdate() {
+    const { isAuthenticated } = this.props;
+    if (isAuthenticated) {
+      console.log("auth#############2");
+    }
+  }
 
   render() {
     const { showPassword } = this.state;
@@ -73,45 +105,80 @@ class Login extends React.PureComponent<ILoginProps, ILoginState> {
         <ContainerDesign />
         <ContainerSidePane>
           <ContainerForm>
-            <form>
-              <FormGroup
-                label="Email"
-                labelFor="email"
-              >
-                <InputGroup
-                  id="email"
-                  placeholder="Enter your email..."
-                  large={true}
-                  type="text"
-                />
-              </FormGroup>
-              <FormGroup
-                label="Password"
-                labelFor="password"
-              >
-                <InputGroup
-                  id="password"
-                  placeholder="Enter your password..."
-                  rightElement={lockButton}
-                  large={true}
-                  type={showPassword ? "text" : "password"}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Switch
-                  label="Remember Me?"
-                  defaultChecked={false}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Button
-                  intent={Intent.PRIMARY}
-                  large={true}
-                >
-                  Login
-                </Button>
-              </FormGroup>
-            </form>
+            <Formik
+              initialValues={{ email: "", password: "" }}
+              validate={values => {
+                let errors: FormState = {};
+
+                if (!values.email) {
+                  errors.email = "Invalid email address";
+                }
+
+                return errors;
+              }}
+              onSubmit={({ email, password }, { setSubmitting }) => {
+                this.props.signIn(email, password);
+                setSubmitting(false);
+              }}
+            >
+              {({
+                values,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+                <form onSubmit={handleSubmit}>
+                  <FormGroup
+                    label="Email"
+                    labelFor="email"
+                  >
+                    <InputGroup
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email..."
+                      large={true}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      type="email"
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    label="Password"
+                    labelFor="password"
+                  >
+                    <InputGroup
+                      id="password"
+                      name="password"
+                      placeholder="Enter your password..."
+                      rightElement={lockButton}
+                      large={true}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      type={showPassword ? "text" : "password"}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Switch
+                      label="Remember Me?"
+                      defaultChecked={false}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Button
+                      intent={Intent.PRIMARY}
+                      large={true}
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
+                      Login
+                    </Button>
+                  </FormGroup>
+                </form>
+              )}
+            </Formik>
           </ContainerForm>
         </ContainerSidePane>
       </Container>

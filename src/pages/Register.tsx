@@ -10,7 +10,8 @@ import {
   Drawer,
   Position
 } from "@blueprintjs/core";
-
+/* import { withRouter } from "react-router";
+ * import { withAuthProvider } from "@/components/AuthProvider"; */
 import bgPattern from "@/assets/images/pattern.svg";
 
 const Container = styled.main`

@@ -82,7 +82,7 @@ const LazySettings = Loadable({
 });
 
 const LazyLogin = Loadable({
-  loader: () => import("@/pages/Login"),
+  loader: () => import("@/pages/Login.C"),
   loading: Loading,
   delay: LoadingDelay
 });
@@ -108,8 +108,13 @@ export const Router = () => (
     <Route path="/schedules" component={LazySchedules} />
     <Route path="/settings" component={LazySettings} />
     <Route path="/login" component={LazyLogin} />
+    <Route path="/login/callback/:provider" component={LazyLogin} />
+    <Route path="/logout" component={LazyLogin} />
     <Route path="/register" component={LazyRegister} />
-    <Route path="/recover-account" component={LazyRecoverAccount} />
+    <Route path="/register/callback/:provider" component={LazyRegister} />
+    <Route path="/confirm_email/:token" component={LazyRegister} />
+    <Route path="/recover_account" component={LazyRecoverAccount} />
+    <Route path="/recover_account/confirm/:token" component={LazyRecoverAccount} />
     <Route component={NoMatch} />
   </Switch>
 );

@@ -10,6 +10,7 @@ module.exports = merge(common, {
     contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: true,
     compress: true,
+    noInfo: false,
     hot: true,
     host: "0.0.0.0",
     port: 8080,
@@ -18,7 +19,8 @@ module.exports = merge(common, {
   stats: "normal",
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development"
+      NODE_EN
+      : "development"
     })
   ]
 });

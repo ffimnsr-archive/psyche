@@ -1,5 +1,5 @@
 export const signIn = (email: string, password: string) => {
-  return fetch("http://192.168.99.100:4000/api/sign_in", {
+  return fetch("http://localhost:4000/api/sign_in", {
     method: "POST",
     headers: {
       "Accept": "application/json",
@@ -13,7 +13,7 @@ export const signIn = (email: string, password: string) => {
 };
 
 export const signUp = (email: string, password: string) => {
-  return fetch("http://192.168.99.100:4000/api/sign_up", {
+  return fetch("http://localhost:4000/api/sign_up", {
     method: "POST",
     headers: {
       "Accept": "application/json",
