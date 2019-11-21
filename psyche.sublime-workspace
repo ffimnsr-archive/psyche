@@ -1,0 +1,464 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Action",
+				"ActionType\talias"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/components/HapButton.tsx",
+			"settings":
+			{
+				"buffer_size": 1599,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 3072,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pretti",
+				"JsPrettier: Format Code"
+			],
+			[
+				"Js",
+				"JsPrettier: Format Code"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"update",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"rename",
+				"Rename File"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"select",
+				"UI: Select Color Scheme"
+			],
+			[
+				"theme",
+				"UI: Select Theme"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Projects/psyche",
+		"/D/Projects/psyche/src",
+		"/D/Projects/psyche/src/actions",
+		"/D/Projects/psyche/src/apis",
+		"/D/Projects/psyche/src/components",
+		"/D/Projects/psyche/src/constants",
+		"/D/Projects/psyche/src/epics",
+		"/D/Projects/psyche/src/models",
+		"/D/Projects/psyche/src/pages",
+		"/D/Projects/psyche/src/reducers",
+		"/D/Projects/psyche/src/templates"
+	],
+	"file_history":
+	[
+		"/D/Projects/psyche/src/epics/session.ts",
+		"/D/Projects/psyche/src/epics/ping.ts",
+		"/D/Projects/psyche/src/pages/NoMatch.tsx",
+		"/D/Projects/psyche/src/pages/Messages.tsx",
+		"/D/Projects/psyche/src/pages/RecoverAccount.tsx",
+		"/D/Projects/psyche/src/pages/RecoverAccount.C.tsx",
+		"/D/Projects/psyche/src/Router.tsx",
+		"/D/Projects/psyche/src/pages/Login.C.tsx",
+		"/D/Projects/psyche/src/pages/Login.tsx",
+		"/D/Projects/psyche/src/pages/Register.C.tsx",
+		"/D/Projects/psyche/src/pages/Register.tsx",
+		"/D/Projects/psyche/src/models/index.ts",
+		"/D/Projects/psyche/src/models/session.ts",
+		"/D/Projects/psyche/src/components/NavigationHeader.tsx",
+		"/D/Projects/psyche/src/components/Sidebar.tsx",
+		"/D/Projects/psyche/src/apis/index.ts",
+		"/D/Projects/psyche/src/actions/index.ts",
+		"/D/Projects/psyche/src/Main.tsx",
+		"/D/Projects/psyche/src/templates/index.html",
+		"/D/Projects/psyche/src/App.tsx",
+		"/D/Projects/starshot/reactandunity/README.md",
+		"/D/ffimnsr/Downloads/unite.apk_2019_11_4_14_18_10.log",
+		"/D/ffimnsr/Downloads/unite.apk_2019_11_4_14_23_28.log",
+		"/D/ffimnsr/Downloads/Ftp admin@itechwordpress.com.xml",
+		"/D/Projects/starshot/reactandunity/unite/android/build.gradle",
+		"/D/Projects/starshot/reactandunity/unite/unity/baskets/.gitignore",
+		"/D/ffimnsr/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
+		"/D/Projects/upass/secret.asc",
+		"/C/Users/ffimnsr/.ssh/config",
+		"/C/Users/ffimnsr/.docker/machine/machines/default/config.json",
+		"/C/Program Files/Docker Toolbox/start.sh",
+		"/D/ffimnsr/Downloads/config.dev.exs",
+		"/D/ffimnsr/Downloads/config.dev_relayer.exs",
+		"/D/Program Files/Clink/0.4.9/z.cmd",
+		"/C/Users/ffimnsr/AppData/Roaming/.emacs.d/init.el",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/work_experience_schema_type.ex",
+		"/D/Projects/sesame/lib/sesame/accounts/work_experience.ex",
+		"/D/Projects/sesame/lib/sesame/accounts/oauth_identity.ex",
+		"/D/Projects/sesame/lib/sesame/accounts/bank_account.ex",
+		"/D/Projects/sesame/lib/sesame_web/resolvers/bank_account_resolver.ex",
+		"/D/Projects/sesame/lib/sesame_web/resolvers/work_experience_resolver.ex",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/experience_level_schema_type.ex",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/user_schema_type.ex",
+		"/D/Projects/sesame/priv/repo/migrations/20181106100600_create_oauth_identities.exs",
+		"/D/Projects/sesame/priv/repo/migrations/20181019105243_create_work_experiences.exs",
+		"/D/Projects/sesame/priv/repo/migrations/20181009064237_create_bank_accounts.exs",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/bank_account_schema_type.ex",
+		"/D/Projects/sesame/test/support/factories/bank_account_factory.ex",
+		"/D/Projects/sesame/lib/sesame/location/country.ex",
+		"/D/Projects/sesame/lib/sesame_web.ex",
+		"/D/Projects/sesame/lib/sesame_web/resolvers/user_resolver.ex",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/issue_schema_type.ex",
+		"/D/Projects/sesame/lib/sesame_web/schema_types/country_schema_type.ex",
+		"/D/Projects/sesame/mix.exs",
+		"/D/Projects/sesame/lib/sesame_web/endpoint.ex",
+		"/D/Projects/sesame/lib/sesame_web/templates/error/403_page.html.eex",
+		"/D/Projects/sesame/lib/sesame_web/gettext.ex",
+		"/D/Projects/sesame/lib/sesame/accounts/auth.ex",
+		"/D/Projects/sesame/lib/sesame/accounts/user.ex",
+		"/D/Projects/sesame/priv/repo/seeds.exs",
+		"/D/Projects/sesame/config/test.exs",
+		"/D/Projects/sesame/README.org",
+		"/D/Projects/sesame/lib/sesame_web/router.ex",
+		"/D/Projects/sesame/lib/sesame_web/views/email_view.ex",
+		"/D/Projects/sesame/lib/sesame_web/templates/layout/email.html.eex",
+		"/D/Projects/sesame/config/dev.exs",
+		"/D/Projects/sesame/config/prod.exs",
+		"/D/Projects/sesame/.iex.exs",
+		"/D/Projects/sesame/Makefile",
+		"/D/Projects/sesame/lib/sesame_web/plugs/flow.ex",
+		"/D/Projects/sesame/lib/sesame_web/plugs/.gitkeep",
+		"/D/Projects/sesame/lib/sesame_web/plugs/current_user.ex",
+		"/D/Projects/sesame/lib/sesame_web/plugs/flow_to_index.ex",
+		"/D/Projects/sesame/lib/sesame_web/controllers/admin/country_controller.ex",
+		"/D/Projects/sesame/docker-compose.yml",
+		"//192.168.254.104/pastel/Desktop/.ssh/config",
+		"/C/Users/ffimnsr/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/ffimnsr/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/D/Projects/passport/src/model.rs",
+		"/D/Projects/passport/src/main.rs",
+		"/C/Users/ffimnsr/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/ffimnsr/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/ffimnsr/Desktop/hosts"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+			"D:\\Projects\\sesame\\lib",
+			"-_build",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Unity",
+			"AndroidRuntime",
+			"yDirectories=[/data/app/com.unite-3p434lSOaz4_JhU8xo16Fw==/lib/arm64, /data/app/com.unite-3p434lSOaz4_JhU8xo16Fw==/base.apk!/lib/arm64-v8a, /system/lib64]]] couldn't find \"libmain.so\"",
+			"json",
+			"Guardian",
+			"Gettext",
+			"Phoenix.HTML",
+			"Bcrypt"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/components/HapButton.tsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1599,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								355,
+								355
+							]
+						],
+						"settings":
+						{
+							"SL.13.region_keys":
+							[
+							],
+							"SL.51.region_keys":
+							[
+							],
+							"syntax": "Packages/TypeScript/TypeScriptReact.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 2,
+								"tabSize": 2
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "package.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3072,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1954,
+								1954
+							]
+						],
+						"settings":
+						{
+							"SL.15.region_keys":
+							[
+							],
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "psyche.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Router",
+				"src\\Router.tsx"
+			],
+			[
+				"bank",
+				"lib\\sesame_web\\resolvers\\bank_account_resolver.ex"
+			],
+			[
+				"bank_acc",
+				"test\\support\\factories\\user_bank_account_factory.ex"
+			],
+			[
+				"bank_Ac",
+				"lib\\sesame_web\\schema_types\\user_bank_account_schema_type.ex"
+			],
+			[
+				"seeds",
+				"priv\\repo\\seeds.exs"
+			],
+			[
+				"test",
+				"config\\test.exs"
+			],
+			[
+				"mix",
+				"mix.exs"
+			],
+			[
+				"seed",
+				"priv\\repo\\seeds.exs"
+			],
+			[
+				"",
+				"Makefile"
+			],
+			[
+				"with",
+				"src\\model\\withdrawal_request.rs"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\Projects\\sesame\\sesame.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 290.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

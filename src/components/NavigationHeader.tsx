@@ -24,13 +24,16 @@ const NoShadowNavbar = styled(Navbar)`
 export interface NavigationHeaderProps extends RouteComponentProps<any> {}
 
 class NavigationHeaderImpl extends React.PureComponent<NavigationHeaderProps> {
-
   routeChange = (r: string) => () => this.props.history.push(r);
 
   render() {
     const userMenu = (
       <Menu>
-        <MenuItem onClick={this.routeChange("/profile")} icon="person" text="My Profile" />
+        <MenuItem
+          onClick={this.routeChange("/profile")}
+          icon="person"
+          text="My Profile"
+        />
         <MenuItem icon="graph" text="Graph" />
         <MenuDivider />
         <MenuItem icon="settings" text="Settings" />
@@ -53,14 +56,8 @@ class NavigationHeaderImpl extends React.PureComponent<NavigationHeaderProps> {
           />
         </NavbarGroup>
         <NavbarGroup align={Alignment.RIGHT}>
-          <Popover
-            content={userMenu}
-            position={Position.BOTTOM}
-          >
-            <Button
-              minimal={true}
-              rightIcon="user"
-            />
+          <Popover content={userMenu} position={Position.BOTTOM}>
+            <Button minimal={true} rightIcon="user" />
           </Popover>
         </NavbarGroup>
       </NoShadowNavbar>

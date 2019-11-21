@@ -11,7 +11,7 @@ import {
   Popover,
   Tooltip
 } from "@blueprintjs/core";
-import { IconName } from "@blueprintjs/icons"
+import { IconName } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
 
@@ -67,11 +67,7 @@ export const Sidebar = () => {
   ];
 
   const navButtons = navs.map((v: ISidebarNavigator, i: number) => (
-    <Tooltip
-      key={i}
-      content={<span>{v.display}</span>}
-      position={Position.RIGHT}
-    >
+    <Tooltip key={i} content={<span>{v.display}</span>} position={Position.RIGHT}>
       <PaleWhiteHapButton to={v.to} icon={v.icon} />
     </Tooltip>
   ));
@@ -106,5 +102,5 @@ export const Sidebar = () => {
         </ButtonGroup>
       </ContainerNav>
     </ContainerSidebar>
-  )
+  );
 };

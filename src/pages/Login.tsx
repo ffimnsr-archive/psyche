@@ -10,9 +10,8 @@ import {
 } from "@blueprintjs/core";
 import { Formik } from "formik";
 import { ActionType } from "typesafe-actions";
-import { SessionState } from "@/reducers/session";
 import bgPattern from "@/assets/images/pattern.svg";
-import { withRouter } from "react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 import { IAuthContext, withAuthProvider } from "@/components/AuthProvider";
 import * as actions from "@/actions";
 
@@ -47,13 +46,15 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-export interface ILoginProps {}
+export interface IOwnProps extends RouteComponentProps<any> {}
 
-export interface ILoginActionProps {
+export interface IStateProps {}
+
+export interface IDispatchProps {
   signIn: (email: string, password: string) => Action;
 }
 
-interface ILoginState {
+interface IOwnState {
   showPassword: boolean;
 }
 
@@ -62,10 +63,12 @@ interface FormState {
   password?: string;
 }
 
+type Props = IAuthContext & IOwnProps & IStateProps & IDispatchProps;
+
 @withRouter
 @withAuthProvider
-class Login extends React.Component<IAuthContext & ILoginProps & ILoginActionProps, ILoginState> {
-  public state: ILoginState = {
+class Login extends React.PureComponent<Props, IOwnState> {
+  public state: IOwnState = {
     showPassword: false
   };
 

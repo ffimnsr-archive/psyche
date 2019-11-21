@@ -6,8 +6,8 @@ import * as actions from "@/actions";
 
 type Action = ActionType<typeof actions>;
 
-export const pingEpic: Epic<Action, Action, RootState> = (action$) =>
-  action$.pipe(
-    filter(isActionOf(actions.sesamePing)),
-    mapTo(actions.sesamePong()),
-  );
+export const pingEpic: Epic<Action, Action, RootState> = action$ =>
+	action$.pipe(
+		filter(isActionOf(actions.sesamePing)),
+		mapTo(actions.sesamePong())
+	);

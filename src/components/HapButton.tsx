@@ -5,15 +5,13 @@ import { createLocation, LocationDescriptor, Location } from "history";
 import { AnchorButton } from "@blueprintjs/core";
 
 const resolveToLocation = (to: LocationDescriptor | any, currentLocation: Location) => {
-  return typeof to === "function"
-       ? to(currentLocation)
-       : to;
-}
+  return typeof to === "function" ? to(currentLocation) : to;
+};
 
 const normalizeToLocation = (to: LocationDescriptor, currentLocation: Location) => {
   return typeof to === "string"
-       ? createLocation(to, null, undefined, currentLocation)
-       : to;
+    ? createLocation(to, null, undefined, currentLocation)
+    : to;
 };
 
 interface IHapButtonProps extends AnchorButton {

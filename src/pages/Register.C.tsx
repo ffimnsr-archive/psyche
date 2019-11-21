@@ -2,7 +2,7 @@ import { ActionType } from "typesafe-actions";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "@/actions";
-import Login, { IStateProps, IDispatchProps } from "./Login";
+import Register, { IStateProps, IDispatchProps } from "./Register";
 
 type Action = ActionType<typeof actions>;
 
@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>): IDispatchProps =>
 export default connect<IStateProps, IDispatchProps>(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login);
+)(Register);

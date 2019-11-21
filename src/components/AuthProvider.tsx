@@ -21,8 +21,8 @@ interface IAuthProviderProps {
 }
 
 export const withAuthProvider = (
-  Component: React.ComponentClass | React.StatelessComponent
-) => props => (
+  Component: any
+) => (props: any) => (
   <AuthContext.Consumer>
     {(store: Partial<IAuthContext & IAuthActionContext> | null) => (
       <Component {...props} {...store} />
@@ -36,22 +36,14 @@ class AuthProvider extends React.Component<IAuthProviderProps, IAuthContext> {
   };
 
   private login = async () => {
-    if (!window.sessionStorage.getItem("token")) {
+    try {
+      const { session } = this.props;
+      const { token } = (session && session.currentSession) ? session.currentSession : {};
+      this.updateSessionAuth(token);
+    } catch (_error) {
+      this.logout();
       return false;
     }
-
-    /* try {
-     *   const { session } = this.props;
-     *   const { token } = session.currentSession;
-
-     *   this.updateSessionAuth(token);
-     * } catch (error) {
-     *   if (error === "unauthorized") {
-     *     this.logout();
-     *   } else {
-
-     *   }
-     * } */
 
     return true;
   };
@@ -80,7 +72,7 @@ class AuthProvider extends React.Component<IAuthProviderProps, IAuthContext> {
     }
   };
 
-  private onSessionStorageUpdate = event => {
+  private onSessionStorageUpdate = (event: any) => {
     if (event.key === "token") {
       // Has logged out from another tab.
       if (event.oldValue && !event.newValue) {
@@ -118,8 +110,10 @@ class AuthProvider extends React.Component<IAuthProviderProps, IAuthContext> {
     await this.login();
   }
 
-  async componentDidUpdate() {
-    // await this.login();
+  async componentDidUpdate(prevProps: IAuthProviderProps, _prevState: IAuthContext) {
+    if (prevProps.session !== this.props.session) {
+      await this.login();
+    }
   }
 
   componentWillUnmount() {

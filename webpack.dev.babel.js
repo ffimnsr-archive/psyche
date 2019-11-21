@@ -19,8 +19,7 @@ module.exports = merge(common, {
   stats: "normal",
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_EN
-      : "development"
+      NODE_ENV: "development"
     })
   ]
 });

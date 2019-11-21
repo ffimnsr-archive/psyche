@@ -10,9 +10,14 @@ import {
   Drawer,
   Position
 } from "@blueprintjs/core";
-/* import { withRouter } from "react-router";
- * import { withAuthProvider } from "@/components/AuthProvider"; */
+import { Formik } from "formik";
+import { ActionType } from "typesafe-actions";
+import { withRouter, RouteComponentProps } from "react-router";
+// import { withAuthProvider } from "@/components/AuthProvider"; 
 import bgPattern from "@/assets/images/pattern.svg";
+import * as actions from "@/actions";
+
+type Action = ActionType<typeof actions>;
 
 const Container = styled.main`
   height: 100vh;
@@ -43,14 +48,23 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-export interface IRegisterProps {}
+export interface IOwnProps extends RouteComponentProps<any> {}
 
-export interface IRegisterState {
+export interface IStateProps {}
+
+export interface IDispatchProps {
+  signUp: (email: string, password: string) => Action;
+}
+
+export interface IOwnState {
   isTncOpen: boolean;
 }
 
-class Register extends React.PureComponent<IRegisterProps, IRegisterState> {
-  public state: IRegisterState = {
+type Props = IOwnProps & IStateProps & IDispatchProps;
+
+@withRouter
+class Register extends React.PureComponent<Props, IOwnState> {
+  public state: IOwnState = {
     isTncOpen: false
   };
 
