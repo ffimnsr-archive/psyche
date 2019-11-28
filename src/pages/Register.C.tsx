@@ -11,7 +11,7 @@ const mapStateToProps = (): IStateProps => ({});
 const mapDispatchToProps = (dispatch: Dispatch<Action>): IDispatchProps =>
 	bindActionCreators(
 		{
-			signIn: (email: string, password: string) => actions.sesameSignIn(email, password)
+			signUp: (email: string, password: string) => actions.sesameSignUp(email, password)
 		},
 		dispatch
 	);

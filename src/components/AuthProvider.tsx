@@ -20,9 +20,7 @@ interface IAuthProviderProps {
   session?: SessionState;
 }
 
-export const withAuthProvider = (
-  Component: any
-) => (props: any) => (
+export const withAuthProvider = (Component: any) => (props: any) => (
   <AuthContext.Consumer>
     {(store: Partial<IAuthContext & IAuthActionContext> | null) => (
       <Component {...props} {...store} />
@@ -38,7 +36,7 @@ class AuthProvider extends React.Component<IAuthProviderProps, IAuthContext> {
   private login = async () => {
     try {
       const { session } = this.props;
-      const { token } = (session && session.currentSession) ? session.currentSession : {};
+      const { token } = (session && session.currentSession) ? session.currentSession : { token: "" };
       this.updateSessionAuth(token);
     } catch (_error) {
       this.logout();
