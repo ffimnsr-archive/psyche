@@ -34,6 +34,13 @@ const config = {
           loader: "babel-loader"
         }
       },
+            {
+        test: /\.(graphql|gql)$/,
+        include: path.resolve(__dirname, "src"),
+        use: {
+          loader: "graphql-tag/loader"
+        }
+      },
       {
         test: /\.s[ac]ss$/,
         use: [

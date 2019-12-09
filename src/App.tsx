@@ -1,17 +1,17 @@
-import * as React from "react";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { FocusStyleManager } from "@blueprintjs/core";
-import { ConnectedRouter } from "connected-react-router";
-import { History } from "history";
 import { Router } from "@/Router";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-interface IAppProps {
-  history: History;
+export function App() {
+	return (
+		<HelmetProvider>
+			<BrowserRouter>
+		  	<Router />
+		  </BrowserRouter>
+	  </HelmetProvider>
+	);
 }
-
-export const App = ({ history }: IAppProps) => (
-  <ConnectedRouter history={history}>
-    <Router />
-  </ConnectedRouter>
-);

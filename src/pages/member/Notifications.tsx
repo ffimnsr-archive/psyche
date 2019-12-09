@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Card, H5, Button, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
@@ -41,36 +41,34 @@ const NewsFeed = styled.div`
   }
 `;
 
-class Notifications extends React.Component {
-  render() {
-    return (
-      <Container>
-        <Helmet
-          titleTemplate="%s | Open Sesame"
-        >
-          <title>Notifications</title>
-        </Helmet>
-        <Sidebar />
-        <ContainerMain>
-          <NavigationHeader />
-          <ContainerNewsFeed>
-            <NewsFeed>
-              <Card elevation={Elevation.ONE}>
-                <H5>Hello</H5>
-                <p>Hello</p>
-                <Button text="Explore" />
-              </Card>
-              <Card elevation={Elevation.ONE}>
-                <H5>Hello</H5>
-                <p>Hello</p>
-                <Button text="Explore" />
-              </Card>
-            </NewsFeed>
-          </ContainerNewsFeed>
-        </ContainerMain>
-      </Container>
-    );
-  }
+function Notifications() {
+  return (
+    <Container>
+      <Helmet
+        titleTemplate="%s | Open Sesame"
+      >
+        <title>Notifications</title>
+      </Helmet>
+      <Sidebar />
+      <ContainerMain>
+        <NavigationHeader />
+        <ContainerNewsFeed>
+          <NewsFeed>
+            <Card elevation={Elevation.ONE}>
+              <H5>Hello</H5>
+              <p>Hello</p>
+              <Button text="Explore" />
+            </Card>
+            <Card elevation={Elevation.ONE}>
+              <H5>Hello</H5>
+              <p>Hello</p>
+              <Button text="Explore" />
+            </Card>
+          </NewsFeed>
+        </ContainerNewsFeed>
+      </ContainerMain>
+    </Container>
+  );
 }
 
 export default Notifications;

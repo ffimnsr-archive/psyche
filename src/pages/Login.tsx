@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Button,
@@ -9,13 +9,22 @@ import {
   InputGroup
 } from "@blueprintjs/core";
 import { Formik } from "formik";
-import { ActionType } from "typesafe-actions";
+import gql from "graphql-tag";
+import { useApolloClient, useMutation } from "react-apollo";
 import bgPattern from "@/assets/images/pattern.svg";
-import { withRouter, RouteComponentProps } from "react-router";
-import { IAuthContext, withAuthProvider } from "@/components/AuthProvider";
-import * as actions from "@/actions";
 
-type Action = ActionType<typeof actions>;
+const SIGNIN_MUTATION = gql`
+  mutation signIn($input: SignInInput!) {
+    signIn(input: $input) @rest(
+      type: "SignIn"
+      method: "POST",
+      path: "/sign_in",
+    ) {
+      success
+      token
+    }
+  }
+`;
 
 const Container = styled.main`
   height: 100vh;
@@ -46,147 +55,135 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-export interface IOwnProps extends RouteComponentProps<any> {}
-
-export interface IStateProps {}
-
-export interface IDispatchProps {
-  signIn: (email: string, password: string) => Action;
-}
-
-interface IOwnState {
-  showPassword: boolean;
-}
-
 interface FormState {
   email?: string;
   password?: string;
+  rememberMe?: string[];
 }
 
-type Props = IAuthContext & IOwnProps & IStateProps & IDispatchProps;
-
-@withRouter
-@withAuthProvider
-class Login extends React.PureComponent<Props, IOwnState> {
-  public state: IOwnState = {
-    showPassword: false
-  };
-
-  private handleLockClick = () =>
-    this.setState({ showPassword: !this.state.showPassword });
-
-  componentDidMount() {
-    const { isAuthenticated } = this.props;
-    if (isAuthenticated) {
-      console.log("auth#############");
+function LoginForm() {
+  const client = useApolloClient();
+  const [showPassword, setShowPassword] = useState(false);
+  const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
+    onCompleted({ signIn }) {
+      sessionStorage.setItem("token", signIn.token);
+      client.writeData({ data: { isAuthenticated: true } });
     }
-  }
+  });
 
-  componentDidUpdate() {
-    const { isAuthenticated } = this.props;
-    if (isAuthenticated) {
-      console.log("auth#############2");
-    }
-  }
+  const lockButton = (
+    <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`}>
+      <Button
+        icon={showPassword ? "unlock" : "lock"}
+        intent={Intent.WARNING}
+        minimal={true}
+        onClick={() => setShowPassword(!showPassword)}
+      />
+    </Tooltip>
+  );
 
-  render() {
-    const { showPassword } = this.state;
+  if (loading) return <p>Loading</p>;
+  if (error) return <p>Error</p>;
 
-    const lockButton = (
-      <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`}>
-        <Button
-          icon={showPassword ? "unlock" : "lock"}
-          intent={Intent.WARNING}
-          minimal={true}
-          onClick={this.handleLockClick}
-        />
-      </Tooltip>
-    );
+  return (
+    <Formik
+      initialValues={{ email: "", password: "", rememberMe: [] }}
+      validate={values => {
+        let errors: FormState = {};
 
-    return (
-      <Container>
-        <ContainerDesign />
-        <ContainerSidePane>
-          <ContainerForm>
-            <Formik
-              initialValues={{ email: "", password: "" }}
-              validate={values => {
-                let errors: FormState = {};
+        if (!values.email) {
+          errors.email = "Invalid email address";
+        }
 
-                if (!values.email) {
-                  errors.email = "Invalid email address";
-                }
-
-                return errors;
-              }}
-              onSubmit={({ email, password }, { setSubmitting }) => {
-                this.props.signIn(email, password);
-                setSubmitting(false);
-              }}
+        return errors;
+      }}
+      onSubmit={({ email, password }, { setSubmitting }) => {
+        setSubmitting(false);
+        signIn({
+          variables: {
+            input: {
+              email,
+              password,
+            }
+          }
+        });        
+      }}
+    >
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isSubmitting,
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <FormGroup
+            label="Email"
+            labelFor="email"
+          >
+            <InputGroup
+              id="email"
+              name="email"
+              placeholder="Enter your email..."
+              large={true}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.email}
+              type="email"
+            />
+          </FormGroup>
+          <FormGroup
+            label="Password"
+            labelFor="password"
+          >
+            <InputGroup
+              id="password"
+              name="password"
+              placeholder="Enter your password..."
+              rightElement={lockButton}
+              large={true}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password}
+              type={showPassword ? "text" : "password"}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Switch
+              id="rememberMe"
+              label="Remember Me?"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultChecked={false}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Button
+              intent={Intent.PRIMARY}
+              large={true}
+              disabled={isSubmitting}
+              type="submit"
             >
-              {({
-                values,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <FormGroup
-                    label="Email"
-                    labelFor="email"
-                  >
-                    <InputGroup
-                      id="email"
-                      name="email"
-                      placeholder="Enter your email..."
-                      large={true}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                      type="email"
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    label="Password"
-                    labelFor="password"
-                  >
-                    <InputGroup
-                      id="password"
-                      name="password"
-                      placeholder="Enter your password..."
-                      rightElement={lockButton}
-                      large={true}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
-                      type={showPassword ? "text" : "password"}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Switch
-                      label="Remember Me?"
-                      defaultChecked={false}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Button
-                      intent={Intent.PRIMARY}
-                      large={true}
-                      disabled={isSubmitting}
-                      type="submit"
-                    >
-                      Login
-                    </Button>
-                  </FormGroup>
-                </form>
-              )}
-            </Formik>
-          </ContainerForm>
-        </ContainerSidePane>
-      </Container>
-    );
-  }
+              Login
+            </Button>
+          </FormGroup>
+        </form>
+      )}
+    </Formik>
+  );
+}
+
+function Login() {
+  return (
+    <Container>
+      <ContainerDesign />
+      <ContainerSidePane>
+        <ContainerForm>
+          <LoginForm />
+        </ContainerForm>
+      </ContainerSidePane>
+    </Container>
+  );
 }
 
 export default Login;

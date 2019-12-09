@@ -57,7 +57,7 @@ interface ISidebarNavigator {
   to: string;
 }
 
-export const Sidebar = () => {
+export function Sidebar() {
   const navs: ISidebarNavigator[] = [
     { icon: "home", display: "Home", to: "/" },
     { icon: "notifications", display: "Notifications", to: "notifications" },
@@ -103,4 +103,4 @@ export const Sidebar = () => {
       </ContainerNav>
     </ContainerSidebar>
   );
-};
+}

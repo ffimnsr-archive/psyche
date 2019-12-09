@@ -1,10 +1,17 @@
-import * as React from "react";
+import React from "react";
 import { Route, Redirect, Switch, RouteProps } from "react-router-dom";
 import styled from "styled-components";
+import gql from "graphql-tag";
+import { useQuery }  from "react-apollo";
 import { motion } from "framer-motion";
-import { AuthContext } from "@/components/AuthProvider";
 import NoMatch from "@/pages/NoMatch";
 import logoIcon from "@/assets/images/logo_icon.png";
+
+const IS_AUTHENTICATED_QUERY = gql`
+  query isAuthenticated {
+    isAuthenticated @client(always: true)
+  }
+`;
 
 const Container = styled.div`
   height: 100vh;
@@ -31,49 +38,51 @@ const LoadingPlaceholder = (
   </Container>
 );
 
-const LazyMain = React.lazy(() => import("@/pages/Home"));
-const LazyProfile = React.lazy(() => import("@/pages/Profile"));
-const LazyNotifications = React.lazy(() => import("@/pages/Notifications"));
-const LazyMessages = React.lazy(() => import("@/pages/Messages"));
-const LazySchedules = React.lazy(() => import("@/pages/Schedules"));
-const LazySettings = React.lazy(() => import("@/pages/Settings"));
-const LazyLogin = React.lazy(() => import("@/pages/Login.C"));
+const LazyMain = React.lazy(() => import("@/pages/member/Home"));
+const LazyProfile = React.lazy(() => import("@/pages/member/Profile"));
+const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
+const LazyMessages = React.lazy(() => import("@/pages/member/Messages"));
+const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
+const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
+const LazyLogin = React.lazy(() => import("@/pages/Login"));
 const LazyRegister = React.lazy(() => import("@/pages/Register"));
 const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
 
 interface PrivateRouteProps extends RouteProps {}
 
-const PrivateRoute = ({ component, ...otherProps }: PrivateRouteProps) => {
-  const { isAuthenticated } = React.useContext(AuthContext);
+function PrivateRoute({ component, ...otherProps }: PrivateRouteProps) {
+  const { data } = useQuery(IS_AUTHENTICATED_QUERY);
 
   return (
     <Route
       {...otherProps}
       render={(props: any) =>
-        isAuthenticated ? React.createElement(component, props) : <Redirect to="/login" />
+        data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/login" />
       }
     />
   );
 };
 
-export const Router = () => (
-  <React.Suspense fallback={LoadingPlaceholder}>
-    <Switch>
-      <Route path="/login" component={LazyLogin} />
-      <Route path="/login/callback/:provider" component={LazyLogin} />
-      <Route path="/register" component={LazyRegister} />
-      <Route path="/register/callback/:provider" component={LazyRegister} />
-      <Route path="/confirm_email/:token" component={LazyRegister} />
-      <Route path="/recover_account" component={LazyRecoverAccount} />
-      <Route path="/recover_account/confirm/:token" component={LazyRecoverAccount} />
-      <Route exact path="/" component={LazyMain} />
-      <Route path="/profile" component={LazyProfile} />
-      <Route path="/logout" component={LazyLogin} />
-      <Route path="/notifications" component={LazyNotifications} />
-      <Route path="/messages" component={LazyMessages} />
-      <Route path="/schedules" component={LazySchedules} />
-      <Route path="/settings" component={LazySettings} />
-      <Route component={NoMatch} />
-    </Switch>
-  </React.Suspense>
-);
+export function Router () {
+  return (
+    <React.Suspense fallback={LoadingPlaceholder}>
+      <Switch>
+        <Route path="/login" component={LazyLogin} />
+        <Route path="/login/callback/:provider" component={LazyLogin} />
+        <Route path="/register" component={LazyRegister} />
+        <Route path="/register/callback/:provider" component={LazyRegister} />
+        <Route path="/confirm_email/:token" component={LazyRegister} />
+        <Route path="/recover_account" component={LazyRecoverAccount} />
+        <Route path="/recover_account/confirm/:token" component={LazyRecoverAccount} />
+        <PrivateRoute path="/logout" component={LazyLogin} />
+        <PrivateRoute exact path="/" component={LazyMain} />
+        <PrivateRoute path="/profile" component={LazyProfile} />
+        <PrivateRoute path="/notifications" component={LazyNotifications} />
+        <PrivateRoute path="/messages" component={LazyMessages} />
+        <PrivateRoute path="/schedules" component={LazySchedules} />
+        <PrivateRoute path="/settings" component={LazySettings} />
+        <Route component={NoMatch} />
+      </Switch>
+    </React.Suspense>
+  );
+}

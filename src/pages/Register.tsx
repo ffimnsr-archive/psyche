@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Button,
@@ -11,13 +11,22 @@ import {
   Position
 } from "@blueprintjs/core";
 import { Formik } from "formik";
-import { ActionType } from "typesafe-actions";
-import { withRouter, RouteComponentProps } from "react-router";
-// import { withAuthProvider } from "@/components/AuthProvider";
+import gql from "graphql-tag";
+import { useApolloClient, useMutation } from "react-apollo";
 import bgPattern from "@/assets/images/pattern.svg";
-import * as actions from "@/actions";
 
-type Action = ActionType<typeof actions>;
+const SIGNUP_MUTATION = gql`
+  mutation signUp($input: SignInInput!) {
+    signUp(input: $input) @rest(
+      type: "SignUp"
+      method: "POST",
+      path: "/sign_up",
+    ) {
+      success
+      token
+    }
+  }
+`;
 
 const Container = styled.main`
   height: 100vh;
@@ -48,187 +57,210 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-export interface IOwnProps extends RouteComponentProps<any> {}
-
-export interface IStateProps {}
-
-export interface IDispatchProps {
-  signUp: (email: string, password: string) => Action;
-}
-
-export interface IOwnState {
-  isTncOpen: boolean;
-}
-
 interface FormState {
   email?: string;
   password?: string;
+  confirmPassword?: string;
+  tncAgreement?: string[];
+  optinMarketing?: string[];
 }
 
-type Props = IOwnProps & IStateProps & IDispatchProps;
+function RegisterForm(props: any) {
+  const client = useApolloClient();
+  const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION, {
+    onCompleted({ signUp }) {
+      sessionStorage.setItem("token", signUp.token);
+      client.writeData({ data: { isAuthenticated: true } });
+    }
+  });
 
-@withRouter
-class Register extends React.PureComponent<Props, IOwnState> {
-  public state: IOwnState = {
-    isTncOpen: false
-  };
+  const agreement = (
+    <span>
+      I agree to the{" "}
+      <a
+        href="#" 
+        onClick={(e) => {
+          e.preventDefault();
+          props.setTncStatus(true);
+        }}
+      >
+        Terms and Conditions
+      </a>
+      .
+    </span>
+  );
 
-  private handleTncOpen = () => this.setState({ isTncOpen: true });
-  private handleTncClose = () => this.setState({ isTncOpen: false });
+  if (loading) return <p>Loading</p>;
+  if (error) return <p>Error</p>;
 
-  render() {
-    const agreement = (
-      <span>
-        I agree to the{" "}
-        <a href="javascript:;" onClick={this.handleTncOpen}>
-          Terms and Conditions
-        </a>
-        .
-      </span>
-    );
+  return (
+    <Formik
+      initialValues={{ email: "", password: "", confirmPassword: "" }}
+      validate={values => {
+        let errors: FormState = {};
 
-    const year = new Date().getFullYear();
+        if (!values.email) {
+          errors.email = "Invalid email address";
+        }
 
-    return (
-      <Container>
-        <ContainerDesign />
-        <ContainerSidePane>
-          <ContainerForm>
-            <Formik
-              initialValues={{ email: "", password: "", confirmPassword: "" }}
-              validate={values => {
-                let errors: FormState = {};
+        if (values.password !== values.confirmPassword) {
+          errors.password = "Password is not same";
+        }
 
-                if (!values.email) {
-                  errors.email = "Invalid email address";
-                }
-
-                return errors;
-              }}
-              onSubmit={({ email, password }, { setSubmitting }) => {
-                this.props.signUp(email, password);
-                setSubmitting(false);
-              }}
+        return errors;
+      }}
+      onSubmit={({ email, password }, { setSubmitting }) => {
+        setSubmitting(false);        
+        signUp({ 
+          variables: {
+            input: {
+              email,
+              password,
+            }
+          }
+        }); 
+      }}
+    >
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        isSubmitting,
+      }) => (
+        <form onSubmit={handleSubmit}>
+          <FormGroup label="Email" labelFor="email">
+            <InputGroup
+              id="email"
+              placeholder="Enter your email..."
+              large={true}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.email}
+              type="text"
+            />
+          </FormGroup>
+          <FormGroup label="Password" labelFor="password">
+            <InputGroup
+              id="password"
+              placeholder="Enter your password..."
+              large={true}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.password}
+              type="password"
+            />
+          </FormGroup>
+          <FormGroup label="Confirm Password" labelFor="confirmPassword">
+            <InputGroup
+              id="confirmPassword"
+              placeholder="Re-type your password..."
+              large={true}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.confirmPassword}
+              type="password"                     
+            />
+          </FormGroup>
+          <FormGroup>
+            <Switch
+              id="tncAgreement"
+              labelElement={agreement}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultChecked={false} />
+            <Switch
+              id="optinMarketing"
+              label="Opt-in to notifications and promotions."
+              onChange={handleChange}
+              onBlur={handleBlur}
+              defaultChecked={false}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Button 
+              intent={Intent.PRIMARY}
+              large={true}
+              disabled={isSubmitting}
+              type="submit"
             >
-              {({
-                values,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <FormGroup label="Email" labelFor="email">
-                    <InputGroup
-                      id="email"
-                      placeholder="Enter your email..."
-                      large={true}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                      type="text"
-                    />
-                  </FormGroup>
-                  <FormGroup label="Password" labelFor="password">
-                    <InputGroup
-                      id="password"
-                      placeholder="Enter your password..."
-                      large={true}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
-                      type="password"
-                    />
-                  </FormGroup>
-                  <FormGroup label="Confirm Password" labelFor="confirm-password">
-                    <InputGroup
-                      id="confirm-password"
-                      placeholder="Re-type your password..."
-                      large={true}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.confirmPassword} 
-                      type="password"                     
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Switch labelElement={agreement} defaultChecked={false} />
-                    <Switch
-                      label="Opt-in to notifications and promotions."
-                      defaultChecked={false}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Button 
-                      intent={Intent.PRIMARY}
-                      large={true}
-                      disabled={isSubmitting}
-                      type="submit"
-                    >
-                      Register
-                    </Button>
-                  </FormGroup>
-                </form>              
-              )}
-            </Formik>
-            <Drawer
-              icon="info-sign"
-              title="Terms and Conditions"
-              position={Position.RIGHT}
-              isOpen={this.state.isTncOpen}
-              onClose={this.handleTncClose}
-              hasBackdrop={true}
-              autoFocus={true}
-              enforceFocus={true}
-              canEscapeKeyClose={true}
-              canOutsideClickClose={false}
-              usePortal={true}
-              size={Drawer.SIZE_STANDARD}
-            >
-              <div className={Classes.DRAWER_BODY}>
-                <div className={Classes.DIALOG_BODY}>
-                  <p>
-                    <strong>
-                      Data integration is the seminal problem of the digital age. For over
-                      ten years, we’ve helped the world’s premier organizations rise to
-                      the challenge.
-                    </strong>
-                  </p>
-                  <p>
-                    Palantir Foundry radically reimagines the way enterprises interact
-                    with data by amplifying and extending the power of data integration.
-                    With Foundry, anyone can source, fuse, and transform data into any
-                    shape they desire. Business analysts become data engineers — and
-                    leaders in their organization’s data revolution.
-                  </p>
-                  <p>
-                    Foundry’s back end includes a suite of best-in-class data integration
-                    capabilities: data provenance, git-style versioning semantics,
-                    granular access controls, branching, transformation authoring, and
-                    more. But these powers are not limited to the back-end IT shop.
-                  </p>
-                  <p>
-                    In Foundry, tables, applications, reports, presentations, and
-                    spreadsheets operate as data integrations in their own right. Access
-                    controls, transformation logic, and data quality flow from original
-                    data source to intermediate analysis to presentation in real time.
-                    Every end product created in Foundry becomes a new data source that
-                    other users can build upon. And the enterprise data foundation goes
-                    where the business drives it.
-                  </p>
-                  <p>
-                    Start the revolution. Unleash the power of data integration with
-                    Palantir Foundry.
-                  </p>
-                </div>
+              Register
+            </Button>
+          </FormGroup>
+        </form>              
+      )}
+    </Formik>
+  );
+}
+
+function Register() {
+  const [isTncOpen, setIsTncOpen] = useState(false);
+
+  const year = new Date().getFullYear();
+
+  return (
+    <Container>
+      <ContainerDesign />
+      <ContainerSidePane>
+        <ContainerForm>
+          <RegisterForm setTncStatus={setIsTncOpen} />
+          <Drawer
+            icon="info-sign"
+            title="Terms and Conditions"
+            position={Position.RIGHT}
+            isOpen={isTncOpen}
+            onClose={() => setIsTncOpen(false)}
+            hasBackdrop={true}
+            autoFocus={true}
+            enforceFocus={true}
+            canEscapeKeyClose={true}
+            canOutsideClickClose={false}
+            usePortal={true}
+            size={Drawer.SIZE_STANDARD}
+          >
+            <div className={Classes.DRAWER_BODY}>
+              <div className={Classes.DIALOG_BODY}>
+                <p>
+                  <strong>
+                    Data integration is the seminal problem of the digital age. For over
+                    ten years, we’ve helped the world’s premier organizations rise to
+                    the challenge.
+                  </strong>
+                </p>
+                <p>
+                  Palantir Foundry radically reimagines the way enterprises interact
+                  with data by amplifying and extending the power of data integration.
+                  With Foundry, anyone can source, fuse, and transform data into any
+                  shape they desire. Business analysts become data engineers — and
+                  leaders in their organization’s data revolution.
+                </p>
+                <p>
+                  Foundry’s back end includes a suite of best-in-class data integration
+                  capabilities: data provenance, git-style versioning semantics,
+                  granular access controls, branching, transformation authoring, and
+                  more. But these powers are not limited to the back-end IT shop.
+                </p>
+                <p>
+                  In Foundry, tables, applications, reports, presentations, and
+                  spreadsheets operate as data integrations in their own right. Access
+                  controls, transformation logic, and data quality flow from original
+                  data source to intermediate analysis to presentation in real time.
+                  Every end product created in Foundry becomes a new data source that
+                  other users can build upon. And the enterprise data foundation goes
+                  where the business drives it.
+                </p>
+                <p>
+                  Start the revolution. Unleash the power of data integration with
+                  Palantir Foundry.
+                </p>
               </div>
-              <div className={Classes.DRAWER_FOOTER}>Open Sesame {year}</div>
-            </Drawer>
-          </ContainerForm>
-        </ContainerSidePane>
-      </Container>
-    );
-  }
+            </div>
+            <div className={Classes.DRAWER_FOOTER}>Open Sesame {year}</div>
+          </Drawer>
+        </ContainerForm>
+      </ContainerSidePane>
+    </Container>
+  );
 }
 
 export default Register;

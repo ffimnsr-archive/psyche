@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import invariant from "invariant";
 import { __RouterContext as RouterContext } from "react-router";
 import { createLocation, LocationDescriptor, Location } from "history";
@@ -20,7 +20,7 @@ interface IHapButtonProps extends AnchorButton {
   innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
-export const HapButton = ({ to, replace, ...rest }: IHapButtonProps | any) => {
+export function HapButton({ to, replace, ...rest }: IHapButtonProps | any) {
   return (
     <RouterContext.Consumer>
       {context => {
@@ -46,4 +46,4 @@ export const HapButton = ({ to, replace, ...rest }: IHapButtonProps | any) => {
       }}
     </RouterContext.Consumer>
   );
-};
+}

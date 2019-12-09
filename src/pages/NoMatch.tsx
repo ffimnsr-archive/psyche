@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { NonIdealState, Intent } from "@blueprintjs/core";
 import { HapButton } from "@/components/HapButton";
 
@@ -14,7 +14,7 @@ const Container = styled.main`
   align-content: stretch;
 `;
 
-const NoMatch = () => {
+function NoMatch() {
   const description = (
     <div>
       Is probably the most annoying thing to look at, on a screen.
@@ -50,6 +50,6 @@ const NoMatch = () => {
       />
     </Container>
   );
-};
+}
 
 export default NoMatch;

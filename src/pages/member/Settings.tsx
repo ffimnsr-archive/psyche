@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Card, H5, Button, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
@@ -41,36 +41,34 @@ const SettingsPane = styled.div`
   }
 `;
 
-class Settings extends React.Component {
-  render() {
-    return (
-      <Container>
-        <Helmet
-          titleTemplate="%s | Open Sesame"
-        >
-          <title>Settings</title>
-        </Helmet>
-        <Sidebar />
-        <ContainerMain>
-          <NavigationHeader />
-          <ContainerSettingsPane>
-            <SettingsPane>
-              <Card elevation={Elevation.ONE}>
-                <H5>Hello</H5>
-                <p>Hello</p>
-                <Button text="Explore" />
-              </Card>
-              <Card elevation={Elevation.ONE}>
-                <H5>Hello</H5>
-                <p>Hello</p>
-                <Button text="Explore" />
-              </Card>
-            </SettingsPane>
-          </ContainerSettingsPane>
-        </ContainerMain>
-      </Container>
-    );
-  }
+function Settings() {
+  return (
+    <Container>
+      <Helmet
+        titleTemplate="%s | Open Sesame"
+      >
+        <title>Settings</title>
+      </Helmet>
+      <Sidebar />
+      <ContainerMain>
+        <NavigationHeader />
+        <ContainerSettingsPane>
+          <SettingsPane>
+            <Card elevation={Elevation.ONE}>
+              <H5>Hello</H5>
+              <p>Hello</p>
+              <Button text="Explore" />
+            </Card>
+            <Card elevation={Elevation.ONE}>
+              <H5>Hello</H5>
+              <p>Hello</p>
+              <Button text="Explore" />
+            </Card>
+          </SettingsPane>
+        </ContainerSettingsPane>
+      </ContainerMain>
+    </Container>
+  );
 }
 
 export default Settings;
