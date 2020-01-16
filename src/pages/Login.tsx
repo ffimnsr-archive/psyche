@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   Button,
@@ -8,6 +9,7 @@ import {
   Switch,
   InputGroup
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
 import gql from "graphql-tag";
 import { useApolloClient, useMutation } from "react-apollo";
@@ -44,15 +46,24 @@ const ContainerDesign = styled.div`
 `;
 
 const ContainerSidePane = styled.div`
-  flex: 0.2 0 auto;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
+  width: 500px;
+
+  @media (max-width: 512px) {
+    width: 100vw;
+  }
 `;
 
 const ContainerForm = styled.div`
   flex: 1 1 auto;
   align-self: center;
   padding: 0 2em;
+`;
+
+const ContainerOptions = styled.div`
+  margin-top: 3em;
 `;
 
 interface FormState {
@@ -74,7 +85,7 @@ function LoginForm() {
   const lockButton = (
     <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`}>
       <Button
-        icon={showPassword ? "unlock" : "lock"}
+        icon={showPassword ? IconNames.UNLOCK : IconNames.LOCK}
         intent={Intent.WARNING}
         minimal={true}
         onClick={() => setShowPassword(!showPassword)}
@@ -97,13 +108,14 @@ function LoginForm() {
 
         return errors;
       }}
-      onSubmit={({ email, password }, { setSubmitting }) => {
+      onSubmit={({ email, password, rememberMe }, { setSubmitting }) => {
         setSubmitting(false);
         signIn({
           variables: {
             input: {
               email,
               password,
+              remeber: rememberMe,
             }
           }
         });        
@@ -180,6 +192,11 @@ function Login() {
       <ContainerSidePane>
         <ContainerForm>
           <LoginForm />
+          <ContainerOptions>
+            <Link to="/register">Don't have an account?</Link>
+            <br/>
+            <Link to="/recover_account">Forgot your password?</Link>
+          </ContainerOptions>
         </ContainerForm>
       </ContainerSidePane>
     </Container>

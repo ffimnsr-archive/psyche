@@ -7,7 +7,6 @@ import common from "./webpack.common.babel";
 
 module.exports = merge(common, {
   mode: "production",
-  devtool: "source-map",
   stats: "minimal",
   performance: {
     hints: false

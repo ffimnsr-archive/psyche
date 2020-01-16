@@ -15,33 +15,39 @@ import {
   Popover,
   Position
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { useApolloClient } from "react-apollo";
 
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
 
-function NavigationHeaderContent(props) {
+function NavigationHeaderContent(props: any) {
   const client = useApolloClient();
 
   const userMenu = (
     <Menu>
       <MenuItem
         onClick={() => props.history.push("/profile")}
-        icon="person"
+        icon={IconNames.PERSON}
         text="My Profile"
       />
-      <MenuItem icon="graph" text="Graph" />
+      <MenuItem icon={IconNames.GRAPH} text="Projects" />
       <MenuDivider />
-      <MenuItem icon="settings" text="Settings" />
+      <MenuItem
+        onClick={() => {
+          props.history.push("/settings");
+        }}
+        icon={IconNames.SETTINGS} text="Settings"
+      />
       <MenuDivider />
       <MenuItem
         onClick={() => {
           sessionStorage.removeItem("token");
           client.resetStore();
-          props.history.push("/");  
+          props.history.replace("/");  
         }}
-        icon="log-out" 
+        icon={IconNames.LOG_OUT} 
         text="Logout"
       />
     </Menu>
@@ -57,12 +63,12 @@ function NavigationHeaderContent(props) {
           text="Docs"
           target="_blank"
           minimal={true}
-          rightIcon="share"
+          rightIcon={IconNames.SHARE}
         />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
         <Popover content={userMenu} position={Position.BOTTOM}>
-          <Button minimal={true} rightIcon="user" />
+          <Button minimal={true} rightIcon={IconNames.USER} />
         </Popover>
       </NavbarGroup>
     </NoShadowNavbar>

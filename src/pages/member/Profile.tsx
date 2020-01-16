@@ -23,21 +23,19 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerNewsFeed = styled.div`
+const ContainerProfile = styled.div`
   flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  margin: 20px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-center;
 `;
 
-const NewsFeed = styled.div`
-  min-width: 600px;
+const ProfilePane = styled.div`
   background-color: #fff;
 
   & > div.bp3-card:not(:last-child) {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -52,20 +50,23 @@ function Profile() {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ContainerNewsFeed>
-          <NewsFeed>
+        <ContainerProfile>
+          <ProfilePane>
             <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-              <Button text="Explore" />
+              Avatar
+              Full Name
+              Public ID
             </Card>
             <Card elevation={Elevation.ONE}>
               <H5>Hello</H5>
               <p>Hello</p>
-              <Button text="Explore" />
             </Card>
-          </NewsFeed>
-        </ContainerNewsFeed>
+            <Card elevation={Elevation.ONE}>
+              <H5>Hello</H5>
+              <p>Hello</p>
+            </Card>
+          </ProfilePane>
+        </ContainerProfile>
       </ContainerMain>
     </Container>
   );

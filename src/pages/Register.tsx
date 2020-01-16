@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   Button,
@@ -10,10 +11,12 @@ import {
   Drawer,
   Position
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
 import gql from "graphql-tag";
 import { useApolloClient, useMutation } from "react-apollo";
 import bgPattern from "@/assets/images/pattern.svg";
+
 
 const SIGNUP_MUTATION = gql`
   mutation signUp($input: SignInInput!) {
@@ -46,15 +49,24 @@ const ContainerDesign = styled.div`
 `;
 
 const ContainerSidePane = styled.div`
-  flex: 0.2 0 auto;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
+  width: 500px;
+
+  @media (max-width: 512px) {
+    width: 100vw;
+  }
 `;
 
 const ContainerForm = styled.div`
   flex: 1 1 auto;
   align-self: center;
   padding: 0 2em;
+`;
+
+const ContainerOptions = styled.div`
+  margin-top: 3em;
 `;
 
 interface FormState {
@@ -195,7 +207,6 @@ function RegisterForm(props: any) {
 
 function Register() {
   const [isTncOpen, setIsTncOpen] = useState(false);
-
   const year = new Date().getFullYear();
 
   return (
@@ -204,8 +215,13 @@ function Register() {
       <ContainerSidePane>
         <ContainerForm>
           <RegisterForm setTncStatus={setIsTncOpen} />
+          <ContainerOptions>
+            <Link to="/login">Already have an account?</Link>
+            <br/>
+            <Link to="/recover_account">Forgot your password?</Link>
+          </ContainerOptions>
           <Drawer
-            icon="info-sign"
+            icon={IconNames.INFO_SIGN}
             title="Terms and Conditions"
             position={Position.RIGHT}
             isOpen={isTncOpen}

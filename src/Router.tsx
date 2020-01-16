@@ -46,7 +46,9 @@ const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
 const LazyLogin = React.lazy(() => import("@/pages/Login"));
 const LazyRegister = React.lazy(() => import("@/pages/Register"));
+const LazyConfirmAccount = React.lazy(() => import("@/pages/ConfirmAccount"));
 const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
+const LazyRecoverAccountProcess = React.lazy(() => import("@/pages/RecoverAccountProcess"));
 
 interface PrivateRouteProps extends RouteProps {}
 
@@ -68,12 +70,12 @@ export function Router () {
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
         <Route path="/login" component={LazyLogin} />
-        <Route path="/login/callback/:provider" component={LazyLogin} />
         <Route path="/register" component={LazyRegister} />
-        <Route path="/register/callback/:provider" component={LazyRegister} />
-        <Route path="/confirm_email/:token" component={LazyRegister} />
+        <Route path="/oauth/success" component={LazyLogin} />
+        <Route path="/oauth/error" component={LazyLogin} />
+        <Route path="/confirm_email/:token" component={LazyConfirmAccount} />
         <Route path="/recover_account" component={LazyRecoverAccount} />
-        <Route path="/recover_account/confirm/:token" component={LazyRecoverAccount} />
+        <Route path="/recover_account/confirm/:token" component={LazyRecoverAccountProcess} />
         <PrivateRoute path="/logout" component={LazyLogin} />
         <PrivateRoute exact path="/" component={LazyMain} />
         <PrivateRoute path="/profile" component={LazyProfile} />

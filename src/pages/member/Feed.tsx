@@ -1,9 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
+import { useQuery } from "react-apollo";
 import { Card, H5, Button, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
+
+const FEED_QUERY = gql`
+  query {
+    industries {
+      id
+    }
+  }
+`;
 
 const Container = styled.main`
   height: 100vh;
@@ -41,34 +51,44 @@ const NewsFeed = styled.div`
   }
 `;
 
-function Notifications() {
+function Feeds() {
+  const { loading, error, data } = useQuery(FEED_QUERY);
+
+  if (loading) return <p>Loading</p>;
+  if (error) return <p>Error</p>;
+
+  const feed = data.industries.map(({ id }) => (
+    <Card key={id} elevation={Elevation.ONE}>
+      <H5>{id}</H5>
+      <p>Hello</p>
+      <Button text="Explore" />
+    </Card>
+  ));
+
+  return (
+    <NewsFeed>
+      {feed}
+    </NewsFeed>
+  );
+}
+
+function Feed() {
   return (
     <Container>
       <Helmet
         titleTemplate="%s | Open Sesame"
       >
-        <title>Notifications</title>
+        <title>Feed</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
         <ContainerNewsFeed>
-          <NewsFeed>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-              <Button text="Explore" />
-            </Card>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-              <Button text="Explore" />
-            </Card>
-          </NewsFeed>
+          <Feeds />
         </ContainerNewsFeed>
       </ContainerMain>
-    </Container>
+    </Container>        
   );
 }
 
-export default Notifications;
+export default Feed;

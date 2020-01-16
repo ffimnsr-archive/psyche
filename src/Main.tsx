@@ -56,7 +56,7 @@ const data = {
 };
 
 cache.writeData({ data });
-client.onResetStore(() => cache.writeData({ data }));
+client.onResetStore(async () => cache.writeData({ data }));
 
 function render() {
   Render((

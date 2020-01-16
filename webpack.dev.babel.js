@@ -5,7 +5,7 @@ import common from "./webpack.common.babel";
 
 module.exports = merge(common, {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: true,

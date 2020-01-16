@@ -8,8 +8,8 @@ FocusStyleManager.onlyShowFocusOnTabs();
 
 export function App() {
 	return (
-		<HelmetProvider>
-			<BrowserRouter>
+	  <HelmetProvider>
+		  <BrowserRouter>
 		  	<Router />
 		  </BrowserRouter>
 	  </HelmetProvider>

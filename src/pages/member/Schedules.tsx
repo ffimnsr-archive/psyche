@@ -37,7 +37,7 @@ const NewsFeed = styled.div`
   background-color: #fff;
 
   & > div.bp3-card:not(:last-child) {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
   }
 `;
 

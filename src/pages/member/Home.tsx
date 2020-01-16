@@ -3,9 +3,11 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Button, Elevation } from "@blueprintjs/core";
+import { Card, H5, Button, Elevation, Callout, Intent, NonIdealState } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
+
 
 const INDUSTRY_QUERY = gql`
   query {
@@ -33,46 +35,38 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerNewsFeed = styled.div`
-  flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
+const ContainerHome = styled.div`
+  flex: 0 1 auto;
+  margin: 20px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
-const NewsFeed = styled.div`
-  min-width: 600px;
+const ContainerContent = styled.div`
   background-color: #fff;
-
-  & > div.bp3-card:not(:last-child) {
-    margin-bottom: 10px;
-  }
 `;
 
-function Feeds() {
-  const { loading, error, data } = useQuery(INDUSTRY_QUERY);
-
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
-
-  const feed = data.industries.map(({ id }) => (
-    <Card key={id} elevation={Elevation.ONE}>
-      <H5>{id}</H5>
-      <p>Hello</p>
-      <Button text="Explore" />
-    </Card>
-  ));
-
-  return (
-    <NewsFeed>
-      {feed}
-    </NewsFeed>
-  );
-}
+const ContainerCallout = styled.div`
+  margin-bottom: 10px;
+`;
 
 function Home() {
+  const action = (
+    <>
+      <Button intent={Intent.SUCCESS} fill={true} large={true} text="Join" />
+      <small>We will notify you immediately through SMS and email once a project gets assigned to you.</small>
+    </>
+  );
+
+  const description = (
+    <p>
+      Once you've joined the search pool you'll be able to get projects that you would work on. 
+      Those projects were based on things that you've indicated on your profile.
+      You can either accept or reject the project that's been assigned to you.
+    </p>
+  );
+
   return (
     <Container>
       <Helmet
@@ -83,9 +77,23 @@ function Home() {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ContainerNewsFeed>
-          <Feeds />
-        </ContainerNewsFeed>
+        <ContainerHome>
+          <ContainerCallout>
+            <Callout intent={Intent.WARNING} title="Fill up your profile!">
+              In order to use our services you need to complete your initial private profile. Your profile will not be shared with any of the clients nor other third party services.
+            </Callout>
+          </ContainerCallout>
+          <ContainerContent>
+            <Card elevation={Elevation.ONE}>
+              <NonIdealState 
+                icon={IconNames.MOUNTAIN}
+                title="Join Search Pool"
+                description={description}
+                action={action}
+              />
+            </Card>
+          </ContainerContent>
+        </ContainerHome>
       </ContainerMain>
     </Container>        
   );

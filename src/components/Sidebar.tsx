@@ -1,16 +1,17 @@
 import * as React from "react";
 import styled, { css } from "styled-components";
 import {
-  Colors,
   Alignment,
-  ButtonGroup,
-  Position,
   Button,
+  ButtonGroup,
+  Colors,
   Menu,
   MenuItem,
   Popover,
+  Position,
   Tooltip
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { IconName } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
@@ -59,11 +60,10 @@ interface ISidebarNavigator {
 
 export function Sidebar() {
   const navs: ISidebarNavigator[] = [
-    { icon: "home", display: "Home", to: "/" },
-    { icon: "notifications", display: "Notifications", to: "notifications" },
-    { icon: "envelope", display: "Messages", to: "/messages" },
-    { icon: "calendar", display: "Schedules", to: "/schedules" },
-    { icon: "settings", display: "Settings", to: "/settings" }
+    { icon: IconNames.HOME, display: "Home", to: "/" },
+    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "notifications" },
+    { icon: IconNames.ENVELOPE, display: "Messages", to: "/messages" },
+    { icon: IconNames.CALENDAR, display: "Schedules", to: "/schedules" }
   ];
 
   const navButtons = navs.map((v: ISidebarNavigator, i: number) => (
@@ -74,13 +74,13 @@ export function Sidebar() {
 
   const moreMenu = (
     <Menu>
-      <MenuItem icon="graph" text="Graph" />
+      <MenuItem icon={IconNames.GRAPH} text="Graph" />
     </Menu>
   );
 
   const moreButton = (
     <Popover content={moreMenu} position={Position.LEFT}>
-      <PaleWhiteButton icon="more" />
+      <PaleWhiteButton icon={IconNames.MORE} />
     </Popover>
   );
 

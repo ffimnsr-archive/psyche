@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { NonIdealState, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 
 const Container = styled.main`
@@ -43,7 +44,7 @@ function NoMatch() {
         <title>Page Not Found</title>
       </Helmet>
       <NonIdealState
-        icon="path-search"
+        icon={IconNames.PATH_SEARCH}
         title="Page Not Found"
         description={description}
         action={action}
