@@ -77,7 +77,7 @@ interface FormState {
   optinMarketing?: string[];
 }
 
-function RegisterForm(props: any) {
+function SignUpForm(props: any) {
   const client = useApolloClient();
   const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION, {
     onCompleted({ signUp }) {
@@ -196,7 +196,7 @@ function RegisterForm(props: any) {
               disabled={isSubmitting}
               type="submit"
             >
-              Register
+              Sign Up
             </Button>
           </FormGroup>
         </form>              
@@ -205,7 +205,7 @@ function RegisterForm(props: any) {
   );
 }
 
-function Register() {
+function SignUp() {
   const [isTncOpen, setIsTncOpen] = useState(false);
   const year = new Date().getFullYear();
 
@@ -214,9 +214,9 @@ function Register() {
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerForm>
-          <RegisterForm setTncStatus={setIsTncOpen} />
+          <SignUpForm setTncStatus={setIsTncOpen} />
           <ContainerOptions>
-            <Link to="/login">Already have an account?</Link>
+            <Link to="/sign_in">Already have an account?</Link>
             <br/>
             <Link to="/recover_account">Forgot your password?</Link>
           </ContainerOptions>
@@ -279,4 +279,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default SignUp;

@@ -13,6 +13,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
 import gql from "graphql-tag";
 import { useApolloClient, useMutation } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNIN_MUTATION = gql`
@@ -72,13 +73,14 @@ interface FormState {
   rememberMe?: string[];
 }
 
-function LoginForm() {
+function SignInFormContent(props: any) {
   const client = useApolloClient();
   const [showPassword, setShowPassword] = useState(false);
   const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
     onCompleted({ signIn }) {
       sessionStorage.setItem("token", signIn.token);
       client.writeData({ data: { isAuthenticated: true } });
+      props.history.replace("/"); 
     }
   });
 
@@ -176,7 +178,7 @@ function LoginForm() {
               disabled={isSubmitting}
               type="submit"
             >
-              Login
+              Sign In
             </Button>
           </FormGroup>
         </form>
@@ -185,15 +187,17 @@ function LoginForm() {
   );
 }
 
-function Login() {
+const SignInForm = withRouter(SignInFormContent);
+
+function SignIn() {
   return (
     <Container>
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerForm>
-          <LoginForm />
+          <SignInForm />
           <ContainerOptions>
-            <Link to="/register">Don't have an account?</Link>
+            <Link to="/sign_up">Don't have an account?</Link>
             <br/>
             <Link to="/recover_account">Forgot your password?</Link>
           </ContainerOptions>
@@ -203,4 +207,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;

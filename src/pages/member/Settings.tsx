@@ -4,17 +4,31 @@ import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
 import { 
-  Button,
   Card,
   Elevation,
-  H5
+  H5,
+  HTMLTable,
+  Checkbox
 } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
 const SETTINGS_QUERY = gql`
   query {
-    workFunctions {
+    profile: memberMyProfile {
+      id
+      socialSecurityNumber
+      clue {
+        firstName
+        lastName
+        gender
+        birthDate
+        image
+        phoneNumber
+        bio
+      }
+    }
+    wf: memberListWorkFunctions {
       id
       name
     }
@@ -50,16 +64,72 @@ const ContainerSettings = styled.div`
 const SettingsPane = styled.div`
   background-color: #fff;
 
-  & > div.bp3-card:not(:last-child) {
+  & > div.bp3-card {
     margin-bottom: 10px;
   }
 `;
 
-function Account({ data }) {
+const ResponsiveTable = styled(HTMLTable)`
+  width: 100%;
+`;
+
+const CheckboxContainer = styled.td`
+  & > label.bp3-control.bp3-disabled {
+    margin-bottom: 0;
+    cursor: pointer;
+    color: #182026;
+  }
+`;
+
+const EditButton = styled.div`
+  float: right;
+`;
+
+function format(value: string): string {
+  return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4")
+}
+
+function Account({ data }: any) {
+  const { socialSecurityNumber } = data.profile;
   return (
     <Card elevation={Elevation.ONE}>
-      <H5>Account</H5>
-      <p>Hello</p>
+      <div className="clearfixn" style={{marginBottom: "10px"}}>
+        <H5 style={{display: "inline"}}>Account</H5>
+        <EditButton>EDIT</EditButton>
+      </div>
+      
+      <ResponsiveTable condensed={true}>
+        <tbody>
+          <tr>
+            <td>Social No.</td>
+            <td>{format(socialSecurityNumber)}</td>
+          </tr>
+          <tr>
+            <td>First Name</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Last Name</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Gender</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Birt Date</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Phone Number</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Bio</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </ResponsiveTable>
     </Card> 
   );
 }
@@ -67,8 +137,19 @@ function Account({ data }) {
 function PrivacyAndSafety({ data }) {
   return (
     <Card elevation={Elevation.ONE}>
-      <H5>Privacy and Safety</H5>
-      <p>Hello</p>
+      <div className="clearfixn" style={{marginBottom: "10px"}}>
+        <H5 style={{display: "inline"}}>Privacy and Safety</H5>
+        <EditButton>EDIT</EditButton>
+      </div>
+      <ResponsiveTable condensed={true}>
+        <tbody>
+          <tr>
+            <td>
+              
+            </td>
+          </tr>
+        </tbody>
+      </ResponsiveTable>
     </Card> 
   );
 }
@@ -76,33 +157,49 @@ function PrivacyAndSafety({ data }) {
 function Notifications({ data }) {
   return (
     <Card elevation={Elevation.ONE}>
-      <H5>Notifications</H5>
-      <p>Hello</p>
+      <div className="clearfixn" style={{marginBottom: "10px"}}>
+        <H5 style={{display: "inline"}}>Site Preference & Notifications</H5>
+        <EditButton>EDIT</EditButton>
+      </div>
+      <ResponsiveTable condensed={true}>
+        <tbody>
+          <tr>
+            <td>
+              
+            </td>
+          </tr>
+        </tbody>
+      </ResponsiveTable>
     </Card> 
   );
 }
 
-function WorkPreference({ data }) {
-  const workFunctions = data.workFunctions.map(({ id, name }) => (
-    <p key={id}>
-      {name}
-    </p>
+function WorkPreference({ data }: any) {
+  const workFunctions = data.wf.map(({ id, name }: any) => (
+    <tr>
+      <CheckboxContainer>
+        <Checkbox
+          key={id}
+          label={name}
+          defaultIndeterminate={false}
+          disabled={true}
+        />        
+      </CheckboxContainer>
+    </tr>    
   ));
 
   return (
     <Card elevation={Elevation.ONE}>
-      <H5>Work Preference</H5>
-      {workFunctions}
+      <div className="clearfixn" style={{marginBottom: "10px"}}>
+        <H5 style={{display: "inline"}}>Work Preference</H5>
+        <EditButton>EDIT</EditButton>
+      </div>      
+      <ResponsiveTable condensed={true}>
+        <tbody>
+          {workFunctions}
+        </tbody>
+      </ResponsiveTable>
     </Card>
-  );
-}
-
-function SitePreference({ data }) {
-  return (
-    <Card elevation={Elevation.ONE}>
-      <H5>Site Preference</H5>
-      <p>Hello</p>
-    </Card>  
   );
 }
 
@@ -128,7 +225,6 @@ function Settings() {
             <PrivacyAndSafety data={data} />
             <Notifications data={data} />
             <WorkPreference data={data} />
-            <SitePreference data={data} />
           </SettingsPane>
         </ContainerSettings>
       </ContainerMain>      

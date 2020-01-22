@@ -44,24 +44,37 @@ const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"
 const LazyMessages = React.lazy(() => import("@/pages/member/Messages"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
-const LazyLogin = React.lazy(() => import("@/pages/Login"));
-const LazyRegister = React.lazy(() => import("@/pages/Register"));
-const LazyConfirmAccount = React.lazy(() => import("@/pages/ConfirmAccount"));
+const LazySignIn = React.lazy(() => import("@/pages/SignIn"));
+const LazySignUp = React.lazy(() => import("@/pages/SignUp"));
+const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
+const LazyConfirmAccount = React.lazy(() => import("@/pages/SignUpVerify"));
 const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
-const LazyRecoverAccountProcess = React.lazy(() => import("@/pages/RecoverAccountProcess"));
+const LazyRecoverAccountProcess = React.lazy(() => import("@/pages/RecoverAccountVerify"));
 
-interface PrivateRouteProps extends RouteProps {}
+const OpenRoute = Route;
 
-function PrivateRoute({ component, ...otherProps }: PrivateRouteProps) {
+interface AuthRouteProps extends RouteProps {
+  no?: boolean;
+}
+
+function AuthRoute({ component, no = false, ...otherProps }: AuthRouteProps) {
   const { data } = useQuery(IS_AUTHENTICATED_QUERY);
 
   return (
-    <Route
-      {...otherProps}
-      render={(props: any) =>
-        data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/login" />
-      }
-    />
+    no ?
+      <Route
+        {...otherProps}
+        render={(props: any) =>
+          !data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/" />
+        }
+      />
+    :
+      <Route
+        {...otherProps}
+        render={(props: any) =>
+          data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/sign_in" />
+        }
+      />
   );
 };
 
@@ -69,21 +82,22 @@ export function Router () {
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
-        <Route path="/login" component={LazyLogin} />
-        <Route path="/register" component={LazyRegister} />
-        <Route path="/oauth/success" component={LazyLogin} />
-        <Route path="/oauth/error" component={LazyLogin} />
-        <Route path="/confirm_email/:token" component={LazyConfirmAccount} />
-        <Route path="/recover_account" component={LazyRecoverAccount} />
-        <Route path="/recover_account/confirm/:token" component={LazyRecoverAccountProcess} />
-        <PrivateRoute path="/logout" component={LazyLogin} />
-        <PrivateRoute exact path="/" component={LazyMain} />
-        <PrivateRoute path="/profile" component={LazyProfile} />
-        <PrivateRoute path="/notifications" component={LazyNotifications} />
-        <PrivateRoute path="/messages" component={LazyMessages} />
-        <PrivateRoute path="/schedules" component={LazySchedules} />
-        <PrivateRoute path="/settings" component={LazySettings} />
-        <Route component={NoMatch} />
+        <AuthRoute no={true} path="/sign_in" component={LazySignIn} />
+        <AuthRoute no={true} path="/sign_up" component={LazySignUp} />
+        <AuthRoute no={true} path="/oauth/success" component={LazySignIn} />
+        <AuthRoute no={true} path="/oauth/error" component={LazySignIn} />
+        <AuthRoute no={true} path="/sign_up/verify/:token" component={LazyConfirmAccount} />
+        <AuthRoute no={true} path="/recover_account" component={LazyRecoverAccount} />
+        <AuthRoute no={true} path="/recover_account/verify/:token" component={LazyRecoverAccountProcess} />
+        <AuthRoute path="/logout" component={LazySignIn} />
+        <AuthRoute exact path="/" component={LazyMain} />
+        <AuthRoute path="/profile" component={LazyProfile} />
+        <AuthRoute path="/notifications" component={LazyNotifications} />
+        <AuthRoute path="/messages" component={LazyMessages} />
+        <AuthRoute path="/schedules" component={LazySchedules} />
+        <AuthRoute path="/settings" component={LazySettings} />
+        <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />
+        <OpenRoute component={NoMatch} />
       </Switch>
     </React.Suspense>
   );

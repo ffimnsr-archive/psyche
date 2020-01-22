@@ -141,7 +141,7 @@ function RecoverAccount() {
         <ContainerForm>
           <RecoverAccountForm />
           <ContainerOptions>
-            <Link to="/register">Don't have an account?</Link>
+            <Link to="/sign_up">Don't have an account?</Link>
           </ContainerOptions>
         </ContainerForm>
       </ContainerSidePane>

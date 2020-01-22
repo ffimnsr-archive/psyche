@@ -62,7 +62,7 @@ const config = {
             options: {
               name: "[name].[ext]",
               outputPath: "assets/images/",
-              publicPath: "assets/images/"
+              publicPath: "/assets/images/"
             }
           }
         ]
@@ -75,7 +75,7 @@ const config = {
             options: {
               name: "[name].[ext]",
               outputPath: "assets/fonts/",
-              publicPath: "assets/fonts/"
+              publicPath: "/assets/fonts/"
             }
           }
         ]
@@ -91,7 +91,8 @@ const config = {
   output: {
     filename: "[name].bundle.js",
     chunkFilename: "[name].bundle.js",
-    path: path.resolve(__dirname, "./dist/")
+    path: path.resolve(__dirname, "./dist/"),
+    publicPath: "/"
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
