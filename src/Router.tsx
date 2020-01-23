@@ -46,10 +46,10 @@ const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
 const LazySignIn = React.lazy(() => import("@/pages/SignIn"));
 const LazySignUp = React.lazy(() => import("@/pages/SignUp"));
-const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
-const LazyConfirmAccount = React.lazy(() => import("@/pages/SignUpVerify"));
+const LazySignUpVerify = React.lazy(() => import("@/pages/SignUpVerify"));
 const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
-const LazyRecoverAccountProcess = React.lazy(() => import("@/pages/RecoverAccountVerify"));
+const LazyRecoverAccountVerify = React.lazy(() => import("@/pages/RecoverAccountVerify"));
+const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 
 const OpenRoute = Route;
 
@@ -83,13 +83,12 @@ export function Router () {
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
         <AuthRoute no={true} path="/sign_in" component={LazySignIn} />
-        <AuthRoute no={true} path="/sign_up" component={LazySignUp} />
         <AuthRoute no={true} path="/oauth/success" component={LazySignIn} />
         <AuthRoute no={true} path="/oauth/error" component={LazySignIn} />
-        <AuthRoute no={true} path="/sign_up/verify/:token" component={LazyConfirmAccount} />
-        <AuthRoute no={true} path="/recover_account" component={LazyRecoverAccount} />
-        <AuthRoute no={true} path="/recover_account/verify/:token" component={LazyRecoverAccountProcess} />
-        <AuthRoute path="/logout" component={LazySignIn} />
+        <AuthRoute no={true} exact path="/sign_up" component={LazySignUp} />
+        <AuthRoute no={true} path="/sign_up/verify/:code" component={LazySignUpVerify} />
+        <AuthRoute no={true} exact path="/recover_account" component={LazyRecoverAccount} />
+        <AuthRoute no={true} path="/recover_account/verify/:code" component={LazyRecoverAccountVerify} />
         <AuthRoute exact path="/" component={LazyMain} />
         <AuthRoute path="/profile" component={LazyProfile} />
         <AuthRoute path="/notifications" component={LazyNotifications} />

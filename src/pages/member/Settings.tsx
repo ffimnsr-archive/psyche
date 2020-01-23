@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { 
+import {
   Card,
   Elevation,
   H5,
   HTMLTable,
+  Dialog,
+  Classes,
+  Tooltip,
+  Button,
+  AnchorButton,
+  Intent,
   Checkbox
 } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -81,125 +88,372 @@ const CheckboxContainer = styled.td`
   }
 `;
 
-const EditButton = styled.div`
+const EditButton = styled.a`
   float: right;
 `;
+
+const defaultDialogOptions = {
+  autoFocus: true,
+  canEscapeKeyClose: true,
+  canOutsideClickClose: false,
+  enforceFocus: true,
+  usePortal: true
+};
 
 function format(value: string): string {
   return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4")
 }
 
 function Account({ data }: any) {
+  const title = "Account"
+  const [isOpen, setIsOpen] = useState(false);
   const { socialSecurityNumber } = data.profile;
   return (
-    <Card elevation={Elevation.ONE}>
-      <div className="clearfixn" style={{marginBottom: "10px"}}>
-        <H5 style={{display: "inline"}}>Account</H5>
-        <EditButton>EDIT</EditButton>
-      </div>
-      
-      <ResponsiveTable condensed={true}>
-        <tbody>
-          <tr>
-            <td>Social No.</td>
-            <td>{format(socialSecurityNumber)}</td>
-          </tr>
-          <tr>
-            <td>First Name</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Last Name</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Gender</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Birt Date</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Phone Number</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Bio</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </ResponsiveTable>
-    </Card> 
+    <>
+      <Card elevation={Elevation.ONE}>
+        <div className="clearfixr" style={{marginBottom: "10px"}}>
+          <H5 style={{display: "inline"}}>{title}</H5>
+          <EditButton
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
+            EDIT
+          </EditButton>
+        </div>
+
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            <tr>
+              <td>Social No.</td>
+              <td>{format(socialSecurityNumber)}</td>
+            </tr>
+            <tr>
+              <td>First Name</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Birt Date</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Phone Number</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Bio</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
+      <Dialog
+        icon={IconNames.INFO_SIGN}
+        title={title}
+        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+        {...defaultDialogOptions}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            <strong>
+              Data integration is the seminal problem of the digital age. For over ten years, we’ve
+              helped the world’s premier organizations rise to the challenge.
+            </strong>
+          </p>
+          <p>
+            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
+            and extending the power of data integration. With Foundry, anyone can source, fuse, and
+            transform data into any shape they desire. Business analysts become data engineers — and
+            leaders in their organization’s data revolution.
+          </p>
+          <p>
+            Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+            provenance, git-style versioning semantics, granular access controls, branching,
+            transformation authoring, and more. But these powers are not limited to the back-end IT
+            shop.
+          </p>
+          <p>
+            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+            integrations in their own right. Access controls, transformation logic, and data quality
+            flow from original data source to intermediate analysis to presentation in real time. Every
+            end product created in Foundry becomes a new data source that other users can build upon.
+            And the enterprise data foundation goes where the business drives it.
+          </p>
+          <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Tooltip content="This button is hooked up to close the dialog.">
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            </Tooltip>
+            <AnchorButton
+              intent={Intent.PRIMARY}
+              href="https://www.palantir.com/palantir-foundry/"
+              target="_blank"
+            >
+              Visit the Foundry website
+            </AnchorButton>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
 function PrivacyAndSafety({ data }) {
+  const title = "Privacy and Safety"
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Card elevation={Elevation.ONE}>
-      <div className="clearfixn" style={{marginBottom: "10px"}}>
-        <H5 style={{display: "inline"}}>Privacy and Safety</H5>
-        <EditButton>EDIT</EditButton>
-      </div>
-      <ResponsiveTable condensed={true}>
-        <tbody>
-          <tr>
-            <td>
-              
-            </td>
-          </tr>
-        </tbody>
-      </ResponsiveTable>
-    </Card> 
+    <>
+      <Card elevation={Elevation.ONE}>
+        <div className="clearfixr" style={{marginBottom: "10px"}}>
+          <H5 style={{display: "inline"}}>{title}</H5>
+          <EditButton
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
+            EDIT
+          </EditButton>
+        </div>
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            <tr>
+              <td>
+
+              </td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
+      <Dialog
+        icon={IconNames.INFO_SIGN}
+        title={title}
+        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+        {...defaultDialogOptions}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            <strong>
+              Data integration is the seminal problem of the digital age. For over ten years, we’ve
+              helped the world’s premier organizations rise to the challenge.
+            </strong>
+          </p>
+          <p>
+            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
+            and extending the power of data integration. With Foundry, anyone can source, fuse, and
+            transform data into any shape they desire. Business analysts become data engineers — and
+            leaders in their organization’s data revolution.
+          </p>
+          <p>
+            Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+            provenance, git-style versioning semantics, granular access controls, branching,
+            transformation authoring, and more. But these powers are not limited to the back-end IT
+            shop.
+          </p>
+          <p>
+            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+            integrations in their own right. Access controls, transformation logic, and data quality
+            flow from original data source to intermediate analysis to presentation in real time. Every
+            end product created in Foundry becomes a new data source that other users can build upon.
+            And the enterprise data foundation goes where the business drives it.
+          </p>
+          <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Tooltip content="This button is hooked up to close the dialog.">
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            </Tooltip>
+            <AnchorButton
+              intent={Intent.PRIMARY}
+              href="https://www.palantir.com/palantir-foundry/"
+              target="_blank"
+            >
+              Visit the Foundry website
+            </AnchorButton>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
 function Notifications({ data }) {
+  const title = "Site Preference & Notifications";
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Card elevation={Elevation.ONE}>
-      <div className="clearfixn" style={{marginBottom: "10px"}}>
-        <H5 style={{display: "inline"}}>Site Preference & Notifications</H5>
-        <EditButton>EDIT</EditButton>
-      </div>
-      <ResponsiveTable condensed={true}>
-        <tbody>
-          <tr>
-            <td>
-              
-            </td>
-          </tr>
-        </tbody>
-      </ResponsiveTable>
-    </Card> 
+    <>
+      <Card elevation={Elevation.ONE}>
+        <div className="clearfixr" style={{marginBottom: "10px"}}>
+          <H5 style={{display: "inline"}}>{title}</H5>
+          <EditButton
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
+            EDIT
+          </EditButton>
+        </div>
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            <tr>
+              <td>
+
+              </td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
+      <Dialog
+        icon={IconNames.INFO_SIGN}
+        title={title}
+        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+        {...defaultDialogOptions}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            <strong>
+              Data integration is the seminal problem of the digital age. For over ten years, we’ve
+              helped the world’s premier organizations rise to the challenge.
+            </strong>
+          </p>
+          <p>
+            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
+            and extending the power of data integration. With Foundry, anyone can source, fuse, and
+            transform data into any shape they desire. Business analysts become data engineers — and
+            leaders in their organization’s data revolution.
+          </p>
+          <p>
+            Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+            provenance, git-style versioning semantics, granular access controls, branching,
+            transformation authoring, and more. But these powers are not limited to the back-end IT
+            shop.
+          </p>
+          <p>
+            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+            integrations in their own right. Access controls, transformation logic, and data quality
+            flow from original data source to intermediate analysis to presentation in real time. Every
+            end product created in Foundry becomes a new data source that other users can build upon.
+            And the enterprise data foundation goes where the business drives it.
+          </p>
+          <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Tooltip content="This button is hooked up to close the dialog.">
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            </Tooltip>
+            <AnchorButton
+              intent={Intent.PRIMARY}
+              href="https://www.palantir.com/palantir-foundry/"
+              target="_blank"
+            >
+              Visit the Foundry website
+            </AnchorButton>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
 function WorkPreference({ data }: any) {
+  const title = "Work Preference"
+  const [isOpen, setIsOpen] = useState(false);
   const workFunctions = data.wf.map(({ id, name }: any) => (
-    <tr>
+    <tr key={id}>
       <CheckboxContainer>
         <Checkbox
-          key={id}
           label={name}
           defaultIndeterminate={false}
           disabled={true}
-        />        
+        />
       </CheckboxContainer>
-    </tr>    
+    </tr>
   ));
 
   return (
-    <Card elevation={Elevation.ONE}>
-      <div className="clearfixn" style={{marginBottom: "10px"}}>
-        <H5 style={{display: "inline"}}>Work Preference</H5>
-        <EditButton>EDIT</EditButton>
-      </div>      
-      <ResponsiveTable condensed={true}>
-        <tbody>
-          {workFunctions}
-        </tbody>
-      </ResponsiveTable>
-    </Card>
+    <>
+      <Card elevation={Elevation.ONE}>
+        <div className="clearfixr" style={{marginBottom: "10px"}}>
+          <H5 style={{display: "inline"}}>{title}</H5>
+          <EditButton>EDIT</EditButton>
+        </div>
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            {workFunctions}
+          </tbody>
+        </ResponsiveTable>
+      </Card>
+      <Dialog
+        icon={IconNames.INFO_SIGN}
+        title={title}
+        onClose={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+        {...defaultDialogOptions}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            <strong>
+              Data integration is the seminal problem of the digital age. For over ten years, we’ve
+              helped the world’s premier organizations rise to the challenge.
+            </strong>
+          </p>
+          <p>
+            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
+            and extending the power of data integration. With Foundry, anyone can source, fuse, and
+            transform data into any shape they desire. Business analysts become data engineers — and
+            leaders in their organization’s data revolution.
+          </p>
+          <p>
+            Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+            provenance, git-style versioning semantics, granular access controls, branching,
+            transformation authoring, and more. But these powers are not limited to the back-end IT
+            shop.
+          </p>
+          <p>
+            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
+            integrations in their own right. Access controls, transformation logic, and data quality
+            flow from original data source to intermediate analysis to presentation in real time. Every
+            end product created in Foundry becomes a new data source that other users can build upon.
+            And the enterprise data foundation goes where the business drives it.
+          </p>
+          <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+        </div>
+        <div className={Classes.DIALOG_FOOTER}>
+          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+            <Tooltip content="This button is hooked up to close the dialog.">
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            </Tooltip>
+            <AnchorButton
+              intent={Intent.PRIMARY}
+              href="https://www.palantir.com/palantir-foundry/"
+              target="_blank"
+            >
+              Visit the Foundry website
+            </AnchorButton>
+          </div>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
@@ -227,7 +481,7 @@ function Settings() {
             <WorkPreference data={data} />
           </SettingsPane>
         </ContainerSettings>
-      </ContainerMain>      
+      </ContainerMain>
     </Container>
   );
 }

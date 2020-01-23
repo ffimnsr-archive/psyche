@@ -57,7 +57,7 @@ function Feeds() {
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
-  const feed = data.industries.map(({ id }) => (
+  const feed = data.industries.map(({ id }: any) => (
     <Card key={id} elevation={Elevation.ONE}>
       <H5>{id}</H5>
       <p>Hello</p>
@@ -87,7 +87,7 @@ function Feed() {
           <Feeds />
         </ContainerNewsFeed>
       </ContainerMain>
-    </Container>        
+    </Container>
   );
 }
 

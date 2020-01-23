@@ -45,9 +45,9 @@ function NavigationHeaderContent(props: any) {
         onClick={() => {
           sessionStorage.removeItem("token");
           client.resetStore();
-          props.history.replace("/");  
+          props.history.replace("/");
         }}
-        icon={IconNames.LOG_OUT} 
+        icon={IconNames.LOG_OUT}
         text="Logout"
       />
     </Menu>

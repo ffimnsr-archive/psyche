@@ -7,21 +7,25 @@ import {
   FormGroup,
   Tooltip,
   Switch,
+  Spinner,
+  NonIdealState,
   InputGroup
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
 import gql from "graphql-tag";
+import _ from "lodash";
 import { useApolloClient, useMutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
+import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNIN_MUTATION = gql`
   mutation signIn($input: SignInInput!) {
     signIn(input: $input) @rest(
-      type: "SignIn"
+      type: "SignIn",
       method: "POST",
-      path: "/sign_in",
+      path: "/sign_in"
     ) {
       success
       token
@@ -73,6 +77,44 @@ interface FormState {
   rememberMe?: string[];
 }
 
+function SignInLoading() {
+  return (
+    <Spinner
+      size={Spinner.SIZE_LARGE}
+    />
+  );
+}
+
+function SignInError() {
+  // TODO: update data
+  const description = (
+    <div>
+      An email has been sent to.
+      Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.WARNING_SIGN}
+      title="Sign-In Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
 function SignInFormContent(props: any) {
   const client = useApolloClient();
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +122,7 @@ function SignInFormContent(props: any) {
     onCompleted({ signIn }) {
       sessionStorage.setItem("token", signIn.token);
       client.writeData({ data: { isAuthenticated: true } });
-      props.history.replace("/"); 
+      props.history.replace("/");
     }
   });
 
@@ -95,95 +137,102 @@ function SignInFormContent(props: any) {
     </Tooltip>
   );
 
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+  if (loading) return <SignInLoading />;
+  if (error) return <SignInError />;
 
   return (
-    <Formik
-      initialValues={{ email: "", password: "", rememberMe: [] }}
-      validate={values => {
-        let errors: FormState = {};
+    <>
+      <Formik
+        initialValues={{ email: "", password: "", rememberMe: [] }}
+        validate={(values: FormState) => {
+          let errors: any = {};
 
-        if (!values.email) {
-          errors.email = "Invalid email address";
-        }
-
-        return errors;
-      }}
-      onSubmit={({ email, password, rememberMe }, { setSubmitting }) => {
-        setSubmitting(false);
-        signIn({
-          variables: {
-            input: {
-              email,
-              password,
-              remeber: rememberMe,
-            }
+          if (!values.email) {
+            errors.email = "Invalid email address";
           }
-        });        
-      }}
-    >
-      {({
-        values,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <FormGroup
-            label="Email"
-            labelFor="email"
-          >
-            <InputGroup
-              id="email"
-              name="email"
-              placeholder="Enter your email..."
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-              type="email"
-            />
-          </FormGroup>
-          <FormGroup
-            label="Password"
-            labelFor="password"
-          >
-            <InputGroup
-              id="password"
-              name="password"
-              placeholder="Enter your password..."
-              rightElement={lockButton}
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-              type={showPassword ? "text" : "password"}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Switch
-              id="rememberMe"
-              label="Remember Me?"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultChecked={false}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Button
-              intent={Intent.PRIMARY}
-              large={true}
-              disabled={isSubmitting}
-              type="submit"
+
+          return errors;
+        }}
+        onSubmit={({ email, password, rememberMe }, { setSubmitting }) => {
+          setSubmitting(false);
+          signIn({
+            variables: {
+              input: {
+                email,
+                password,
+                remember: _.isEmpty(rememberMe),
+              }
+            }
+          });
+        }}
+      >
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <FormGroup
+              label="Email"
+              labelFor="email"
             >
-              Sign In
-            </Button>
-          </FormGroup>
-        </form>
-      )}
-    </Formik>
+              <InputGroup
+                id="email"
+                name="email"
+                placeholder="Enter your email..."
+                large={true}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                type="email"
+              />
+            </FormGroup>
+            <FormGroup
+              label="Password"
+              labelFor="password"
+            >
+              <InputGroup
+                id="password"
+                name="password"
+                placeholder="Enter your password..."
+                rightElement={lockButton}
+                large={true}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                type={showPassword ? "text" : "password"}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Switch
+                id="rememberMe"
+                label="Remember Me?"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                defaultChecked={false}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button
+                intent={Intent.PRIMARY}
+                large={true}
+                disabled={isSubmitting}
+                type="submit"
+              >
+                Sign In
+              </Button>
+            </FormGroup>
+          </form>
+        )}
+      </Formik>
+      <ContainerOptions>
+        <Link to="/sign_up">Don't have an account?</Link>
+        <br/>
+        <Link to="/recover_account">Forgot your password?</Link>
+      </ContainerOptions>
+    </>
   );
 }
 
@@ -196,11 +245,6 @@ function SignIn() {
       <ContainerSidePane>
         <ContainerForm>
           <SignInForm />
-          <ContainerOptions>
-            <Link to="/sign_up">Don't have an account?</Link>
-            <br/>
-            <Link to="/recover_account">Forgot your password?</Link>
-          </ContainerOptions>
         </ContainerForm>
       </ContainerSidePane>
     </Container>

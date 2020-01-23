@@ -1,16 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
+import _ from "lodash";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Elevation } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import {
+  Card,
+  H5,
+  Elevation,
+  Spinner,
+  Intent,
+  NonIdealState
+} from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
+import { HapButton } from "@/components/HapButton";
 
-const PROFILE_QUERY = gql`
-  query {
-    memberMyProfile {
-      id
+const REQUEST_PROFILE_QUERY = gql`
+  query($id: String!) {
+    requestProfile(id: $id) @rest(
+      type: "RequestProfile",
+      method: "GET",
+      path: "/request_profile/{args.id}"
+    ) {
+      success
+      profile
     }
   }
 `;
@@ -49,11 +63,72 @@ const ProfilePane = styled.div`
   }
 `;
 
-function ShareableProfile() {
-  const { loading, error, data } = useQuery(PROFILE_QUERY);
+function camelizeKeys(obj: any): any {
+  if (Array.isArray(obj)) {
+    return obj.map(v => camelizeKeys(v));
+  } else if (_.isPlainObject(obj)) {
+    return Object.keys(obj).reduce(
+      (result, key) => ({
+        ...result,
+        [_.camelCase(key)]: camelizeKeys(obj[key]),
+      }),
+      {},
+    );
+  }
+  return obj;
+};
 
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+function ShareableProfileLoading() {
+  return (
+    <Spinner
+      size={Spinner.SIZE_LARGE}
+    />
+  );
+}
+
+function ShareableProfileError() {
+  // TODO: update data
+  const description = (
+    <div>
+      An email has been sent to.
+      Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.WARNING_SIGN}
+      title="Account Recovery Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
+function ShareableProfile() {
+  const { id } = useParams();
+  const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
+    variables: { id }
+  });
+
+  if (loading) return <ShareableProfileLoading />;
+  if (error) return <ShareableProfileError />;
+
+  if (_.isNil(data.requestProfile)) return <ShareableProfileError />;
+
+  const { profile } = data.requestProfile;
+  const formattedProfile = camelizeKeys(profile);
 
   return (
     <Container>
@@ -62,22 +137,17 @@ function ShareableProfile() {
       >
         <title>Profile</title>
       </Helmet>
-      <Sidebar />
       <ContainerMain>
-        <NavigationHeader />
         <ContainerProfile>
           <ProfilePane>
             <Card elevation={Elevation.ONE}>
               <img src="https://via.placeholder.com/200" />
               Full Name
-              Public ID
+              {formattedProfile.socialSecurityNumber}
+              {formattedProfile.email}
             </Card>
             <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-            </Card>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
+              <H5>Work Experience</H5>
               <p>Hello</p>
             </Card>
           </ProfilePane>

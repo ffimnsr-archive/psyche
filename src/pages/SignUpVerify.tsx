@@ -1,25 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  Button,
-  Intent,
-  FormGroup,
-  InputGroup
-} from "@blueprintjs/core";
-import { Formik } from "formik";
+import { Intent, NonIdealState, Spinner } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
+import { useParams } from "react-router-dom";
 import { useMutation } from "react-apollo";
+import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
-const RECOVER_ACCOUNT_MUTATION = gql`
-  mutation recoverAccount($input: RecoverAccountInput!) {
-    recoverAccount(input: $input) @rest(
-      type: "RecoverAccount",
+const SIGN_UP_VERIFY_MUTATION = gql`
+  mutation signUpVerify($input: SignUpVerifyInput!) {
+    signUpVerify(input: $input) @rest(
+      type: "SignUpVerify",
       method: "POST",
-      path: "/recover_account",
+      path: "/sign_up/verify",
     ) {
       success
+      token
     }
   }
 `;
@@ -58,95 +55,91 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-const ContainerOptions = styled.div`
-  margin-top: 3em;
-`;
-
-interface FormState {
-  email?: string;
-}
-
-function RecoverAccountForm() {
-  const [recoverAccount, { loading, error }] = useMutation(RECOVER_ACCOUNT_MUTATION);
-
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
-
+function SignUpVerifyLoading() {
   return (
-    <Formik
-      initialValues={{ email: "" }}
-      validate={values => {
-        let errors: FormState = {};
-
-        if (!values.email) {
-          errors.email = "Invalid email address";
-        }
-
-        return errors;
-      }}
-      onSubmit={({ email }, { setSubmitting }) => {
-        setSubmitting(false);
-        recoverAccount({
-          variables: {
-            input: {
-              email,
-            }
-          }
-        });
-      }}
-    >
-      {({
-        values,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <FormGroup
-            label="Email"
-            labelFor="email"
-          >
-            <InputGroup
-              id="email"
-              placeholder="Enter your email..."
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-              type="text"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Button
-              intent={Intent.PRIMARY}
-              large={true}
-              disabled={isSubmitting}
-              type="submit"
-            >
-              Recover Account
-            </Button>
-          </FormGroup>
-        </form>
-      )}
-    </Formik>
+    <Spinner
+      size={Spinner.SIZE_LARGE}
+    />
   );
 }
 
-function RecoverAccount() {
+function SignUpVerifyError() {
+  // TODO: update data
+  const description = (
+    <div>
+      An email has been sent to.
+      Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.WARNING_SIGN}
+      title="Sign-In Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
+function SignUpVerifyContent() {
+  // TODO: run mutation on mount
+  const { code } = useParams();
+  const [signUpVerify, { loading, error }] = useMutation(SIGN_UP_VERIFY_MUTATION);
+
+  if (loading) return <SignUpVerifyLoading />;
+  if (error) return <SignUpVerifyError />;
+
+  const description = (
+    <div>
+      An email has been sent to .
+      Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.TICK_CIRCLE}
+      title="Account Verified!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
+function SignUpVerify() {
   return (
     <Container>
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerForm>
-          <RecoverAccountForm />
-          <ContainerOptions>
-            <Link to="/sign_up">Don't have an account?</Link>
-          </ContainerOptions>
+          <SignUpVerifyContent />
         </ContainerForm>
       </ContainerSidePane>
     </Container>
   );
 }
 
-export default RecoverAccount;
+export default SignUpVerify;

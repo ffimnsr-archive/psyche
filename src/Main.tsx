@@ -33,7 +33,7 @@ const authLink = setContext((_, { headers }) => {
 	const token = sessionStorage.getItem("token");
 	const context = {
 		headers: {
-			...headers,	
+			...headers,
 			Authorization: token ? `Bearer ${sessionStorage.getItem("token")}` : "",
 		}
 	};
@@ -45,7 +45,7 @@ const restLink = new RestLink({ uri: ENDPOINT_URI });
 
 const httpLink = new HttpLink({ uri: GRAPH_URI });
 
-const client = new ApolloClient({	
+const client = new ApolloClient({
 	link: ApolloLink.from([errorLink, restLink, authLink, httpLink]),
 	cache,
 	resolvers,

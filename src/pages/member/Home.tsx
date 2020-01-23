@@ -1,21 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
+// import { useQuery } from "react-apollo";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "react-apollo";
-import { Card, H5, Button, Elevation, Callout, Intent, NonIdealState } from "@blueprintjs/core";
+import { Card, Button, Elevation, Callout, Intent, NonIdealState } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
-
-const INDUSTRY_QUERY = gql`
-  query {
-    industries {
-      id
-    }
-  }
-`;
+// const INDUSTRY_QUERY = gql`
+//   query {
+//     industries {
+//       id
+//     }
+//   }
+// `;
 
 const Container = styled.main`
   height: 100vh;
@@ -61,7 +60,7 @@ function Home() {
 
   const description = (
     <p>
-      Once you've joined the search pool you'll be able to get projects that you would work on. 
+      Once you've joined the search pool you'll be able to get projects that you would work on.
       Those projects were based on things that you've indicated on your profile.
       You can either accept or reject the project that's been assigned to you.
     </p>
@@ -85,7 +84,7 @@ function Home() {
           </ContainerCallout>
           <ContainerContent>
             <Card elevation={Elevation.ONE}>
-              <NonIdealState 
+              <NonIdealState
                 icon={IconNames.MOUNTAIN}
                 title="Join Search Pool"
                 description={description}
@@ -95,7 +94,7 @@ function Home() {
           </ContainerContent>
         </ContainerHome>
       </ContainerMain>
-    </Container>        
+    </Container>
   );
 }
 

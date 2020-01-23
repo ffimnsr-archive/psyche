@@ -23,24 +23,6 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerNewsFeed = styled.div`
-  flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-const NewsFeed = styled.div`
-  min-width: 600px;
-  background-color: #fff;
-
-  & > div.bp3-card:not(:last-child) {
-    margin-bottom: 10px;
-  }
-`;
-
 function Messages() {
   return (
     <Container>
@@ -52,20 +34,6 @@ function Messages() {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ContainerNewsFeed>
-          <NewsFeed>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-              <Button text="Explore" />
-            </Card>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-              <Button text="Explore" />
-            </Card>
-          </NewsFeed>
-        </ContainerNewsFeed>
       </ContainerMain>
     </Container>
   );

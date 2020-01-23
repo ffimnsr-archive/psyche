@@ -9,21 +9,24 @@ import {
   InputGroup,
   Classes,
   Drawer,
+  Spinner,
+  NonIdealState,
   Position
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
 import gql from "graphql-tag";
+import _ from "lodash";
 import { useApolloClient, useMutation } from "react-apollo";
+import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
-
 
 const SIGNUP_MUTATION = gql`
   mutation signUp($input: SignInInput!) {
     signUp(input: $input) @rest(
-      type: "SignUp"
+      type: "SignUp",
       method: "POST",
-      path: "/sign_up",
+      path: "/sign_up"
     ) {
       success
       token
@@ -77,6 +80,44 @@ interface FormState {
   optinMarketing?: string[];
 }
 
+function SignUpLoading() {
+  return (
+    <Spinner
+      size={Spinner.SIZE_LARGE}
+    />
+  );
+}
+
+function SignUpError() {
+  // TODO: update data
+  const description = (
+    <div>
+      An email has been sent to.
+      Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.WARNING_SIGN}
+      title="Sign-In Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
 function SignUpForm(props: any) {
   const client = useApolloClient();
   const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION, {
@@ -90,7 +131,7 @@ function SignUpForm(props: any) {
     <span>
       I agree to the{" "}
       <a
-        href="#" 
+        href="#"
         onClick={(e) => {
           e.preventDefault();
           props.setTncStatus(true);
@@ -102,106 +143,117 @@ function SignUpForm(props: any) {
     </span>
   );
 
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+  if (loading) return <SignUpLoading />;
+  if (error) return <SignUpError />;
 
   return (
-    <Formik
-      initialValues={{ email: "", password: "", confirmPassword: "" }}
-      validate={values => {
-        let errors: FormState = {};
+    <>
+      <Formik
+        initialValues={{ email: "", password: "", confirmPassword: "", tncAgreement: [] }}
+        validate={(values: FormState) => {
+          let errors: any = {};
 
-        if (!values.email) {
-          errors.email = "Invalid email address";
-        }
-
-        if (values.password !== values.confirmPassword) {
-          errors.password = "Password is not same";
-        }
-
-        return errors;
-      }}
-      onSubmit={({ email, password }, { setSubmitting }) => {
-        setSubmitting(false);        
-        signUp({ 
-          variables: {
-            input: {
-              email,
-              password,
-            }
+          if (!values.email) {
+            errors.email = "Invalid email address";
           }
-        }); 
-      }}
-    >
-      {({
-        values,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <FormGroup label="Email" labelFor="email">
-            <InputGroup
-              id="email"
-              placeholder="Enter your email..."
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-              type="text"
-            />
-          </FormGroup>
-          <FormGroup label="Password" labelFor="password">
-            <InputGroup
-              id="password"
-              placeholder="Enter your password..."
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup label="Confirm Password" labelFor="confirmPassword">
-            <InputGroup
-              id="confirmPassword"
-              placeholder="Re-type your password..."
-              large={true}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.confirmPassword}
-              type="password"                     
-            />
-          </FormGroup>
-          <FormGroup>
-            <Switch
-              id="tncAgreement"
-              labelElement={agreement}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultChecked={false} />
-            <Switch
-              id="optinMarketing"
-              label="Opt-in to notifications and promotions."
-              onChange={handleChange}
-              onBlur={handleBlur}
-              defaultChecked={false}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Button 
-              intent={Intent.PRIMARY}
-              large={true}
-              disabled={isSubmitting}
-              type="submit"
-            >
-              Sign Up
-            </Button>
-          </FormGroup>
-        </form>              
-      )}
-    </Formik>
+
+          if (values.password !== values.confirmPassword) {
+            errors.password = "Password is not same";
+          }
+
+          if (_.isEmpty(values.tncAgreement)) {
+            errors.tncAgreement = ["Terms and condition not agreed"]
+          }
+
+          return errors;
+        }}
+        onSubmit={({ email, password }, { setSubmitting }) => {
+          setSubmitting(false);
+          signUp({
+            variables: {
+              input: {
+                email,
+                password,
+              }
+            }
+          });
+        }}
+      >
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <FormGroup label="Email" labelFor="email">
+              <InputGroup
+                id="email"
+                placeholder="Enter your email..."
+                large={true}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                type="text"
+              />
+            </FormGroup>
+            <FormGroup label="Password" labelFor="password">
+              <InputGroup
+                id="password"
+                placeholder="Enter your password..."
+                large={true}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                type="password"
+              />
+            </FormGroup>
+            <FormGroup label="Confirm Password" labelFor="confirmPassword">
+              <InputGroup
+                id="confirmPassword"
+                placeholder="Re-type your password..."
+                large={true}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.confirmPassword}
+                type="password"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Switch
+                id="tncAgreement"
+                labelElement={agreement}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                defaultChecked={false} />
+              <Switch
+                id="optinMarketing"
+                label="Opt-in to notifications and promotions."
+                onChange={handleChange}
+                onBlur={handleBlur}
+                defaultChecked={false}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button
+                intent={Intent.PRIMARY}
+                large={true}
+                disabled={isSubmitting}
+                type="submit"
+              >
+                Sign Up
+              </Button>
+            </FormGroup>
+          </form>
+        )}
+      </Formik>
+      <ContainerOptions>
+        <Link to="/sign_in">Already have an account?</Link>
+        <br/>
+        <Link to="/recover_account">Forgot your password?</Link>
+      </ContainerOptions>
+    </>
   );
 }
 
@@ -215,11 +267,6 @@ function SignUp() {
       <ContainerSidePane>
         <ContainerForm>
           <SignUpForm setTncStatus={setIsTncOpen} />
-          <ContainerOptions>
-            <Link to="/sign_in">Already have an account?</Link>
-            <br/>
-            <Link to="/recover_account">Forgot your password?</Link>
-          </ContainerOptions>
           <Drawer
             icon={IconNames.INFO_SIGN}
             title="Terms and Conditions"
