@@ -39,6 +39,16 @@ const Container = styled.main`
   align-content: stretch;
 `;
 
+const ContainerNonTrivial = styled.main`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+`;
+
 const ContainerMain = styled.div`
   flex: 1 1 auto;
   display: flex;
@@ -80,19 +90,19 @@ function camelizeKeys(obj: any): any {
 
 function ShareableProfileLoading() {
   return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
+    <ContainerNonTrivial>
+      <Spinner
+        size={Spinner.SIZE_LARGE}
+      />
+    </ContainerNonTrivial>
   );
 }
 
 function ShareableProfileError() {
-  // TODO: update data
   const description = (
     <div>
-      An email has been sent to.
-      Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      The requested profile can not be found in the server.
+      Please double check if you have the correct profile address.
     </div>
   );
 
@@ -107,12 +117,14 @@ function ShareableProfileError() {
   );
 
   return (
-    <NonIdealState
-      icon={IconNames.WARNING_SIGN}
-      title="Account Recovery Error!"
-      description={description}
-      action={action}
-    />
+    <ContainerNonTrivial>
+      <NonIdealState
+        icon={IconNames.WARNING_SIGN}
+        title="Profile Not Found!"
+        description={description}
+        action={action}
+      />
+    </ContainerNonTrivial>
   );
 }
 

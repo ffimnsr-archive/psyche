@@ -86,7 +86,7 @@ function SignUpVerifyError() {
   return (
     <NonIdealState
       icon={IconNames.WARNING_SIGN}
-      title="Sign-In Error!"
+      title="Account Verification Error!"
       description={description}
       action={action}
     />

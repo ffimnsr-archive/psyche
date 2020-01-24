@@ -15,9 +15,10 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
+import * as Yup from "yup";
 import gql from "graphql-tag";
 import _ from "lodash";
-import { useApolloClient, useMutation } from "react-apollo";
+import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
@@ -72,13 +73,17 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-interface FormState {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  tncAgreement?: string[];
-  optinMarketing?: string[];
-}
+const SignUpSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password too short")
+    .required("Password is required"),    
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords do not match")
+    .required("Confirm Password is required"),
+});
 
 function SignUpLoading() {
   return (
@@ -89,12 +94,11 @@ function SignUpLoading() {
 }
 
 function SignUpError() {
-  // TODO: update data
   const description = (
     <div>
-      An email has been sent to.
-      Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      There are some errors in your sign-up.
+      Please double check your password if its less than 8 letter alphanumeric.
+      And check if your email is already registered to our platform.
     </div>
   );
 
@@ -111,7 +115,35 @@ function SignUpError() {
   return (
     <NonIdealState
       icon={IconNames.WARNING_SIGN}
-      title="Sign-In Error!"
+      title="Sign-Up Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
+function SignUpSuccess() {
+  const description = (
+    <div>
+      Please check your inbox.
+      Follow the instruction indicated on it to verify your account.
+    </div>
+  );
+
+  const action = (
+    <HapButton
+      to="/"
+      intent={Intent.PRIMARY}
+      large={true}
+    >
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.TICK_CIRCLE}
+      title="Sign-Up Success!"
       description={description}
       action={action}
     />
@@ -119,13 +151,7 @@ function SignUpError() {
 }
 
 function SignUpForm(props: any) {
-  const client = useApolloClient();
-  const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION, {
-    onCompleted({ signUp }) {
-      sessionStorage.setItem("token", signUp.token);
-      client.writeData({ data: { isAuthenticated: true } });
-    }
-  });
+  const [signUp, { loading, error, data }] = useMutation(SIGNUP_MUTATION);
 
   const agreement = (
     <span>
@@ -146,27 +172,21 @@ function SignUpForm(props: any) {
   if (loading) return <SignUpLoading />;
   if (error) return <SignUpError />;
 
+  const { success } = !_.isNil(data) ? data.signUp : { success: false };
+
+  if (success) return <SignUpSuccess />;
+
   return (
     <>
       <Formik
-        initialValues={{ email: "", password: "", confirmPassword: "", tncAgreement: [] }}
-        validate={(values: FormState) => {
-          let errors: any = {};
-
-          if (!values.email) {
-            errors.email = "Invalid email address";
-          }
-
-          if (values.password !== values.confirmPassword) {
-            errors.password = "Password is not same";
-          }
-
-          if (_.isEmpty(values.tncAgreement)) {
-            errors.tncAgreement = ["Terms and condition not agreed"]
-          }
-
-          return errors;
+        initialValues={{
+          email: "",
+          password: "",
+          confirmPassword: "",
+          tncAgreement: [],
+          optinMarketing: []
         }}
+        validationSchema={SignUpSchema}
         onSubmit={({ email, password }, { setSubmitting }) => {
           setSubmitting(false);
           signUp({

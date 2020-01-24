@@ -13,6 +13,7 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
+import * as Yup from "yup";
 import gql from "graphql-tag";
 import _ from "lodash";
 import { useApolloClient, useMutation } from "react-apollo";
@@ -71,11 +72,14 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-interface FormState {
-  email?: string;
-  password?: string;
-  rememberMe?: string[];
-}
+const SignInSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password too short")
+    .required("Password is required"),
+});
 
 function SignInLoading() {
   return (
@@ -86,12 +90,10 @@ function SignInLoading() {
 }
 
 function SignInError() {
-  // TODO: update data
   const description = (
     <div>
-      An email has been sent to.
-      Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      An error was encountered while authenticating your account.
+      Please check if your sign-in credentials are valid.
     </div>
   );
 
@@ -144,15 +146,7 @@ function SignInFormContent(props: any) {
     <>
       <Formik
         initialValues={{ email: "", password: "", rememberMe: [] }}
-        validate={(values: FormState) => {
-          let errors: any = {};
-
-          if (!values.email) {
-            errors.email = "Invalid email address";
-          }
-
-          return errors;
-        }}
+        validationSchema={SignInSchema}
         onSubmit={({ email, password, rememberMe }, { setSubmitting }) => {
           setSubmitting(false);
           signIn({
