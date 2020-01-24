@@ -9,7 +9,7 @@ import {
   MenuItem,
   Popover,
   Position,
-  Tooltip
+  Tooltip,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { IconName } from "@blueprintjs/icons";
@@ -52,21 +52,21 @@ const PaleWhiteButton = styled(Button)`
   ${SharedCss};
 `;
 
-interface ISidebarNavigator {
+interface SidebarNavigator {
   icon: IconName | JSX.Element | false | null | undefined;
   display: string;
   to: string;
 }
 
-export function Sidebar() {
-  const navs: ISidebarNavigator[] = [
+export function Sidebar(): JSX.Element {
+  const navs: SidebarNavigator[] = [
     { icon: IconNames.HOME, display: "Home", to: "/" },
     { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "notifications" },
     { icon: IconNames.ENVELOPE, display: "Messages", to: "/messages" },
-    { icon: IconNames.CALENDAR, display: "Schedules", to: "/schedules" }
+    { icon: IconNames.CALENDAR, display: "Schedules", to: "/schedules" },
   ];
 
-  const navButtons = navs.map((v: ISidebarNavigator, i: number) => (
+  const navButtons = navs.map((v: SidebarNavigator, i: number) => (
     <Tooltip key={i} content={<span>{v.display}</span>} position={Position.RIGHT}>
       <PaleWhiteHapButton to={v.to} icon={v.icon} />
     </Tooltip>

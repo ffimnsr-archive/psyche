@@ -7,7 +7,7 @@ import {
   FormGroup,
   InputGroup,
   Spinner,
-  NonIdealState
+  NonIdealState,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import _ from "lodash";
@@ -19,11 +19,8 @@ import bgPattern from "@/assets/images/pattern.svg";
 
 const RECOVER_ACCOUNT_MUTATION = gql`
   mutation recoverAccount($input: RecoverAccountInput!) {
-    recoverAccount(input: $input) @rest(
-      type: "RecoverAccount",
-      method: "POST",
-      path: "/recover_account",
-    ) {
+    recoverAccount(input: $input)
+      @rest(type: "RecoverAccount", method: "POST", path: "/recover_account") {
       success
     }
   }
@@ -71,21 +68,17 @@ interface FormState {
   email?: string;
 }
 
-function RecoverNonTrivialResponse(props: any) {
+function RecoverNonTrivialResponse(props: any): JSX.Element {
   const description = (
     <div>
-      An email has been sent to <b>{props.email}</b>.
-      Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      An email has been sent to <b>{props.email}</b>. Please check your inbox for a
+      recovery email otherwise, if you have not received it your email may not be
+      registered to our platform.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -100,17 +93,15 @@ function RecoverNonTrivialResponse(props: any) {
   );
 }
 
-function RecoverAccountLoading() {
-  return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
-  );
+function RecoverAccountLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function RecoverAccountForm() {
+function RecoverAccountForm(): JSX.Element {
   const [capturedEmail, setCapturedEmail] = useState("undefined");
-  const [recoverAccount, { loading, error, data }] = useMutation(RECOVER_ACCOUNT_MUTATION);
+  const [recoverAccount, { loading, error, data }] = useMutation(
+    RECOVER_ACCOUNT_MUTATION,
+  );
 
   if (loading) return <RecoverAccountLoading />;
   if (error) return <RecoverNonTrivialResponse email={capturedEmail} />;
@@ -124,7 +115,7 @@ function RecoverAccountForm() {
       <Formik
         initialValues={{ email: "" }}
         validate={(values: FormState) => {
-          let errors: any = {};
+          const errors: any = {};
 
           if (!values.email) {
             errors.email = "Invalid email address";
@@ -132,15 +123,15 @@ function RecoverAccountForm() {
 
           return errors;
         }}
-        onSubmit={({ email }, { setSubmitting }) => {
+        onSubmit={({ email }, { setSubmitting }): void => {
           setSubmitting(false);
           setCapturedEmail(email);
           recoverAccount({
             variables: {
               input: {
                 email,
-              }
-            }
+              },
+            },
           });
         }}
       >
@@ -150,12 +141,9 @@ function RecoverAccountForm() {
           handleBlur,
           handleSubmit,
           isSubmitting,
-        }) => (
+        }): JSX.Element => (
           <form onSubmit={handleSubmit}>
-            <FormGroup
-              label="Email"
-              labelFor="email"
-            >
+            <FormGroup label="Email" labelFor="email">
               <InputGroup
                 id="email"
                 placeholder="Enter your email..."
@@ -180,13 +168,13 @@ function RecoverAccountForm() {
         )}
       </Formik>
       <ContainerOptions>
-        <Link to="/sign_up">Don't have an account?</Link>
+        <Link to="/sign_up">Don&apos;t have an account?</Link>
       </ContainerOptions>
     </>
   );
 }
 
-function RecoverAccount() {
+function RecoverAccount(): JSX.Element {
   return (
     <Container>
       <ContainerDesign />

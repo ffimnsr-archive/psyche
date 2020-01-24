@@ -49,7 +49,7 @@ const ProfilePane = styled.div`
   }
 `;
 
-function Profile() {
+function Profile(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
 
   if (loading) return <p>Loading</p>;
@@ -57,9 +57,7 @@ function Profile() {
 
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Profile</title>
       </Helmet>
       <Sidebar />
@@ -69,8 +67,7 @@ function Profile() {
           <ProfilePane>
             <Card elevation={Elevation.ONE}>
               <img src="https://via.placeholder.com/200" />
-              Full Name
-              Public ID
+              Full Name Public ID
             </Card>
             <Card elevation={Elevation.ONE}>
               <H5>Hello</H5>

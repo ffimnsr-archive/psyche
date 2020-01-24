@@ -51,7 +51,7 @@ const NewsFeed = styled.div`
   }
 `;
 
-function Feeds() {
+function Feeds(): JSX.Element {
   const { loading, error, data } = useQuery(FEED_QUERY);
 
   if (loading) return <p>Loading</p>;
@@ -65,19 +65,13 @@ function Feeds() {
     </Card>
   ));
 
-  return (
-    <NewsFeed>
-      {feed}
-    </NewsFeed>
-  );
+  return <NewsFeed>{feed}</NewsFeed>;
 }
 
-function Feed() {
+function Feed(): JSX.Element {
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Feed</title>
       </Helmet>
       <Sidebar />

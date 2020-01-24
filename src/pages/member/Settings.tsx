@@ -5,7 +5,12 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
-import { Account, Notifications, PrivacyAndSafety, WorkPreference } from "@/pages/member/fragments/SettingsFragment";
+import {
+  Account,
+  Notifications,
+  PrivacyAndSafety,
+  WorkPreference,
+} from "@/pages/member/fragments/SettingsFragment";
 
 const SETTINGS_QUERY = gql`
   query {
@@ -63,7 +68,7 @@ const SettingsPane = styled.div`
   }
 `;
 
-function Settings() {
+function Settings(): JSX.Element {
   const { loading, error, data } = useQuery(SETTINGS_QUERY);
 
   if (loading) return <p>Loading</p>;
@@ -71,9 +76,7 @@ function Settings() {
 
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Settings</title>
       </Helmet>
       <Sidebar />

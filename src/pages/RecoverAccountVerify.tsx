@@ -7,7 +7,7 @@ import {
   FormGroup,
   Spinner,
   NonIdealState,
-  InputGroup
+  InputGroup,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
@@ -20,11 +20,12 @@ import bgPattern from "@/assets/images/pattern.svg";
 
 const RECOVER_ACCOUNT_VERIFY_CODE_QUERY = gql`
   query recoverAccountVerifyCode($code: String!) {
-    recoverAccountVerifyCode(code: $code) @rest(
-      type: "RecoverAccountVerifyCode",
-      method: "GET",
-      path: "/recover_account/verify?code={args.code}&type=recover",
-    ) {
+    recoverAccountVerifyCode(code: $code)
+      @rest(
+        type: "RecoverAccountVerifyCode"
+        method: "GET"
+        path: "/recover_account/verify?code={args.code}&type=recover"
+      ) {
       success
     }
   }
@@ -32,11 +33,12 @@ const RECOVER_ACCOUNT_VERIFY_CODE_QUERY = gql`
 
 const RECOVER_ACCOUNT_VERIFY_MUTATION = gql`
   mutation recoverAccountVerify($input: RecoverAccountVerifyInput!) {
-    recoverAccountVerify(input: $input) @rest(
-      type: "RecoverAccountVerify",
-      method: "POST",
-      path: "/recover_account/verify",
-    ) {
+    recoverAccountVerify(input: $input)
+      @rest(
+        type: "RecoverAccountVerify"
+        method: "POST"
+        path: "/recover_account/verify"
+      ) {
       success
     }
   }
@@ -86,29 +88,20 @@ interface FormState {
 }
 
 function RecoverAccountVerifyLoading() {
-  return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
-  );
+  return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
 function RecoverAccountVerifyError() {
   // TODO: update data
   const description = (
     <div>
-      An email has been sent to.
-      Please check your inbox for a recovery email otherwise,
+      An email has been sent to. Please check your inbox for a recovery email otherwise,
       if you have not received it your email may not be registered to our platform.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -123,14 +116,16 @@ function RecoverAccountVerifyError() {
   );
 }
 
-function RecoverAccountVerifyForm() {
+function RecoverAccountVerifyForm(): JSX.Element {
   const { code } = useParams();
 
   const { loading, error, data } = useQuery(RECOVER_ACCOUNT_VERIFY_CODE_QUERY, {
-    variables: { code }
+    variables: { code },
   });
 
-  const [recoverAccountVerify, mutationProps] = useMutation(RECOVER_ACCOUNT_VERIFY_MUTATION);
+  const [recoverAccountVerify, mutationProps] = useMutation(
+    RECOVER_ACCOUNT_VERIFY_MUTATION,
+  );
 
   if (mutationProps.loading || loading) return <RecoverAccountVerifyLoading />;
   if (mutationProps.error || error) return <RecoverAccountVerifyError />;
@@ -144,7 +139,7 @@ function RecoverAccountVerifyForm() {
       <Formik
         initialValues={{ password: "", confirmPassword: "" }}
         validate={(values: FormState) => {
-          let errors: any = {};
+          const errors: any = {};
 
           if (!values.password) {
             errors.password = "Invalid password input";
@@ -156,15 +151,15 @@ function RecoverAccountVerifyForm() {
 
           return errors;
         }}
-        onSubmit={({ password }, { setSubmitting }) => {
+        onSubmit={({ password }, { setSubmitting }): void => {
           setSubmitting(false);
           recoverAccountVerify({
             variables: {
               input: {
                 code,
                 password,
-              }
-            }
+              },
+            },
           });
         }}
       >
@@ -174,7 +169,7 @@ function RecoverAccountVerifyForm() {
           handleBlur,
           handleSubmit,
           isSubmitting,
-        }) => (
+        }): JSX.Element => (
           <form onSubmit={handleSubmit}>
             <FormGroup label="New Password" labelFor="password">
               <InputGroup
@@ -212,13 +207,13 @@ function RecoverAccountVerifyForm() {
         )}
       </Formik>
       <ContainerOptions>
-        <Link to="/sign_up">Don't have an account?</Link>
+        <Link to="/sign_up">Don&apos;t have an account?</Link>
       </ContainerOptions>
     </>
   );
 }
 
-function RecoverAccount() {
+function RecoverAccount(): JSX.Element {
   return (
     <Container>
       <ContainerDesign />

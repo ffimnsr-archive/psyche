@@ -23,12 +23,10 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-function Notifications() {
+function Notifications(): JSX.Element {
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Notifications</title>
       </Helmet>
       <Sidebar />

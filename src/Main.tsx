@@ -17,28 +17,28 @@ const GRAPH_URI = process.env.REACT_APP_GRAPH_URI || "http://localhost:4000/grap
 
 const cache = new InMemoryCache();
 
-const errorLink = onError(({ graphQLErrors, networkError, operation }) =>  {
-	if (graphQLErrors) {
-		graphQLErrors.forEach(({ message, locations, path }) => {
-			console.log(`[GraphQL error]: M: ${message} L: ${locations} P: ${path}`);
-		});
-	}
+const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.log(`[GraphQL error]: M: ${message} L: ${locations} P: ${path}`);
+    });
+  }
 
-	if (networkError) {
-		console.log(`[Network error ${operation.operationName}]: ${networkError}`);
-	}
+  if (networkError) {
+    console.log(`[Network error ${operation.operationName}]: ${networkError}`);
+  }
 });
 
 const authLink = setContext((_, { headers }) => {
-	const token = sessionStorage.getItem("token");
-	const context = {
-		headers: {
-			...headers,
-			Authorization: token ? `Bearer ${sessionStorage.getItem("token")}` : "",
-		}
-	};
+  const token = sessionStorage.getItem("token");
+  const context = {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${sessionStorage.getItem("token")}` : "",
+    },
+  };
 
-	return context;
+  return context;
 });
 
 const restLink = new RestLink({ uri: ENDPOINT_URI });
@@ -46,24 +46,25 @@ const restLink = new RestLink({ uri: ENDPOINT_URI });
 const httpLink = new HttpLink({ uri: GRAPH_URI });
 
 const client = new ApolloClient({
-	link: ApolloLink.from([errorLink, restLink, authLink, httpLink]),
-	cache,
-	resolvers,
+  link: ApolloLink.from([errorLink, restLink, authLink, httpLink]),
+  cache,
+  resolvers,
 });
 
 const data = {
-	isAuthenticated: !!sessionStorage.getItem("token"),
+  isAuthenticated: !!sessionStorage.getItem("token"),
 };
 
 cache.writeData({ data });
 client.onResetStore(async () => cache.writeData({ data }));
 
-function render() {
-  Render((
+function render(): void {
+  Render(
     <ApolloProvider client={client}>
       <App />
-    </ApolloProvider>
-  ), document.getElementById("root"));
+    </ApolloProvider>,
+    document.getElementById("root"),
+  );
 }
 
 render();

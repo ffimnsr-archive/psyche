@@ -15,32 +15,25 @@ const Container = styled.main`
   align-content: stretch;
 `;
 
-function NoMatch() {
+function NoMatch(): JSX.Element {
   const description = (
     <div>
-      Is probably the most annoying thing to look at, on a screen.
-      This is a page nobody wants to land into.
-      For the longest time this page echoed the words "disappointment"
-      and had always been notoriously referred to as the
-      "last page of the internet".
+      Is probably the most annoying thing to look at, on a screen. This is a page nobody
+      wants to land into. For the longest time this page echoed the words
+      &quot;disappointment&quot; and had always been notoriously referred to as the
+      &quot;last page of the internet&quot;.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
 
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Page Not Found</title>
       </Helmet>
       <NonIdealState

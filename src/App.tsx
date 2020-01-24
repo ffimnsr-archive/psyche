@@ -6,12 +6,12 @@ import { Router } from "@/Router";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-export function App() {
-	return (
-	  <HelmetProvider>
-		  <BrowserRouter>
-		  	<Router />
-		  </BrowserRouter>
-	  </HelmetProvider>
-	);
+export function App(): JSX.Element {
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </HelmetProvider>
+  );
 }

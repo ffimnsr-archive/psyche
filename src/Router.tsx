@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect, Switch, RouteProps } from "react-router-dom";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { useQuery }  from "react-apollo";
+import { useQuery } from "react-apollo";
 import { motion } from "framer-motion";
 import NoMatch from "@/pages/NoMatch";
 import logoIcon from "@/assets/images/logo_icon.png";
@@ -32,7 +32,7 @@ const LoadingPlaceholder = (
         duration: 2,
         ease: "easeInOut",
         loop: Infinity,
-        repeatDelay: 1
+        repeatDelay: 1,
       }}
     />
   </Container>
@@ -57,28 +57,39 @@ interface AuthRouteProps extends RouteProps {
   no?: boolean;
 }
 
-function AuthRoute({ component, no = false, ...otherProps }: AuthRouteProps) {
+function AuthRoute({
+  component,
+  no = false,
+  ...otherProps
+}: AuthRouteProps): JSX.Element {
   const { data } = useQuery(IS_AUTHENTICATED_QUERY);
 
-  return (
-    no ?
-      <Route
-        {...otherProps}
-        render={(props: any) =>
-          !data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/" />
-        }
-      />
-    :
-      <Route
-        {...otherProps}
-        render={(props: any) =>
-          data.isAuthenticated ? React.createElement(component!, props) : <Redirect to="/sign_in" />
-        }
-      />
+  return no ? (
+    <Route
+      {...otherProps}
+      render={(props: any): JSX.Element =>
+        !data.isAuthenticated ? (
+          React.createElement(component!, props)
+        ) : (
+          <Redirect to="/" />
+        )
+      }
+    />
+  ) : (
+    <Route
+      {...otherProps}
+      render={(props: any): JSX.Element =>
+        data.isAuthenticated ? (
+          React.createElement(component!, props)
+        ) : (
+          <Redirect to="/sign_in" />
+        )
+      }
+    />
   );
-};
+}
 
-export function Router () {
+export function Router(): JSX.Element {
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
@@ -87,8 +98,17 @@ export function Router () {
         <AuthRoute no={true} path="/oauth/error" component={LazySignIn} />
         <AuthRoute no={true} exact path="/sign_up" component={LazySignUp} />
         <AuthRoute no={true} path="/sign_up/verify/:code" component={LazySignUpVerify} />
-        <AuthRoute no={true} exact path="/recover_account" component={LazyRecoverAccount} />
-        <AuthRoute no={true} path="/recover_account/verify/:code" component={LazyRecoverAccountVerify} />
+        <AuthRoute
+          no={true}
+          exact
+          path="/recover_account"
+          component={LazyRecoverAccount}
+        />
+        <AuthRoute
+          no={true}
+          path="/recover_account/verify/:code"
+          component={LazyRecoverAccountVerify}
+        />
         <AuthRoute exact path="/" component={LazyMain} />
         <AuthRoute path="/profile" component={LazyProfile} />
         <AuthRoute path="/notifications" component={LazyNotifications} />

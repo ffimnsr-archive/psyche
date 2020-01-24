@@ -6,7 +6,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
 const config = {
   entry: {
-    psyche: path.resolve(__dirname, "src/Main.tsx")
+    psyche: path.resolve(__dirname, "src/Main.tsx"),
   },
   optimization: {
     runtimeChunk: true,
@@ -19,11 +19,11 @@ const config = {
           chunks: "initial",
           name: "vendors",
           test: /[\\/]node_modules[\\/]/,
-          enforce: true
-        }
-      }
+          enforce: true,
+        },
+      },
     },
-    occurrenceOrder: true
+    occurrenceOrder: true,
   },
   module: {
     rules: [
@@ -31,28 +31,23 @@ const config = {
         test: /\.[tj]sx?$/,
         include: path.resolve(__dirname, "src"),
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
-            {
+      {
         test: /\.(graphql|gql)$/,
         include: path.resolve(__dirname, "src"),
         use: {
-          loader: "graphql-tag/loader"
-        }
+          loader: "graphql-tag/loader",
+        },
       },
       {
         test: /\.s[ac]ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader"
-        ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -62,10 +57,10 @@ const config = {
             options: {
               name: "[name].[ext]",
               outputPath: "assets/images/",
-              publicPath: "/assets/images/"
-            }
-          }
-        ]
+              publicPath: "/assets/images/",
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|ttf|otf|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -75,37 +70,37 @@ const config = {
             options: {
               name: "[name].[ext]",
               outputPath: "assets/fonts/",
-              publicPath: "/assets/fonts/"
-            }
-          }
-        ]
-      }
-    ]
+              publicPath: "/assets/fonts/",
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
     alias: {
-      "@": path.resolve(__dirname, "src")
-    }
+      "@": path.resolve(__dirname, "src"),
+    },
   },
   output: {
     filename: "[name].bundle.js",
     chunkFilename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist/"),
-    publicPath: "/"
+    publicPath: "/",
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: "[name].bundle.css"
+      filename: "[name].bundle.css",
     }),
     new HtmlWebpackPlugin({
       template: "src/templates/index.html",
       favicon: "src/assets/images/favicon.ico",
-      minify: true
+      minify: true,
     }),
-    new webpack.BannerPlugin("Open Sesame")
-  ]
+    new webpack.BannerPlugin("Open Sesame"),
+  ],
 };
 
 export default config;

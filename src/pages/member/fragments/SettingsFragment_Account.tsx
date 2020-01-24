@@ -28,25 +28,25 @@ const defaultDialogOptions = {
   canEscapeKeyClose: true,
   canOutsideClickClose: false,
   enforceFocus: true,
-  usePortal: true
+  usePortal: true,
 };
 
 function format(value: string): string {
-  return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4")
+  return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4");
 }
 
-function Account({ data }: any) {
-  const title = "Account"
+function Account({ data }: any): JSX.Element {
+  const title = "Account";
   const [isOpen, setIsOpen] = useState(false);
   const { socialSecurityNumber } = data.profile;
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <div className="clearfixr" style={{marginBottom: "10px"}}>
-          <H5 style={{display: "inline"}}>{title}</H5>
+        <div className="clearfixr" style={{ marginBottom: "10px" }}>
+          <H5 style={{ display: "inline" }}>{title}</H5>
           <EditButton
             href="#"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
               e.preventDefault();
               setIsOpen(true);
             }}
@@ -90,7 +90,7 @@ function Account({ data }: any) {
       <Dialog
         icon={IconNames.INFO_SIGN}
         title={title}
-        onClose={() => setIsOpen(!isOpen)}
+        onClose={(): void => setIsOpen(!isOpen)}
         isOpen={isOpen}
         {...defaultDialogOptions}
       >
@@ -101,10 +101,10 @@ function Account({ data }: any) {
             gender: "",
             birthDate: "",
             phoneNumber: "",
-            bio: ""
+            bio: "",
           }}
           validate={(values: any) => {
-            let errors: any = {};
+            const errors: any = {};
 
             if (!values.email) {
               errors.email = "Invalid email address";
@@ -112,14 +112,10 @@ function Account({ data }: any) {
 
             return errors;
           }}
-          onSubmit={({
-            firstName,
-            lastName,
-            gender,
-            birthDate,
-            phoneNumber,
-            bio
-          }, { setSubmitting }) => {
+          onSubmit={(
+            { firstName, lastName, gender, birthDate, phoneNumber, bio },
+            { setSubmitting },
+          ): void => {
             setSubmitting(false);
           }}
         >
@@ -129,13 +125,10 @@ function Account({ data }: any) {
             handleBlur,
             handleSubmit,
             isSubmitting,
-          }) => (
+          }): JSX.Element => (
             <form onSubmit={handleSubmit}>
               <div className={Classes.DIALOG_BODY}>
-                <FormGroup
-                  label="First Name"
-                  labelFor="firstName"
-                >
+                <FormGroup label="First Name" labelFor="firstName">
                   <InputGroup
                     id="firstName"
                     name="firstName"
@@ -147,10 +140,7 @@ function Account({ data }: any) {
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup
-                  label="Last Name"
-                  labelFor="lastName"
-                >
+                <FormGroup label="Last Name" labelFor="lastName">
                   <InputGroup
                     id="lastName"
                     name="lastName"
@@ -162,10 +152,7 @@ function Account({ data }: any) {
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup
-                  label="Gender"
-                  labelFor="gender"
-                >
+                <FormGroup label="Gender" labelFor="gender">
                   <InputGroup
                     id="gender"
                     name="gender"
@@ -176,11 +163,8 @@ function Account({ data }: any) {
                     value={values.gender}
                     type="text"
                   />
-                </FormGroup>                 
-                <FormGroup
-                  label="Birth Date"
-                  labelFor="birthDate"
-                >
+                </FormGroup>
+                <FormGroup label="Birth Date" labelFor="birthDate">
                   <InputGroup
                     id="birthDate"
                     name="birthDate"
@@ -191,11 +175,8 @@ function Account({ data }: any) {
                     value={values.birthDate}
                     type="text"
                   />
-                </FormGroup>      
-                <FormGroup
-                  label="Phone Number"
-                  labelFor="phoneNumber"
-                >
+                </FormGroup>
+                <FormGroup label="Phone Number" labelFor="phoneNumber">
                   <InputGroup
                     id="phoneNumber"
                     name="phoneNumber"
@@ -206,11 +187,8 @@ function Account({ data }: any) {
                     value={values.phoneNumber}
                     type="text"
                   />
-                </FormGroup>       
-                <FormGroup
-                  label="Bio"
-                  labelFor="bio"
-                >
+                </FormGroup>
+                <FormGroup label="Bio" labelFor="bio">
                   <InputGroup
                     id="bio"
                     name="bio"
@@ -221,22 +199,18 @@ function Account({ data }: any) {
                     value={values.bio}
                     type="text"
                   />
-                </FormGroup>                                                                        
+                </FormGroup>
               </div>
               <div className={Classes.DIALOG_FOOTER}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                  <Button
-                    intent={Intent.PRIMARY}
-                    disabled={isSubmitting}
-                    type="submit"
-                  >
+                  <Button intent={Intent.PRIMARY} disabled={isSubmitting} type="submit">
                     Update
                   </Button>
                 </div>
               </div>
             </form>
           )}
-        </Formik>        
+        </Formik>
       </Dialog>
     </>
   );

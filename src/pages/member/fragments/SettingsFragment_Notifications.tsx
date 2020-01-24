@@ -28,20 +28,20 @@ const defaultDialogOptions = {
   canEscapeKeyClose: true,
   canOutsideClickClose: false,
   enforceFocus: true,
-  usePortal: true
+  usePortal: true,
 };
 
-function Notifications({ data }) {
+function Notifications({ data }: any): JSX.Element {
   const title = "Site Preference & Notifications";
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <div className="clearfixr" style={{marginBottom: "10px"}}>
-          <H5 style={{display: "inline"}}>{title}</H5>
+        <div className="clearfixr" style={{ marginBottom: "10px" }}>
+          <H5 style={{ display: "inline" }}>{title}</H5>
           <EditButton
             href="#"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
               e.preventDefault();
               setIsOpen(true);
             }}
@@ -52,9 +52,7 @@ function Notifications({ data }) {
         <ResponsiveTable condensed={true}>
           <tbody>
             <tr>
-              <td>
-
-              </td>
+              <td></td>
             </tr>
           </tbody>
         </ResponsiveTable>
@@ -62,7 +60,7 @@ function Notifications({ data }) {
       <Dialog
         icon={IconNames.INFO_SIGN}
         title={title}
-        onClose={() => setIsOpen(!isOpen)}
+        onClose={(): void => setIsOpen(!isOpen)}
         isOpen={isOpen}
         {...defaultDialogOptions}
       >
@@ -73,10 +71,10 @@ function Notifications({ data }) {
             gender: "",
             birthDate: "",
             phoneNumber: "",
-            bio: ""
+            bio: "",
           }}
           validate={(values: any) => {
-            let errors: any = {};
+            const errors: any = {};
 
             if (!values.email) {
               errors.email = "Invalid email address";
@@ -84,14 +82,10 @@ function Notifications({ data }) {
 
             return errors;
           }}
-          onSubmit={({
-            firstName,
-            lastName,
-            gender,
-            birthDate,
-            phoneNumber,
-            bio
-          }, { setSubmitting }) => {
+          onSubmit={(
+            { firstName, lastName, gender, birthDate, phoneNumber, bio },
+            { setSubmitting },
+          ): void => {
             setSubmitting(false);
           }}
         >
@@ -101,24 +95,19 @@ function Notifications({ data }) {
             handleBlur,
             handleSubmit,
             isSubmitting,
-          }) => (        
-            <form onSubmit={handleSubmit}>       
-              <div className={Classes.DIALOG_BODY}>
-              </div>
+          }): JSX.Element => (
+            <form onSubmit={handleSubmit}>
+              <div className={Classes.DIALOG_BODY}></div>
               <div className={Classes.DIALOG_FOOTER}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                  <Button
-                    intent={Intent.PRIMARY}
-                    disabled={isSubmitting}
-                    type="submit"
-                  >
+                  <Button intent={Intent.PRIMARY} disabled={isSubmitting} type="submit">
                     Update
                   </Button>
                 </div>
               </div>
             </form>
           )}
-        </Formik>   
+        </Formik>
       </Dialog>
     </>
   );

@@ -9,7 +9,7 @@ import {
   Switch,
   Spinner,
   NonIdealState,
-  InputGroup
+  InputGroup,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
@@ -23,11 +23,7 @@ import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNIN_MUTATION = gql`
   mutation signIn($input: SignInInput!) {
-    signIn(input: $input) @rest(
-      type: "SignIn",
-      method: "POST",
-      path: "/sign_in"
-    ) {
+    signIn(input: $input) @rest(type: "SignIn", method: "POST", path: "/sign_in") {
       success
       token
     }
@@ -81,28 +77,20 @@ const SignInSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-function SignInLoading() {
-  return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
-  );
+function SignInLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function SignInError() {
+function SignInError(): JSX.Element {
   const description = (
     <div>
-      An error was encountered while authenticating your account.
-      Please check if your sign-in credentials are valid.
+      An error was encountered while authenticating your account. Please check if your
+      sign-in credentials are valid.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -117,7 +105,7 @@ function SignInError() {
   );
 }
 
-function SignInFormContent(props: any) {
+function SignInFormContent(props: any): JSX.Element {
   const client = useApolloClient();
   const [showPassword, setShowPassword] = useState(false);
   const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
@@ -125,7 +113,7 @@ function SignInFormContent(props: any) {
       sessionStorage.setItem("token", signIn.token);
       client.writeData({ data: { isAuthenticated: true } });
       props.history.replace("/");
-    }
+    },
   });
 
   const lockButton = (
@@ -134,7 +122,7 @@ function SignInFormContent(props: any) {
         icon={showPassword ? IconNames.UNLOCK : IconNames.LOCK}
         intent={Intent.WARNING}
         minimal={true}
-        onClick={() => setShowPassword(!showPassword)}
+        onClick={(): void => setShowPassword(!showPassword)}
       />
     </Tooltip>
   );
@@ -147,7 +135,7 @@ function SignInFormContent(props: any) {
       <Formik
         initialValues={{ email: "", password: "", rememberMe: [] }}
         validationSchema={SignInSchema}
-        onSubmit={({ email, password, rememberMe }, { setSubmitting }) => {
+        onSubmit={({ email, password, rememberMe }, { setSubmitting }): void => {
           setSubmitting(false);
           signIn({
             variables: {
@@ -155,8 +143,8 @@ function SignInFormContent(props: any) {
                 email,
                 password,
                 remember: _.isEmpty(rememberMe),
-              }
-            }
+              },
+            },
           });
         }}
       >
@@ -166,12 +154,9 @@ function SignInFormContent(props: any) {
           handleBlur,
           handleSubmit,
           isSubmitting,
-        }) => (
+        }): JSX.Element => (
           <form onSubmit={handleSubmit}>
-            <FormGroup
-              label="Email"
-              labelFor="email"
-            >
+            <FormGroup label="Email" labelFor="email">
               <InputGroup
                 id="email"
                 name="email"
@@ -183,10 +168,7 @@ function SignInFormContent(props: any) {
                 type="email"
               />
             </FormGroup>
-            <FormGroup
-              label="Password"
-              labelFor="password"
-            >
+            <FormGroup label="Password" labelFor="password">
               <InputGroup
                 id="password"
                 name="password"
@@ -222,8 +204,8 @@ function SignInFormContent(props: any) {
         )}
       </Formik>
       <ContainerOptions>
-        <Link to="/sign_up">Don't have an account?</Link>
-        <br/>
+        <Link to="/sign_up">Don&apos;t have an account?</Link>
+        <br />
         <Link to="/recover_account">Forgot your password?</Link>
       </ContainerOptions>
     </>

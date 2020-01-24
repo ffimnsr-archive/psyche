@@ -13,7 +13,7 @@ import {
   MenuItem,
   MenuDivider,
   Popover,
-  Position
+  Position,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { useApolloClient } from "react-apollo";
@@ -22,27 +22,28 @@ const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
 
-function NavigationHeaderContent(props: any) {
+function NavigationHeaderContent(props: any): JSX.Element {
   const client = useApolloClient();
 
   const userMenu = (
     <Menu>
       <MenuItem
-        onClick={() => props.history.push("/profile")}
+        onClick={(): void => props.history.push("/profile")}
         icon={IconNames.PERSON}
         text="My Profile"
       />
       <MenuItem icon={IconNames.GRAPH} text="Projects" />
       <MenuDivider />
       <MenuItem
-        onClick={() => {
+        onClick={(): void => {
           props.history.push("/settings");
         }}
-        icon={IconNames.SETTINGS} text="Settings"
+        icon={IconNames.SETTINGS}
+        text="Settings"
       />
       <MenuDivider />
       <MenuItem
-        onClick={() => {
+        onClick={(): void => {
           sessionStorage.removeItem("token");
           client.resetStore();
           props.history.replace("/");

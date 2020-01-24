@@ -12,14 +12,14 @@ module.exports = merge(common, {
     compress: true,
     noInfo: false,
     hot: true,
-    host: "0.0.0.0",
+    host: "127.0.0.1",
     port: 8080,
-    index: "index.html"
+    index: "index.html",
   },
   stats: "normal",
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development"
-    })
-  ]
+      NODE_ENV: "development",
+    }),
+  ],
 });

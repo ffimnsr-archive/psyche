@@ -23,12 +23,10 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-function Schedules() {
+function Schedules(): JSX.Element {
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Schedules</title>
       </Helmet>
       <Sidebar />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Intent, NonIdealState, Spinner } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
@@ -10,11 +10,8 @@ import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGN_UP_VERIFY_MUTATION = gql`
   mutation signUpVerify($input: SignUpVerifyInput!) {
-    signUpVerify(input: $input) @rest(
-      type: "SignUpVerify",
-      method: "POST",
-      path: "/sign_up/verify",
-    ) {
+    signUpVerify(input: $input)
+      @rest(type: "SignUpVerify", method: "POST", path: "/sign_up/verify") {
       success
       token
     }
@@ -55,30 +52,21 @@ const ContainerForm = styled.div`
   padding: 0 2em;
 `;
 
-function SignUpVerifyLoading() {
-  return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
-  );
+function SignUpVerifyLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function SignUpVerifyError() {
+function SignUpVerifyError(): JSX.Element {
   // TODO: update data
   const description = (
     <div>
-      An email has been sent to.
-      Please check your inbox for a recovery email otherwise,
+      An email has been sent to. Please check your inbox for a recovery email otherwise,
       if you have not received it your email may not be registered to our platform.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -93,28 +81,27 @@ function SignUpVerifyError() {
   );
 }
 
-function SignUpVerifyContent() {
+function SignUpVerifyContent(): JSX.Element {
   // TODO: run mutation on mount
   const { code } = useParams();
   const [signUpVerify, { loading, error }] = useMutation(SIGN_UP_VERIFY_MUTATION);
+
+  useEffect(() => {
+    signUpVerify({});
+  }, [code, signUpVerify]);
 
   if (loading) return <SignUpVerifyLoading />;
   if (error) return <SignUpVerifyError />;
 
   const description = (
     <div>
-      An email has been sent to .
-      Please check your inbox for a recovery email otherwise,
+      An email has been sent to . Please check your inbox for a recovery email otherwise,
       if you have not received it your email may not be registered to our platform.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -129,7 +116,7 @@ function SignUpVerifyContent() {
   );
 }
 
-function SignUpVerify() {
+function SignUpVerify(): JSX.Element {
   return (
     <Container>
       <ContainerDesign />

@@ -3,7 +3,14 @@ import styled from "styled-components";
 // import gql from "graphql-tag";
 // import { useQuery } from "react-apollo";
 import { Helmet } from "react-helmet-async";
-import { Card, Button, Elevation, Callout, Intent, NonIdealState } from "@blueprintjs/core";
+import {
+  Card,
+  Button,
+  Elevation,
+  Callout,
+  Intent,
+  NonIdealState,
+} from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
@@ -50,27 +57,29 @@ const ContainerCallout = styled.div`
   margin-bottom: 10px;
 `;
 
-function Home() {
+function Home(): JSX.Element {
   const action = (
     <>
       <Button intent={Intent.SUCCESS} fill={true} large={true} text="Join" />
-      <small>We will notify you immediately through SMS and email once a project gets assigned to you.</small>
+      <small>
+        We will notify you immediately through SMS and email once a project gets assigned
+        to you.
+      </small>
     </>
   );
 
   const description = (
     <p>
-      Once you've joined the search pool you'll be able to get projects that you would work on.
-      Those projects were based on things that you've indicated on your profile.
-      You can either accept or reject the project that's been assigned to you.
+      Once you&apos;ve joined the search pool you&apos;ll be able to get projects that you
+      would work on. Those projects were based on things that you&apos;ve indicated on
+      your profile. You can either accept or reject the project that&apos;s been assigned
+      to you.
     </p>
   );
 
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Home</title>
       </Helmet>
       <Sidebar />
@@ -79,7 +88,9 @@ function Home() {
         <ContainerHome>
           <ContainerCallout>
             <Callout intent={Intent.WARNING} title="Fill up your profile!">
-              In order to use our services you need to complete your initial private profile. Your profile will not be shared with any of the clients nor other third party services.
+              In order to use our services you need to complete your initial private
+              profile. Your profile will not be shared with any of the clients nor other
+              third party services.
             </Callout>
           </ContainerCallout>
           <ContainerContent>

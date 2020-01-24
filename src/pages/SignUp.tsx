@@ -11,7 +11,7 @@ import {
   Drawer,
   Spinner,
   NonIdealState,
-  Position
+  Position,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
@@ -24,11 +24,7 @@ import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNUP_MUTATION = gql`
   mutation signUp($input: SignInInput!) {
-    signUp(input: $input) @rest(
-      type: "SignUp",
-      method: "POST",
-      path: "/sign_up"
-    ) {
+    signUp(input: $input) @rest(type: "SignUp", method: "POST", path: "/sign_up") {
       success
       token
     }
@@ -79,35 +75,27 @@ const SignUpSchema = Yup.object().shape({
     .required("Email is required"),
   password: Yup.string()
     .min(6, "Password too short")
-    .required("Password is required"),    
+    .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords do not match")
     .required("Confirm Password is required"),
 });
 
-function SignUpLoading() {
-  return (
-    <Spinner
-      size={Spinner.SIZE_LARGE}
-    />
-  );
+function SignUpLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function SignUpError() {
+function SignUpError(): JSX.Element {
   const description = (
     <div>
-      There are some errors in your sign-up.
-      Please double check your password if its less than 8 letter alphanumeric.
-      And check if your email is already registered to our platform.
+      There are some errors in your sign-up. Please double check your password if its less
+      than 8 letter alphanumeric. And check if your email is already registered to our
+      platform.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -122,20 +110,16 @@ function SignUpError() {
   );
 }
 
-function SignUpSuccess() {
+function SignUpSuccess(): JSX.Element {
   const description = (
     <div>
-      Please check your inbox.
-      Follow the instruction indicated on it to verify your account.
+      Please check your inbox. Follow the instruction indicated on it to verify your
+      account.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -150,7 +134,7 @@ function SignUpSuccess() {
   );
 }
 
-function SignUpForm(props: any) {
+function SignUpForm(props: any): JSX.Element {
   const [signUp, { loading, error, data }] = useMutation(SIGNUP_MUTATION);
 
   const agreement = (
@@ -158,7 +142,7 @@ function SignUpForm(props: any) {
       I agree to the{" "}
       <a
         href="#"
-        onClick={(e) => {
+        onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
           e.preventDefault();
           props.setTncStatus(true);
         }}
@@ -184,18 +168,18 @@ function SignUpForm(props: any) {
           password: "",
           confirmPassword: "",
           tncAgreement: [],
-          optinMarketing: []
+          optinMarketing: [],
         }}
         validationSchema={SignUpSchema}
-        onSubmit={({ email, password }, { setSubmitting }) => {
+        onSubmit={({ email, password }, { setSubmitting }): void => {
           setSubmitting(false);
           signUp({
             variables: {
               input: {
                 email,
                 password,
-              }
-            }
+              },
+            },
           });
         }}
       >
@@ -205,7 +189,7 @@ function SignUpForm(props: any) {
           handleBlur,
           handleSubmit,
           isSubmitting,
-        }) => (
+        }): JSX.Element => (
           <form onSubmit={handleSubmit}>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
@@ -246,7 +230,8 @@ function SignUpForm(props: any) {
                 labelElement={agreement}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                defaultChecked={false} />
+                defaultChecked={false}
+              />
               <Switch
                 id="optinMarketing"
                 label="Opt-in to notifications and promotions."
@@ -270,14 +255,14 @@ function SignUpForm(props: any) {
       </Formik>
       <ContainerOptions>
         <Link to="/sign_in">Already have an account?</Link>
-        <br/>
+        <br />
         <Link to="/recover_account">Forgot your password?</Link>
       </ContainerOptions>
     </>
   );
 }
 
-function SignUp() {
+function SignUp(): JSX.Element {
   const [isTncOpen, setIsTncOpen] = useState(false);
   const year = new Date().getFullYear();
 
@@ -292,7 +277,7 @@ function SignUp() {
             title="Terms and Conditions"
             position={Position.RIGHT}
             isOpen={isTncOpen}
-            onClose={() => setIsTncOpen(false)}
+            onClose={(): void => setIsTncOpen(false)}
             hasBackdrop={true}
             autoFocus={true}
             enforceFocus={true}
@@ -306,31 +291,31 @@ function SignUp() {
                 <p>
                   <strong>
                     Data integration is the seminal problem of the digital age. For over
-                    ten years, we’ve helped the world’s premier organizations rise to
-                    the challenge.
+                    ten years, we’ve helped the world’s premier organizations rise to the
+                    challenge.
                   </strong>
                 </p>
                 <p>
-                  Palantir Foundry radically reimagines the way enterprises interact
-                  with data by amplifying and extending the power of data integration.
-                  With Foundry, anyone can source, fuse, and transform data into any
-                  shape they desire. Business analysts become data engineers — and
-                  leaders in their organization’s data revolution.
+                  Palantir Foundry radically reimagines the way enterprises interact with
+                  data by amplifying and extending the power of data integration. With
+                  Foundry, anyone can source, fuse, and transform data into any shape they
+                  desire. Business analysts become data engineers — and leaders in their
+                  organization’s data revolution.
                 </p>
                 <p>
                   Foundry’s back end includes a suite of best-in-class data integration
-                  capabilities: data provenance, git-style versioning semantics,
-                  granular access controls, branching, transformation authoring, and
-                  more. But these powers are not limited to the back-end IT shop.
+                  capabilities: data provenance, git-style versioning semantics, granular
+                  access controls, branching, transformation authoring, and more. But
+                  these powers are not limited to the back-end IT shop.
                 </p>
                 <p>
                   In Foundry, tables, applications, reports, presentations, and
                   spreadsheets operate as data integrations in their own right. Access
-                  controls, transformation logic, and data quality flow from original
-                  data source to intermediate analysis to presentation in real time.
-                  Every end product created in Foundry becomes a new data source that
-                  other users can build upon. And the enterprise data foundation goes
-                  where the business drives it.
+                  controls, transformation logic, and data quality flow from original data
+                  source to intermediate analysis to presentation in real time. Every end
+                  product created in Foundry becomes a new data source that other users
+                  can build upon. And the enterprise data foundation goes where the
+                  business drives it.
                 </p>
                 <p>
                   Start the revolution. Unleash the power of data integration with

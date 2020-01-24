@@ -5,24 +5,14 @@ import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import {
-  Card,
-  H5,
-  Elevation,
-  Spinner,
-  Intent,
-  NonIdealState
-} from "@blueprintjs/core";
+import { Card, H5, Elevation, Spinner, Intent, NonIdealState } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 
 const REQUEST_PROFILE_QUERY = gql`
   query($id: String!) {
-    requestProfile(id: $id) @rest(
-      type: "RequestProfile",
-      method: "GET",
-      path: "/request_profile/{args.id}"
-    ) {
+    requestProfile(id: $id)
+      @rest(type: "RequestProfile", method: "GET", path: "/request_profile/{args.id}") {
       success
       profile
     }
@@ -86,32 +76,26 @@ function camelizeKeys(obj: any): any {
     );
   }
   return obj;
-};
+}
 
-function ShareableProfileLoading() {
+function ShareableProfileLoading(): JSX.Element {
   return (
     <ContainerNonTrivial>
-      <Spinner
-        size={Spinner.SIZE_LARGE}
-      />
+      <Spinner size={Spinner.SIZE_LARGE} />
     </ContainerNonTrivial>
   );
 }
 
-function ShareableProfileError() {
+function ShareableProfileError(): JSX.Element {
   const description = (
     <div>
-      The requested profile can not be found in the server.
-      Please double check if you have the correct profile address.
+      The requested profile can not be found in the server. Please double check if you
+      have the correct profile address.
     </div>
   );
 
   const action = (
-    <HapButton
-      to="/"
-      intent={Intent.PRIMARY}
-      large={true}
-    >
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
       Go Back Home
     </HapButton>
   );
@@ -128,10 +112,10 @@ function ShareableProfileError() {
   );
 }
 
-function ShareableProfile() {
+function ShareableProfile(): JSX.Element {
   const { id } = useParams();
   const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
-    variables: { id }
+    variables: { id },
   });
 
   if (loading) return <ShareableProfileLoading />;
@@ -144,9 +128,7 @@ function ShareableProfile() {
 
   return (
     <Container>
-      <Helmet
-        titleTemplate="%s | Open Sesame"
-      >
+      <Helmet titleTemplate="%s | Open Sesame">
         <title>Profile</title>
       </Helmet>
       <ContainerMain>
