@@ -11,6 +11,7 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import _ from "lodash";
+import * as Yup from "yup";
 import { Formik } from "formik";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
@@ -64,9 +65,11 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-interface FormState {
-  email?: string;
-}
+const RecoverAccountSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+});
 
 function RecoverNonTrivialResponse(props: any): JSX.Element {
   const description = (
@@ -114,15 +117,7 @@ function RecoverAccountForm(): JSX.Element {
     <>
       <Formik
         initialValues={{ email: "" }}
-        validate={(values: FormState) => {
-          const errors: any = {};
-
-          if (!values.email) {
-            errors.email = "Invalid email address";
-          }
-
-          return errors;
-        }}
+        validationSchema={RecoverAccountSchema}
         onSubmit={({ email }, { setSubmitting }): void => {
           setSubmitting(false);
           setCapturedEmail(email);

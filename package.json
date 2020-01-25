@@ -7,8 +7,8 @@
     "build": "webpack --config webpack.dev.babel.js --mode development --no-color",
     "build.types": "tsc --noEmit false --emitDeclarationOnly",
     "watch": "webpack-dev-server --config webpack.dev.babel.js --no-color",
-    "lint": "eslint '*/**/*.{ts,tsx}'",
-    "lint.fix": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
+    "lint": "eslint */**/*.{ts,tsx} .",
+    "lint.fix": "tsc --noEmit && eslint */**/*.{ts,tsx} --quiet --fix"
   },
   "author": "ffimnsr",
   "devDependencies": {
@@ -70,11 +70,11 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@blueprintjs/core": "^3.23.0",
+    "@blueprintjs/core": "^3.23.1",
     "@blueprintjs/datetime": "^3.15.2",
     "@blueprintjs/icons": "^3.13.0",
     "@blueprintjs/select": "^3.11.2",
-    "@blueprintjs/table": "^3.8.2",
+    "@blueprintjs/table": "^3.8.3",
     "@blueprintjs/timezone": "^3.6.1",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
@@ -85,7 +85,7 @@
     "apollo-link-rest": "^0.7.3",
     "classnames": "^2.2.6",
     "formik": "^2.1.2",
-    "framer-motion": "^1.7.2",
+    "framer-motion": "^1.7.3",
     "graphql": "^14.5.8",
     "graphql-anywhere": "^4.2.6",
     "graphql-tag": "^2.10.1",
