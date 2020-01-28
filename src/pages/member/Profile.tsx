@@ -49,12 +49,31 @@ const ProfilePane = styled.div`
   }
 `;
 
-function Profile(): JSX.Element {
+function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
+  return (
+    <ProfilePane>
+      <Card elevation={Elevation.ONE}>
+        <img src="https://via.placeholder.com/200" />
+        Full Name Public ID
+      </Card>
+      <Card elevation={Elevation.ONE}>
+        <H5>Hello</H5>
+        <p>Hello</p>
+      </Card>
+      <Card elevation={Elevation.ONE}>
+        <H5>Hello</H5>
+        <p>Hello</p>
+      </Card>
+    </ProfilePane>
+  );
+}
+
+function Profile(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -64,20 +83,7 @@ function Profile(): JSX.Element {
       <ContainerMain>
         <NavigationHeader />
         <ContainerProfile>
-          <ProfilePane>
-            <Card elevation={Elevation.ONE}>
-              <img src="https://via.placeholder.com/200" />
-              Full Name Public ID
-            </Card>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-            </Card>
-            <Card elevation={Elevation.ONE}>
-              <H5>Hello</H5>
-              <p>Hello</p>
-            </Card>
-          </ProfilePane>
+          <ProfileContent />
         </ContainerProfile>
       </ContainerMain>
     </Container>

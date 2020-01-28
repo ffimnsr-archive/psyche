@@ -134,7 +134,11 @@ function SignUpSuccess(): JSX.Element {
   );
 }
 
-function SignUpForm(props: any): JSX.Element {
+function SignUpForm({
+  setTncStatus,
+}: {
+  setTncStatus: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element {
   const [signUp, { loading, error, data }] = useMutation(SIGNUP_MUTATION);
 
   const agreement = (
@@ -144,7 +148,7 @@ function SignUpForm(props: any): JSX.Element {
         href="#"
         onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
           e.preventDefault();
-          props.setTncStatus(true);
+          setTncStatus(true);
         }}
       >
         Terms and Conditions

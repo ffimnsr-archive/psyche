@@ -71,12 +71,12 @@ const RecoverAccountSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
-function RecoverNonTrivialResponse(props: any): JSX.Element {
+function RecoverNonTrivialResponse({ email }: { email: string }): JSX.Element {
   const description = (
     <div>
-      An email has been sent to <b>{props.email}</b>. Please check your inbox for a
-      recovery email otherwise, if you have not received it your email may not be
-      registered to our platform.
+      An email has been sent to <b>{email}</b>. Please check your inbox for a recovery
+      email otherwise, if you have not received it your email may not be registered to our
+      platform.
     </div>
   );
 

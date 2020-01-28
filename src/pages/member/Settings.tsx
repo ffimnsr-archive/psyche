@@ -68,12 +68,23 @@ const SettingsPane = styled.div`
   }
 `;
 
-function Settings(): JSX.Element {
+function SettingsContent(): JSX.Element {
   const { loading, error, data } = useQuery(SETTINGS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
+  return (
+    <SettingsPane>
+      <Account data={data} />
+      <WorkPreference data={data} />
+      <PrivacyAndSafety data={data} />
+      <Notifications data={data} />
+    </SettingsPane>
+  );
+}
+
+function Settings(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -83,12 +94,7 @@ function Settings(): JSX.Element {
       <ContainerMain>
         <NavigationHeader />
         <ContainerSettings>
-          <SettingsPane>
-            <Account data={data} />
-            <PrivacyAndSafety data={data} />
-            <Notifications data={data} />
-            <WorkPreference data={data} />
-          </SettingsPane>
+          <SettingsContent />
         </ContainerSettings>
       </ContainerMain>
     </Container>

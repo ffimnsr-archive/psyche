@@ -13,7 +13,8 @@ import {
   FormGroup,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { Formik } from "formik";
+import { Formik, Form, FieldArray, FieldArrayRenderProps } from "formik";
+import * as Yup from "yup";
 
 const CheckboxContainer = styled.td`
   & > label.bp3-control.bp3-disabled {
@@ -31,6 +32,12 @@ const EditButton = styled.a`
   float: right;
 `;
 
+const WorkPreferencesUpdateSchema = Yup.object().shape({
+  workPreferences: Yup.array()
+    .ensure()
+    .required("Work preference is required"),
+});
+
 const defaultDialogOptions = {
   autoFocus: true,
   canEscapeKeyClose: true,
@@ -42,13 +49,19 @@ const defaultDialogOptions = {
 function WorkPreference({ data }: any): JSX.Element {
   const title = "Work Preference";
   const [isOpen, setIsOpen] = useState(false);
-  const workFunctions = data.wf.map(({ id, name }: any) => (
-    <tr key={id}>
-      <CheckboxContainer>
-        <Checkbox label={name} defaultIndeterminate={false} disabled={true} />
-      </CheckboxContainer>
-    </tr>
-  ));
+  const workFunctionsDisabled = data.wf.map(
+    ({ id, name }: { id: string; name: string }) => (
+      <tr key={id}>
+        <CheckboxContainer>
+          <Checkbox label={name} defaultIndeterminate={false} disabled={true} />
+        </CheckboxContainer>
+      </tr>
+    ),
+  );
+
+  const initialValues: { workPreferences: string[] } = {
+    workPreferences: [],
+  };
 
   return (
     <>
@@ -66,7 +79,7 @@ function WorkPreference({ data }: any): JSX.Element {
           </EditButton>
         </div>
         <ResponsiveTable condensed={true}>
-          <tbody>{workFunctions}</tbody>
+          <tbody>{workFunctionsDisabled}</tbody>
         </ResponsiveTable>
       </Card>
       <Dialog
@@ -77,39 +90,47 @@ function WorkPreference({ data }: any): JSX.Element {
         {...defaultDialogOptions}
       >
         <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            gender: "",
-            birthDate: "",
-            phoneNumber: "",
-            bio: "",
-          }}
-          validate={(values: any) => {
-            const errors: any = {};
-
-            if (!values.email) {
-              errors.email = "Invalid email address";
-            }
-
-            return errors;
-          }}
-          onSubmit={(
-            { firstName, lastName, gender, birthDate, phoneNumber, bio },
-            { setSubmitting },
-          ): void => {
+          initialValues={initialValues}
+          validationSchema={WorkPreferencesUpdateSchema}
+          onSubmit={({ workPreferences }, { setSubmitting }): void => {
             setSubmitting(false);
+            setTimeout(() => {
+              console.log(JSON.stringify(workPreferences, null, 2));
+            }, 500);
           }}
         >
-          {({
-            values,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }): JSX.Element => (
-            <form onSubmit={handleSubmit}>
-              <div className={Classes.DIALOG_BODY}></div>
+          {({ values, isSubmitting }): JSX.Element => (
+            <Form>
+              <div className={Classes.DIALOG_BODY}>
+                <FormGroup
+                  helperText="This will determine what role in projects you'll be put on."
+                  label="Select your work preference"
+                  labelInfo="(required)"
+                >
+                  <FieldArray
+                    name="workPreferences"
+                    render={(arrayHelpers: FieldArrayRenderProps): JSX.Element =>
+                      data.wf.map(
+                        ({ id, name }: { id: string; name: string }, index: number) => (
+                          <Checkbox
+                            key={id}
+                            label={name}
+                            name={`wf.${index}`}
+                            defaultIndeterminate={false}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                              if (e.target.checked) arrayHelpers.push(id);
+                              else {
+                                const idx = values.workPreferences.indexOf(id);
+                                arrayHelpers.remove(idx);
+                              }
+                            }}
+                          />
+                        ),
+                      )
+                    }
+                  />
+                </FormGroup>
+              </div>
               <div className={Classes.DIALOG_FOOTER}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
                   <Button intent={Intent.PRIMARY} disabled={isSubmitting} type="submit">
@@ -117,7 +138,7 @@ function WorkPreference({ data }: any): JSX.Element {
                   </Button>
                 </div>
               </div>
-            </form>
+            </Form>
           )}
         </Formik>
       </Dialog>

@@ -1,7 +1,14 @@
 import React from "react";
-import { Route, Redirect, Switch, RouteProps } from "react-router-dom";
+import {
+  Route,
+  Redirect,
+  Switch,
+  RouteProps,
+  RouteComponentProps,
+} from "react-router-dom";
 import styled from "styled-components";
 import gql from "graphql-tag";
+import _ from "lodash";
 import { useQuery } from "react-apollo";
 import { motion } from "framer-motion";
 import NoMatch from "@/pages/NoMatch";
@@ -64,26 +71,21 @@ function AuthRoute({
 }: AuthRouteProps): JSX.Element {
   const { data } = useQuery(IS_AUTHENTICATED_QUERY);
 
+  const createOnNotNil = (props: any): JSX.Element | null =>
+    !_.isUndefined(component) ? React.createElement(component, props) : null;
+
   return no ? (
     <Route
       {...otherProps}
-      render={(props: any): JSX.Element =>
-        !data.isAuthenticated ? (
-          React.createElement(component!, props)
-        ) : (
-          <Redirect to="/" />
-        )
+      render={(props: RouteComponentProps<any>): React.ReactNode =>
+        !data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/" />
       }
     />
   ) : (
     <Route
       {...otherProps}
-      render={(props: any): JSX.Element =>
-        data.isAuthenticated ? (
-          React.createElement(component!, props)
-        ) : (
-          <Redirect to="/sign_in" />
-        )
+      render={(props: RouteComponentProps<any>): React.ReactNode =>
+        data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/sign_in" />
       }
     />
   );

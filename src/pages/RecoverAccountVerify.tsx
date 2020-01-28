@@ -12,6 +12,7 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
 import _ from "lodash";
+import * as Yup from "yup";
 import { Formik } from "formik";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "react-apollo";
@@ -82,21 +83,24 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-interface FormState {
-  password?: string;
-  confirmPassword?: string;
-}
+const RecoverAccountVerifySchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, "Password too short")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords do not match")
+    .required("Confirm Password is required"),
+});
 
-function RecoverAccountVerifyLoading() {
+function RecoverAccountVerifyLoading(): JSX.Element {
   return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function RecoverAccountVerifyError() {
-  // TODO: update data
+function RecoverAccountVerifyError(): JSX.Element {
   const description = (
     <div>
-      An email has been sent to. Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      There was an error recovering your account. Its possible that your recovery token is
+      expired or not valid.
     </div>
   );
 
@@ -138,19 +142,7 @@ function RecoverAccountVerifyForm(): JSX.Element {
     <>
       <Formik
         initialValues={{ password: "", confirmPassword: "" }}
-        validate={(values: FormState) => {
-          const errors: any = {};
-
-          if (!values.password) {
-            errors.password = "Invalid password input";
-          }
-
-          if (values.password !== values.confirmPassword) {
-            errors.password = "Password is not same";
-          }
-
-          return errors;
-        }}
+        validationSchema={RecoverAccountVerifySchema}
         onSubmit={({ password }, { setSubmitting }): void => {
           setSubmitting(false);
           recoverAccountVerify({

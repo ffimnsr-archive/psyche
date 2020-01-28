@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import { RouterProps } from "react-router";
 import {
   Alignment,
   AnchorButton,
@@ -22,13 +23,13 @@ const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
 
-function NavigationHeaderContent(props: any): JSX.Element {
+function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   const client = useApolloClient();
 
   const userMenu = (
     <Menu>
       <MenuItem
-        onClick={(): void => props.history.push("/profile")}
+        onClick={(): void => history.push("/profile")}
         icon={IconNames.PERSON}
         text="My Profile"
       />
@@ -36,7 +37,7 @@ function NavigationHeaderContent(props: any): JSX.Element {
       <MenuDivider />
       <MenuItem
         onClick={(): void => {
-          props.history.push("/settings");
+          history.push("/settings");
         }}
         icon={IconNames.SETTINGS}
         text="Settings"
@@ -46,7 +47,7 @@ function NavigationHeaderContent(props: any): JSX.Element {
         onClick={(): void => {
           sessionStorage.removeItem("token");
           client.resetStore();
-          props.history.replace("/");
+          history.replace("/");
         }}
         icon={IconNames.LOG_OUT}
         text="Logout"

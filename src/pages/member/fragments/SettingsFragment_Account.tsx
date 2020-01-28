@@ -11,9 +11,24 @@ import {
   Intent,
   FormGroup,
   InputGroup,
+  Spinner,
+  NonIdealState,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
+import * as Yup from "yup";
+import gql from "graphql-tag";
+import { useMutation } from "react-apollo";
+import { HapButton } from "@/components/HapButton";
+
+const ACCOUNT_UPDATE_MUTATION = gql`
+  mutation signIn($input: SignInInput!) {
+    signIn(input: $input) @rest(type: "SignIn", method: "POST", path: "/sign_in") {
+      success
+      token
+    }
+  }
+`;
 
 const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
@@ -22,6 +37,12 @@ const ResponsiveTable = styled(HTMLTable)`
 const EditButton = styled.a`
   float: right;
 `;
+
+const AccountUpdateSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required"),
+});
 
 const defaultDialogOptions = {
   autoFocus: true,
@@ -35,9 +56,43 @@ function format(value: string): string {
   return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4");
 }
 
+function AccountUpdateLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
+}
+
+function AccountUpdateError(): JSX.Element {
+  // TODO: update data
+  const description = (
+    <div>
+      An email has been sent to. Please check your inbox for a recovery email otherwise,
+      if you have not received it your email may not be registered to our platform.
+    </div>
+  );
+
+  const action = (
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.WARNING_SIGN}
+      title="Account Verification Error!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
 function Account({ data }: any): JSX.Element {
   const title = "Account";
   const [isOpen, setIsOpen] = useState(false);
+  const [accountUpdate, { loading, error }] = useMutation(ACCOUNT_UPDATE_MUTATION);
+
+  if (loading) return <AccountUpdateLoading />;
+  if (error) return <AccountUpdateError />;
+
   const { socialSecurityNumber } = data.profile;
   return (
     <>
@@ -103,20 +158,24 @@ function Account({ data }: any): JSX.Element {
             phoneNumber: "",
             bio: "",
           }}
-          validate={(values: any) => {
-            const errors: any = {};
-
-            if (!values.email) {
-              errors.email = "Invalid email address";
-            }
-
-            return errors;
-          }}
+          validationSchema={AccountUpdateSchema}
           onSubmit={(
             { firstName, lastName, gender, birthDate, phoneNumber, bio },
             { setSubmitting },
           ): void => {
             setSubmitting(false);
+            accountUpdate({
+              variables: {
+                input: {
+                  firstName,
+                  lastName,
+                  gender,
+                  birthDate,
+                  phoneNumber,
+                  bio,
+                },
+              },
+            });
           }}
         >
           {({
@@ -128,7 +187,7 @@ function Account({ data }: any): JSX.Element {
           }): JSX.Element => (
             <form onSubmit={handleSubmit}>
               <div className={Classes.DIALOG_BODY}>
-                <FormGroup label="First Name" labelFor="firstName">
+                <FormGroup label="First Name" labelFor="firstName" labelInfo="(required)">
                   <InputGroup
                     id="firstName"
                     name="firstName"
@@ -140,7 +199,7 @@ function Account({ data }: any): JSX.Element {
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup label="Last Name" labelFor="lastName">
+                <FormGroup label="Last Name" labelFor="lastName" labelInfo="(required)">
                   <InputGroup
                     id="lastName"
                     name="lastName"
@@ -164,7 +223,7 @@ function Account({ data }: any): JSX.Element {
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup label="Birth Date" labelFor="birthDate">
+                <FormGroup label="Birth Date" labelFor="birthDate" labelInfo="(required)">
                   <InputGroup
                     id="birthDate"
                     name="birthDate"

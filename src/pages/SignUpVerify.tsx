@@ -57,11 +57,10 @@ function SignUpVerifyLoading(): JSX.Element {
 }
 
 function SignUpVerifyError(): JSX.Element {
-  // TODO: update data
   const description = (
     <div>
-      An email has been sent to. Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      There was an error activating your account. Its possible that your activation token
+      is expired or not valid.
     </div>
   );
 
@@ -82,12 +81,15 @@ function SignUpVerifyError(): JSX.Element {
 }
 
 function SignUpVerifyContent(): JSX.Element {
-  // TODO: run mutation on mount
   const { code } = useParams();
   const [signUpVerify, { loading, error }] = useMutation(SIGN_UP_VERIFY_MUTATION);
 
   useEffect(() => {
-    signUpVerify({});
+    signUpVerify({
+      variables: {
+        code,
+      },
+    });
   }, [code, signUpVerify]);
 
   if (loading) return <SignUpVerifyLoading />;

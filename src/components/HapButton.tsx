@@ -1,14 +1,25 @@
 import React from "react";
 import invariant from "invariant";
 import { __RouterContext as RouterContext } from "react-router";
-import { createLocation, LocationDescriptor, Location } from "history";
+import {
+  createLocation,
+  LocationDescriptor,
+  LocationDescriptorObject,
+  Location,
+} from "history";
 import { AnchorButton } from "@blueprintjs/core";
 
-const resolveToLocation = (to: LocationDescriptor | any, currentLocation: Location) => {
+const resolveToLocation = (
+  to: LocationDescriptor | any,
+  currentLocation: Location,
+): string => {
   return typeof to === "function" ? to(currentLocation) : to;
 };
 
-const normalizeToLocation = (to: LocationDescriptor, currentLocation: Location) => {
+const normalizeToLocation = (
+  to: LocationDescriptor,
+  currentLocation: Location,
+): LocationDescriptorObject => {
   return typeof to === "string"
     ? createLocation(to, null, undefined, currentLocation)
     : to;
@@ -33,7 +44,9 @@ export function HapButton({ to, replace, ...rest }: HapButtonProps | any): JSX.E
         );
 
         const href = location ? history.createHref(location) : "";
-        const onClick = (event: MouseEvent | any): void => {
+        const onClick = (
+          event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+        ): void => {
           event.preventDefault();
 
           const location = resolveToLocation(to, context.location);

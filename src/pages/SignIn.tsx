@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { RouterProps } from "react-router";
 import styled from "styled-components";
 import {
   Button,
@@ -105,14 +106,14 @@ function SignInError(): JSX.Element {
   );
 }
 
-function SignInFormContent(props: any): JSX.Element {
+function SignInFormContent({ history }: RouterProps): JSX.Element {
   const client = useApolloClient();
   const [showPassword, setShowPassword] = useState(false);
   const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
     onCompleted({ signIn }) {
       sessionStorage.setItem("token", signIn.token);
       client.writeData({ data: { isAuthenticated: true } });
-      props.history.replace("/");
+      history.replace("/");
     },
   });
 
@@ -184,6 +185,7 @@ function SignInFormContent(props: any): JSX.Element {
             <FormGroup>
               <Switch
                 id="rememberMe"
+                name="rememberMe"
                 label="Remember Me?"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -214,7 +216,7 @@ function SignInFormContent(props: any): JSX.Element {
 
 const SignInForm = withRouter(SignInFormContent);
 
-function SignIn() {
+function SignIn(): JSX.Element {
   return (
     <Container>
       <ContainerDesign />
