@@ -17,6 +17,9 @@ module.exports = merge(common, {
     index: "index.html",
   },
   stats: "normal",
+  output: {
+    path: path.resolve(__dirname, "./dist/debug/"),
+  },
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",

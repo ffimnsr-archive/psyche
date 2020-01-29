@@ -1,7 +1,7 @@
-FROM node:10.16
+FROM node:12.14
 
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install
+RUN npm install && npm install pm2 -g
 
-CMD ["npm", "start"]
+CMD ["pm2-runtime", "npm", "--", "start"]

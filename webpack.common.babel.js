@@ -6,7 +6,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { version } from "./package.json";
 
 const revision = require("child_process")
-  .execSync("git rev-parse HEAD")
+  .execSync("git rev-parse --short HEAD")
   .toString()
   .trim();
 
@@ -110,7 +110,7 @@ const config = {
       VERSION: JSON.stringify(version),
       BUILD_HASH: JSON.stringify(revision),
     }),
-    new webpack.BannerPlugin("Open Sesame"),
+    new webpack.BannerPlugin(`Open Sesame v${version}.${revision}`),
   ],
 };
 

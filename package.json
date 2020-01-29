@@ -5,6 +5,7 @@
   "scripts": {
     "start": "npm run watch",
     "build": "webpack --config webpack.dev.babel.js --mode development --no-color",
+    "build.production": "webpack --config webpack.prod.babel.js --mode production --no-color",
     "build.types": "tsc --noEmit false --emitDeclarationOnly",
     "watch": "webpack-dev-server --config webpack.dev.babel.js --no-color",
     "lint": "eslint */**/*.{ts,tsx}",
@@ -24,7 +25,7 @@
     "@babel/preset-typescript": "^7.8.3",
     "@babel/register": "^7.8.3",
     "@testing-library/react": "^9.4.0",
-    "@types/chai": "^4.2.7",
+    "@types/chai": "^4.2.8",
     "@types/classnames": "^2.2.9",
     "@types/history": "^4.7.4",
     "@types/invariant": "^2.2.31",
