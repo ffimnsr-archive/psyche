@@ -3,6 +3,12 @@ import path from "path";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import { version } from "./package.json";
+
+const revision = require("child_process")
+  .execSync("git rev-parse HEAD")
+  .toString()
+  .trim();
 
 const config = {
   entry: {
@@ -90,6 +96,7 @@ const config = {
     publicPath: "/",
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundle.css",
@@ -98,6 +105,10 @@ const config = {
       template: "src/templates/index.html",
       favicon: "src/assets/images/favicon.ico",
       minify: true,
+    }),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(version),
+      BUILD_HASH: JSON.stringify(revision),
     }),
     new webpack.BannerPlugin("Open Sesame"),
   ],

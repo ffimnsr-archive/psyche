@@ -2,6 +2,7 @@ import webpack from "webpack";
 import merge from "webpack-merge";
 import UglifyJSWebpackPlugin from "uglifyjs-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
+import CleanWebpackPlugin from "clean-webpack-plugin";
 import common from "./webpack.common.babel";
 
 module.exports = merge(common, {
@@ -21,8 +22,14 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
+    }),
+    new webpack.HashedModuleIdsPlugin({
+      hashFunction: "sha256",
+      hashDigest: "hex",
+      hashDigestLength: 20,
     }),
   ],
 });
