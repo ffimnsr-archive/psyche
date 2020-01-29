@@ -7,9 +7,9 @@
     "build": "webpack --config webpack.dev.babel.js --mode development --no-color",
     "build.types": "tsc --noEmit false --emitDeclarationOnly",
     "watch": "webpack-dev-server --config webpack.dev.babel.js --no-color",
-    "lint": "eslint */**/*.{ts,tsx} .",
-    "lint.fix": "eslint */**/*.{ts,tsx} --quiet --fix .",
-    "lint.full": "tsc --noEmit && eslint */**/*.{ts,tsx} --quiet --fix .",
+    "lint": "eslint */**/*.{ts,tsx}",
+    "lint.fix": "eslint */**/*.{ts,tsx} --quiet --fix",
+    "lint.full": "tsc --noEmit && eslint */**/*.{ts,tsx} --quiet --fix",
     "test": "mocha"
   },
   "author": "ffimnsr",

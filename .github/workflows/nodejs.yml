@@ -1,4 +1,4 @@
-name: Psyche NodeJS CI
+name: NodeJS Flow
 
 on:
   push:
