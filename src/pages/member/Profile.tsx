@@ -3,7 +3,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Button, Elevation } from "@blueprintjs/core";
+import { Card, H5, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -50,7 +50,7 @@ const ProfilePane = styled.div`
 `;
 
 function ProfileContent(): JSX.Element {
-  const { loading, error, data } = useQuery(PROFILE_QUERY);
+  const { loading, error } = useQuery(PROFILE_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;

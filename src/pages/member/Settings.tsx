@@ -78,8 +78,8 @@ function SettingsContent(): JSX.Element {
     <SettingsPane>
       <Account data={data} />
       <WorkPreference data={data} />
-      <PrivacyAndSafety data={data} />
-      <Notifications data={data} />
+      <PrivacyAndSafety />
+      <Notifications />
     </SettingsPane>
   );
 }

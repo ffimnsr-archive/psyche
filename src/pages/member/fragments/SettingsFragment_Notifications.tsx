@@ -9,11 +9,9 @@ import {
   Classes,
   Button,
   Intent,
-  Checkbox,
-  FormGroup,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 const ResponsiveTable = styled(HTMLTable)`
@@ -32,7 +30,13 @@ const defaultDialogOptions = {
   usePortal: true,
 };
 
-function Notifications({ data }: any): JSX.Element {
+const NotificationsUpdateSchema = Yup.object().shape({
+  workPreferences: Yup.array()
+    .ensure()
+    .required("Work preference is required"),
+});
+
+function Notifications(): JSX.Element {
   const title = "Site Preference & Notifications";
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -74,30 +78,13 @@ function Notifications({ data }: any): JSX.Element {
             phoneNumber: "",
             bio: "",
           }}
-          validate={(values: any) => {
-            const errors: any = {};
-
-            if (!values.email) {
-              errors.email = "Invalid email address";
-            }
-
-            return errors;
-          }}
-          onSubmit={(
-            { firstName, lastName, gender, birthDate, phoneNumber, bio },
-            { setSubmitting },
-          ): void => {
+          validationSchema={NotificationsUpdateSchema}
+          onSubmit={(_, { setSubmitting }): void => {
             setSubmitting(false);
           }}
         >
-          {({
-            values,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }): JSX.Element => (
-            <form onSubmit={handleSubmit}>
+          {({ isSubmitting }): JSX.Element => (
+            <Form>
               <div className={Classes.DIALOG_BODY}></div>
               <div className={Classes.DIALOG_FOOTER}>
                 <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -106,7 +93,7 @@ function Notifications({ data }: any): JSX.Element {
                   </Button>
                 </div>
               </div>
-            </form>
+            </Form>
           )}
         </Formik>
       </Dialog>

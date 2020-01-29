@@ -1,17 +1,21 @@
 # Psyche
 
-## Typescript Basic Types
+![Workflow](https://github.com/ffimnsr/psyche/workflows/.github/workflows/nodejs.yml/badge.svg)
 
-- boolean
-- number
-- string
-- array (e.g. number[] or Array<number>)
-- tuple (e.g. [string, number])
-- enum
-- any
-- void
-- null and undefined
-- never (e.g. exceptions throws)
+### Typescript Basic Types
+
+Listed below are basic types that can be use on typescript for reference.
+
+- `boolean`
+- `number`
+- `string`
+- `array` (e.g. number[] or Array<number>)
+- `tuple` (e.g. [string, number])
+- `enum`
+- `any`
+- `void`
+- `null` and `undefined`
+- `never` (e.g. exceptions throws)
 
 ## License
 
