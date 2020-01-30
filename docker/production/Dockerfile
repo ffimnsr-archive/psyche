@@ -2,7 +2,7 @@ FROM node:12.14 AS builder
 
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install
+RUN npm install --silent
 RUN npm run build.production --if-present
 
 FROM nginx:1.17

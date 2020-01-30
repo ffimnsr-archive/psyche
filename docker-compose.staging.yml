@@ -1,0 +1,11 @@
+version: '3'
+services:
+  psyche-server:
+    extends:
+      file: common-services.yml
+      service: psyche-server
+    build:
+      context: .
+      dockerfile: ./docker/staging/Dockerfile
+    ports:
+      - 80:80      

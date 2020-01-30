@@ -1,0 +1,7 @@
+version: '3'
+services:
+  psyche-server:
+    image: psyche
+    container_name: psyche-server
+    dns: 8.8.8.8
+    network_mode: "bridge"

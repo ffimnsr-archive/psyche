@@ -1,19 +1,18 @@
 version: '3'
 services:
   psyche-server:
+    extends:
+      file: common-services.yml
+      service: psyche-server
     build:
       context: .
-      dockerfile: ./docker/staging/Dockerfile
-    image: psyche
-    container_name: psyche-server
+      dockerfile: ./docker/development/Dockerfile
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    dns: 8.8.8.8
-    network_mode: "bridge"
     ports:
       - 8080:8080
-    command: npm start
+    command: npm start   
 
 networks:
   default:

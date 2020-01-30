@@ -1,6 +1,7 @@
 import merge from "webpack-merge";
 import webpack from "webpack";
 import path from "path";
+import DotenvWebpack from "dotenv-webpack";
 import common from "./webpack.common.babel";
 
 module.exports = merge(common, {
@@ -21,6 +22,7 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, "./dist/debug/"),
   },
   plugins: [
+    new DotenvWebpack(),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
     }),
