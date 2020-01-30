@@ -27,7 +27,7 @@ function Issues(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Messages</title>
+        <title>Issues</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>

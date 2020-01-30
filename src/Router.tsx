@@ -49,6 +49,7 @@ const LazyMain = React.lazy(() => import("@/pages/member/Home"));
 const LazyProfile = React.lazy(() => import("@/pages/member/Profile"));
 const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyMessages = React.lazy(() => import("@/pages/member/Messages"));
+const LazyIssues = React.lazy(() => import("@/pages/member/Issues"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
 const LazySignIn = React.lazy(() => import("@/pages/SignIn"));
@@ -115,6 +116,7 @@ export function Router(): JSX.Element {
         <AuthRoute path="/profile" component={LazyProfile} />
         <AuthRoute path="/notifications" component={LazyNotifications} />
         <AuthRoute path="/messages" component={LazyMessages} />
+        <AuthRoute path="/issues" component={LazyIssues} />
         <AuthRoute path="/schedules" component={LazySchedules} />
         <AuthRoute path="/settings" component={LazySettings} />
         <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />

@@ -63,7 +63,8 @@ export function Sidebar(): JSX.Element {
     { icon: IconNames.HOME, display: "Home", to: "/" },
     { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "notifications" },
     { icon: IconNames.ENVELOPE, display: "Messages", to: "/messages" },
-    { icon: IconNames.CALENDAR, display: "Schedules", to: "/schedules" },
+    { icon: IconNames.PROJECTS, display: "Issues", to: "/issues" },
+    { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/schedules" },
   ];
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
