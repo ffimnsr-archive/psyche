@@ -1,6 +1,6 @@
 # Psyche
 
-![Workflow](https://github.com/ffimnsr/psyche/workflows/.github/workflows/nodejs.yml/badge.svg)
+![Workflow](https://github.com/ffimnsr/psyche/workflows/NodeJS%20Flow/badge.svg)
 
 ### Typescript Basic Types
 
