@@ -9,8 +9,8 @@ import {
 } from "history";
 import { AnchorButton } from "@blueprintjs/core";
 
-const resolveToLocation = (
-  to: LocationDescriptor | any,
+const resolveToLocation = <T,>(
+  to: LocationDescriptor | T,
   currentLocation: Location,
 ): string => {
   return typeof to === "function" ? to(currentLocation) : to;
@@ -31,6 +31,7 @@ interface HapButtonProps extends AnchorButton {
   innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function HapButton({ to, replace, ...rest }: HapButtonProps | any): JSX.Element {
   return (
     <RouterContext.Consumer>

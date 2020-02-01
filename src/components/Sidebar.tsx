@@ -17,7 +17,7 @@ import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
 
 const ContainerSidebar = styled.div`
-  width: 60px;
+  min-width: 60px;
   background-color: ${Colors.VIOLET1};
 `;
 

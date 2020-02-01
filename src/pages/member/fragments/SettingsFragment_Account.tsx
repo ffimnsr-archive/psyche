@@ -85,7 +85,11 @@ function AccountUpdateError(): JSX.Element {
   );
 }
 
-function Account({ data }: any): JSX.Element {
+function Account({
+  data,
+}: {
+  data: { profile: { socialSecurityNumber: string } };
+}): JSX.Element {
   const title = "Account";
   const [isOpen, setIsOpen] = useState(false);
   const [accountUpdate, { loading, error }] = useMutation(ACCOUNT_UPDATE_MUTATION);

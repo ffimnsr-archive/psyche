@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import classNames from "classnames";
 import { Helmet } from "react-helmet-async";
-import { H4, H5, Classes, Colors } from "@blueprintjs/core";
+import { H5, Colors } from "@blueprintjs/core";
 import {
   DropResult,
   Droppable,
@@ -10,6 +9,7 @@ import {
   Draggable,
   DraggableProvided,
   DraggableLocation,
+  DraggableStateSnapshot,
   DragDropContext,
 } from "react-beautiful-dnd";
 import { Sidebar } from "@/components/Sidebar";
@@ -44,29 +44,79 @@ const ContainerIssues = styled.div`
 `;
 
 const ContainerBoard = styled.div`
-  background-color: ${Colors.BLUE2};
   height: 100%;
+  width: 100%;
+  display: inline-flex;
 `;
 
 const ContainerColumn = styled.div`
-  margin: 5px;
+  margin: 8px;
   display: flex;
   flex-direction: column;
-`;
-
-const ContainerColumnHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const ContainerList = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: ${Colors.GRAY4};
+  padding: 8px;
+  padding-bottom: 0;
+  border: 8px;
+  transition: background-color 0.2s ease, opacity 0.1 ease;
+  use-select: none;
+  width: 320px;
+`;
+
+const ContainerIssue = styled.a`
+  border-radius: 2px;
+  border: 2px solid transparent;
+  border-color: transparent;
+  background-color: ${Colors.WHITE};
+  box-shadow: none;
+  box-sizing: border-box;
+  padding: 8px;
+  margin-bottom: 8px;
+  user-select: none;
+  display: flex;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  background-color: ${Colors.GRAY4};
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${Colors.GRAY5};
+  }
+`;
+
+const Title = styled.h4`
+  padding: 8px;
+  transition: background-color ease 0.2s;
+  flex-grow: 1;
+  user-select: none;
+  position: relative;
+
+  &:focus {
+    outline: 2px solid ${Colors.BLUE3};
+    outline-offset: 2px;
+  }
 `;
 
 const DropZone = styled.div`
-  padding-bottom: 5px;
+  min-height: 200px;
+  padding-bottom: 8px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 100%;
 `;
 
 interface IssueClue {
@@ -121,23 +171,28 @@ function reorderIssueMap({
   return { issueMap: result };
 }
 
-const IssueInnerList = React.memo(function IssueInnerList({
+const InnerIssueList = React.memo(function InnerIssueList({
   issues,
 }: {
   issues: IssueClue[];
 }): JSX.Element {
   const list = issues.map((issue: IssueClue, index: number) => (
     <Draggable key={issue.id} draggableId={issue.id} index={index}>
-      {(provided: DraggableProvided): JSX.Element => (
-        <div
-          className={classNames(Classes.CARD, Classes.INTERACTIVE)}
+      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot): JSX.Element => (
+        <ContainerIssue
+          key={issue.id}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          data-is-dragging={snapshot.isDragging}
+          data-testid={issue.id}
+          data-index={index}
         >
-          <H5>{issue.id}</H5>
-          <p>{issue.content}</p>
-        </div>
+          <Content>
+            <H5>{issue.id}</H5>
+            <p>{issue.content}</p>
+          </Content>
+        </ContainerIssue>
       )}
     </Draggable>
   ));
@@ -163,7 +218,7 @@ function IssueList({
         <ContainerList {...provided.droppableProps}>
           <div>
             <DropZone ref={provided.innerRef}>
-              <IssueInnerList issues={issues} />
+              <InnerIssueList issues={issues} />
               {provided.placeholder}
             </DropZone>
           </div>
@@ -186,9 +241,9 @@ function IssueColumn({
     <Draggable draggableId={title} index={index}>
       {(provided: DraggableProvided): JSX.Element => (
         <ContainerColumn ref={provided.innerRef} {...provided.draggableProps}>
-          <ContainerColumnHeader>
-            <H4 {...provided.dragHandleProps}>{title}</H4>
-          </ContainerColumnHeader>
+          <Header>
+            <Title {...provided.dragHandleProps}>{title}</Title>
+          </Header>
           <IssueList listId={title} issues={issues} />
         </ContainerColumn>
       )}
@@ -211,6 +266,7 @@ function IssueBoard({
       droppableId="board"
       type="COLUMN"
       direction="horizontal"
+      ignoreContainerClipping={false}
       isCombineEnabled={false}
     >
       {(provided: DroppableProvided): JSX.Element => (
@@ -227,13 +283,19 @@ function IssueBoard({
 
 function Issues(): JSX.Element {
   const initialData = {
-    bmo: [
+    "Back Log": [
+      {
+        id: "10",
+        content: "Sometimes life is scary and dark",
+      },
+    ],
+    "To Do": [
       {
         id: "1",
         content: "Sometimes life is scary and dark",
       },
     ],
-    finn: [
+    "In Progress": [
       {
         id: "4",
         content: "Is that where creativity comes from? From sad biz?",
@@ -252,7 +314,7 @@ function Issues(): JSX.Element {
         content: "Don't you always call sweatpants 'give up on life pants,' Jake?",
       },
     ],
-    princess: [
+    "For Review": [
       {
         id: "6",
         content: "Responsibility demands sacrifice",
@@ -262,7 +324,7 @@ function Issues(): JSX.Element {
         content: "That's it! The answer was so simple, I was too smart to see it!",
       },
     ],
-    jake: [
+    "For Release": [
       {
         id: "2",
         content:

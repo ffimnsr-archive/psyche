@@ -17,7 +17,7 @@ import { Formik, Form, FieldArray, FieldArrayRenderProps } from "formik";
 import * as Yup from "yup";
 
 const CheckboxContainer = styled.td`
-  & > label.bp3-control.bp3-disabled {
+  & > label.${Classes.CONTROL}.${Classes.DISABLED} {
     margin-bottom: 0;
     cursor: pointer;
     color: #182026;
@@ -46,7 +46,11 @@ const defaultDialogOptions = {
   usePortal: true,
 };
 
-function WorkPreference({ data }: any): JSX.Element {
+function WorkPreference({
+  data,
+}: {
+  data: { wf: { id: string; name: string }[] };
+}): JSX.Element {
   const title = "Work Preference";
   const [isOpen, setIsOpen] = useState(false);
   const workFunctionsDisabled = data.wf.map(
@@ -109,7 +113,7 @@ function WorkPreference({ data }: any): JSX.Element {
                 >
                   <FieldArray
                     name="workPreferences"
-                    render={(arrayHelpers: FieldArrayRenderProps): JSX.Element =>
+                    render={(arrayHelpers: FieldArrayRenderProps): JSX.Element[] =>
                       data.wf.map(
                         ({ id, name }: { id: string; name: string }, index: number) => (
                           <Checkbox

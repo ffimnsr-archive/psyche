@@ -72,20 +72,20 @@ function AuthRoute({
 }: AuthRouteProps): JSX.Element {
   const { data } = useQuery(IS_AUTHENTICATED_QUERY);
 
-  const createOnNotNil = (props: any): JSX.Element | null =>
+  const createOnNotNil = <T,>(props: RouteComponentProps<T>): React.ReactNode =>
     !_.isUndefined(component) ? React.createElement(component, props) : null;
 
   return no ? (
     <Route
       {...otherProps}
-      render={(props: RouteComponentProps<any>): React.ReactNode =>
+      render={<T,>(props: RouteComponentProps<T>): React.ReactNode =>
         !data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/" />
       }
     />
   ) : (
     <Route
       {...otherProps}
-      render={(props: RouteComponentProps<any>): React.ReactNode =>
+      render={<T,>(props: RouteComponentProps<T>): React.ReactNode =>
         data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/sign_in" />
       }
     />

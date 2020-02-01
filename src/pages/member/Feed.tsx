@@ -3,7 +3,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Button, Elevation, Colors } from "@blueprintjs/core";
+import { Card, H5, Button, Elevation, Colors, Classes } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -46,7 +46,7 @@ const NewsFeed = styled.div`
   min-width: 600px;
   background-color: ${Colors.WHITE};
 
-  & > div.bp3-card:not(:last-child) {
+  & > div.${Classes.CARD}:not(:last-child) {
     margin-bottom: 10px;
   }
 `;

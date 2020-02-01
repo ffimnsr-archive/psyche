@@ -239,7 +239,7 @@ function SignUpForm({
               />
               <Switch
                 id="optinMarketing"
-                label="Opt-in to notifications and promotions."
+                label="Opt&hyphen;in to notifications and promotions."
                 onChange={handleChange}
                 onBlur={handleBlur}
                 defaultChecked={false}

@@ -13,6 +13,7 @@ import {
   Intent,
   NonIdealState,
   Colors,
+  Classes,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
@@ -66,11 +67,12 @@ const ContainerProfile = styled.div`
 const ProfilePane = styled.div`
   background-color: ${Colors.WHITE};
 
-  & > div.bp3-card:not(:last-child) {
+  & > div.${Classes.CARD}:not(:last-child) {
     margin-bottom: 10px;
   }
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function camelizeKeys(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.map(v => camelizeKeys(v));

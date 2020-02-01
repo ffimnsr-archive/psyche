@@ -3,7 +3,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Colors } from "@blueprintjs/core";
+import { Colors, Classes } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import {
@@ -64,7 +64,7 @@ const ContainerSettings = styled.div`
 const SettingsPane = styled.div`
   background-color: ${Colors.WHITE};
 
-  & > div.bp3-card {
+  & > div.${Classes.CARD} {
     margin-bottom: 10px;
   }
 `;
