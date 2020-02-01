@@ -8,6 +8,7 @@ import {
   Spinner,
   NonIdealState,
   InputGroup,
+  Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
@@ -58,7 +59,7 @@ const Container = styled.main`
 const ContainerDesign = styled.div`
   flex: 1 1 auto;
   background-size: auto !important;
-  background-color: #434959;
+  background-color: ${Colors.GRAY2};
   background-image: url(${bgPattern});
 `;
 

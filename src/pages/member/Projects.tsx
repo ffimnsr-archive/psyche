@@ -23,11 +23,11 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-function Messages(): JSX.Element {
+function Projects(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Messages</title>
+        <title>Projects</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
@@ -37,4 +37,4 @@ function Messages(): JSX.Element {
   );
 }
 
-export default Messages;
+export default Projects;

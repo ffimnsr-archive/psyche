@@ -10,6 +10,7 @@ import {
   Callout,
   Intent,
   NonIdealState,
+  Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
@@ -50,7 +51,7 @@ const ContainerHome = styled.div`
 `;
 
 const ContainerContent = styled.div`
-  background-color: #fff;
+  background-color: ${Colors.WHITE};
 `;
 
 const ContainerCallout = styled.div`

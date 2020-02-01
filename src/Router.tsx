@@ -48,7 +48,7 @@ const LoadingPlaceholder = (
 const LazyMain = React.lazy(() => import("@/pages/member/Home"));
 const LazyProfile = React.lazy(() => import("@/pages/member/Profile"));
 const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
-const LazyMessages = React.lazy(() => import("@/pages/member/Messages"));
+const LazyProjects = React.lazy(() => import("@/pages/member/Projects"));
 const LazyIssues = React.lazy(() => import("@/pages/member/Issues"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
@@ -115,7 +115,7 @@ export function Router(): JSX.Element {
         <AuthRoute exact path="/" component={LazyMain} />
         <AuthRoute path="/profile" component={LazyProfile} />
         <AuthRoute path="/notifications" component={LazyNotifications} />
-        <AuthRoute path="/messages" component={LazyMessages} />
+        <AuthRoute path="/projects" component={LazyProjects} />
         <AuthRoute path="/issues" component={LazyIssues} />
         <AuthRoute path="/schedules" component={LazySchedules} />
         <AuthRoute path="/settings" component={LazySettings} />

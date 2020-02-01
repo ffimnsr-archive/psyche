@@ -5,7 +5,15 @@ import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Elevation, Spinner, Intent, NonIdealState } from "@blueprintjs/core";
+import {
+  Card,
+  H5,
+  Elevation,
+  Spinner,
+  Intent,
+  NonIdealState,
+  Colors,
+} from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 
@@ -56,7 +64,7 @@ const ContainerProfile = styled.div`
 `;
 
 const ProfilePane = styled.div`
-  background-color: #fff;
+  background-color: ${Colors.WHITE};
 
   & > div.bp3-card:not(:last-child) {
     margin-bottom: 10px;

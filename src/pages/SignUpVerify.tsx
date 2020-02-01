@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Intent, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Intent, NonIdealState, Spinner, Colors } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
 import { useParams } from "react-router-dom";
@@ -31,7 +31,7 @@ const Container = styled.main`
 const ContainerDesign = styled.div`
   flex: 1 1 auto;
   background-size: auto !important;
-  background-color: #434959;
+  background-color: ${Colors.GRAY2};
   background-image: url(${bgPattern});
 `;
 

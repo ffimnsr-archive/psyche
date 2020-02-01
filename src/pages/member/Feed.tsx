@@ -3,7 +3,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Button, Elevation } from "@blueprintjs/core";
+import { Card, H5, Button, Elevation, Colors } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -44,7 +44,7 @@ const ContainerNewsFeed = styled.div`
 
 const NewsFeed = styled.div`
   min-width: 600px;
-  background-color: #fff;
+  background-color: ${Colors.WHITE};
 
   & > div.bp3-card:not(:last-child) {
     margin-bottom: 10px;
@@ -57,7 +57,7 @@ function Feeds(): JSX.Element {
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
-  const feed = data.industries.map(({ id }: any) => (
+  const feed = data.industries.map(({ id }: { id: number }) => (
     <Card key={id} elevation={Elevation.ONE}>
       <H5>{id}</H5>
       <p>Hello</p>
