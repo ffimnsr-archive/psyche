@@ -13,6 +13,8 @@ import {
   InputGroup,
   Spinner,
   NonIdealState,
+  HTMLSelect,
+  TextArea,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik } from "formik";
@@ -38,10 +40,16 @@ const EditButton = styled.a`
   float: right;
 `;
 
+const ModifiedTextArea = styled(TextArea)`
+  resize: vertical;
+  min-height: 100px;
+`;
+
 const AccountUpdateSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+  firstMidName: Yup.string().required("First and middle name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  gender: Yup.string().required("Gender is required"),
+  birthDate: Yup.string().required("Birth date is required"),
 });
 
 const defaultDialogOptions = {
@@ -61,11 +69,10 @@ function AccountUpdateLoading(): JSX.Element {
 }
 
 function AccountUpdateError(): JSX.Element {
-  // TODO: update data
   const description = (
     <div>
-      An email has been sent to. Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      An error occurred while trying to update your account. Kindly try to submit again
+      after several minutes.
     </div>
   );
 
@@ -78,10 +85,19 @@ function AccountUpdateError(): JSX.Element {
   return (
     <NonIdealState
       icon={IconNames.WARNING_SIGN}
-      title="Account Verification Error!"
+      title="Account Update Error!"
       description={description}
       action={action}
     />
+  );
+}
+
+function Row({ title, sub }: { title: string; sub: string }): JSX.Element {
+  return (
+    <tr>
+      <td>{title}</td>
+      <td>{sub}</td>
+    </tr>
   );
 }
 
@@ -115,34 +131,13 @@ function Account({
         </div>
         <ResponsiveTable condensed={true}>
           <tbody>
-            <tr>
-              <td>Social No.</td>
-              <td>{format(socialSecurityNumber)}</td>
-            </tr>
-            <tr>
-              <td>First Name</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Last Name</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Gender</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Birth Date</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Phone Number</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Bio</td>
-              <td></td>
-            </tr>
+            <Row title="Social No." sub={format(socialSecurityNumber)} />
+            <Row title="First &amp; Middle Name" sub={""} />
+            <Row title="Last Name" sub={""} />
+            <Row title="Gender" sub={""} />
+            <Row title="Birth Date" sub={""} />
+            <Row title="Phone Number" sub={""} />
+            <Row title="Bio" sub={""} />
           </tbody>
         </ResponsiveTable>
       </Card>
@@ -155,7 +150,7 @@ function Account({
       >
         <Formik
           initialValues={{
-            firstName: "",
+            firstMidName: "",
             lastName: "",
             gender: "",
             birthDate: "",
@@ -164,14 +159,14 @@ function Account({
           }}
           validationSchema={AccountUpdateSchema}
           onSubmit={(
-            { firstName, lastName, gender, birthDate, phoneNumber, bio },
+            { firstMidName, lastName, gender, birthDate, phoneNumber, bio },
             { setSubmitting },
           ): void => {
             setSubmitting(false);
             accountUpdate({
               variables: {
                 input: {
-                  firstName,
+                  firstMidName,
                   lastName,
                   gender,
                   birthDate,
@@ -191,15 +186,19 @@ function Account({
           }): JSX.Element => (
             <form onSubmit={handleSubmit}>
               <div className={Classes.DIALOG_BODY}>
-                <FormGroup label="First Name" labelFor="firstName" labelInfo="(required)">
+                <FormGroup
+                  label="First &amp; Middle Name"
+                  labelFor="firstMidName"
+                  labelInfo="(required)"
+                >
                   <InputGroup
-                    id="firstName"
-                    name="firstName"
+                    id="firstMidName"
+                    name="firstMidName"
                     placeholder="Enter your first name..."
                     large={true}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.firstName}
+                    value={values.firstMidName}
                     type="text"
                   />
                 </FormGroup>
@@ -215,16 +214,20 @@ function Account({
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup label="Gender" labelFor="gender">
-                  <InputGroup
+                <FormGroup label="Gender" labelFor="gender" labelInfo="(required)">
+                  <HTMLSelect
                     id="gender"
                     name="gender"
-                    placeholder="Enter your gender..."
                     large={true}
+                    fill={true}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.gender}
-                    type="text"
+                    options={[
+                      { label: "Unknown", value: "unknown" },
+                      { label: "Male", value: "male" },
+                      { label: "Female", value: "female" },
+                    ]}
                   />
                 </FormGroup>
                 <FormGroup label="Birth Date" labelFor="birthDate" labelInfo="(required)">
@@ -251,16 +254,17 @@ function Account({
                     type="text"
                   />
                 </FormGroup>
-                <FormGroup label="Bio" labelFor="bio">
-                  <InputGroup
+                <FormGroup label="Tell us more about you?" labelFor="bio">
+                  <ModifiedTextArea
                     id="bio"
                     name="bio"
                     placeholder="Enter your bio..."
                     large={true}
+                    fill={true}
+                    growVertically={true}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.bio}
-                    type="text"
                   />
                 </FormGroup>
               </div>

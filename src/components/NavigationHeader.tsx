@@ -33,7 +33,13 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
         icon={IconNames.PERSON}
         text="My Profile"
       />
-      <MenuItem icon={IconNames.GRAPH} text="Projects" />
+      <MenuItem
+        onClick={(): void => {
+          history.push("/projects");
+        }}
+        icon={IconNames.GRAPH}
+        text="Projects"
+      />
       <MenuDivider />
       <MenuItem
         onClick={(): void => {
@@ -50,7 +56,7 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
           history.replace("/");
         }}
         icon={IconNames.LOG_OUT}
-        text="Logout"
+        text="Sign out"
       />
     </Menu>
   );

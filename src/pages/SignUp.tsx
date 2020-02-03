@@ -33,7 +33,7 @@ const SIGNUP_MUTATION = gql`
 `;
 
 const Container = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -239,7 +239,7 @@ function SignUpForm({
               />
               <Switch
                 id="optinMarketing"
-                label="Opt&hyphen;in to notifications and promotions."
+                label="Opt&#8208;in to notifications and promotions."
                 onChange={handleChange}
                 onBlur={handleBlur}
                 defaultChecked={false}

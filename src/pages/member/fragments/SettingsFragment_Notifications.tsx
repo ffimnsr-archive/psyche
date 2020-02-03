@@ -5,17 +5,33 @@ import {
   Elevation,
   H5,
   Dialog,
-  HTMLTable,
+  UL,
   Classes,
   Button,
   Intent,
+  Checkbox,
+  Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-const ResponsiveTable = styled(HTMLTable)`
-  width: 100%;
+const CheckboxContainer = styled.div`
+  & > label.${Classes.CONTROL}.${Classes.DISABLED} {
+    margin-bottom: 0;
+    cursor: pointer;
+    color: #182026;
+  }
+`;
+
+const ResponsiveList = styled(UL)`
+  column-count: 2;
+  margin-top: 0;
+  padding-left: 11px;
+
+  & > li {
+    list-style-type: none;
+  }
 `;
 
 const EditButton = styled.a`
@@ -54,13 +70,36 @@ function Notifications(): JSX.Element {
             EDIT
           </EditButton>
         </div>
-        <ResponsiveTable condensed={true}>
-          <tbody>
-            <tr>
-              <td></td>
-            </tr>
-          </tbody>
-        </ResponsiveTable>
+        <Divider />
+        <ResponsiveList>
+          <li>
+            <CheckboxContainer>
+              <Checkbox
+                label="Opt&#8208;in anonymous usage statistics"
+                defaultIndeterminate={false}
+                disabled={true}
+              />
+            </CheckboxContainer>
+          </li>
+          <li>
+            <CheckboxContainer>
+              <Checkbox
+                label="Opt&#8208;in marketing and promotions"
+                defaultIndeterminate={false}
+                disabled={true}
+              />
+            </CheckboxContainer>
+          </li>
+          <li>
+            <CheckboxContainer>
+              <Checkbox
+                label="Enable experimental features"
+                defaultIndeterminate={false}
+                disabled={true}
+              />
+            </CheckboxContainer>
+          </li>
+        </ResponsiveList>
       </Card>
       <Dialog
         icon={IconNames.INFO_SIGN}

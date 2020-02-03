@@ -6,7 +6,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 
 const Container = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

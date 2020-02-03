@@ -3,7 +3,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Colors, Classes } from "@blueprintjs/core";
+import { Colors, Classes, Spinner } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import {
@@ -36,7 +36,7 @@ const SETTINGS_QUERY = gql`
 `;
 
 const Container = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -59,6 +59,8 @@ const ContainerSettings = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-x: none;
+  overflow-y: none;
 `;
 
 const SettingsPane = styled.div`
@@ -69,11 +71,15 @@ const SettingsPane = styled.div`
   }
 `;
 
+function SettingsLoading(): JSX.Element {
+  return <Spinner size={Spinner.SIZE_LARGE} />;
+}
+
 function SettingsContent(): JSX.Element {
   const { loading, error, data } = useQuery(SETTINGS_QUERY);
 
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+  if (loading) return <SettingsLoading />;
+  if (error) return <SettingsLoading />;
 
   return (
     <SettingsPane>

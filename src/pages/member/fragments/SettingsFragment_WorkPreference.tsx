@@ -6,17 +6,18 @@ import {
   H5,
   Dialog,
   Classes,
-  HTMLTable,
+  UL,
   Button,
   Intent,
   Checkbox,
   FormGroup,
+  Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form, FieldArray, FieldArrayRenderProps } from "formik";
 import * as Yup from "yup";
 
-const CheckboxContainer = styled.td`
+const CheckboxContainer = styled.div`
   & > label.${Classes.CONTROL}.${Classes.DISABLED} {
     margin-bottom: 0;
     cursor: pointer;
@@ -24,8 +25,14 @@ const CheckboxContainer = styled.td`
   }
 `;
 
-const ResponsiveTable = styled(HTMLTable)`
-  width: 100%;
+const ResponsiveList = styled(UL)`
+  column-count: 2;
+  margin-top: 0;
+  padding-left: 11px;
+
+  & > li {
+    list-style-type: none;
+  }
 `;
 
 const EditButton = styled.a`
@@ -55,11 +62,11 @@ function WorkPreference({
   const [isOpen, setIsOpen] = useState(false);
   const workFunctionsDisabled = data.wf.map(
     ({ id, name }: { id: string; name: string }) => (
-      <tr key={id}>
+      <li key={id}>
         <CheckboxContainer>
           <Checkbox label={name} defaultIndeterminate={false} disabled={true} />
         </CheckboxContainer>
-      </tr>
+      </li>
     ),
   );
 
@@ -82,9 +89,8 @@ function WorkPreference({
             EDIT
           </EditButton>
         </div>
-        <ResponsiveTable condensed={true}>
-          <tbody>{workFunctionsDisabled}</tbody>
-        </ResponsiveTable>
+        <Divider />
+        <ResponsiveList>{workFunctionsDisabled}</ResponsiveList>
       </Card>
       <Dialog
         icon={IconNames.INFO_SIGN}

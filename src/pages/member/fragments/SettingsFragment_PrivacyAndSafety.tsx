@@ -9,6 +9,9 @@ import {
   Classes,
   Button,
   Intent,
+  AnchorButton,
+  Tag,
+  Tooltip,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form } from "formik";
@@ -18,8 +21,10 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-const EditButton = styled.a`
-  float: right;
+const RowContainer = styled.tr`
+  & > td {
+    vertical-align: middle !important;
+  }
 `;
 
 const defaultDialogOptions = {
@@ -36,29 +41,77 @@ const PrivacyAndSafetyUpdateSchema = Yup.object().shape({
     .required("Work preference is required"),
 });
 
+function Row({
+  title,
+  sub,
+  action,
+}: {
+  title: string;
+  sub?: JSX.Element | string;
+  action?: JSX.Element;
+}): JSX.Element {
+  return (
+    <RowContainer>
+      <td>{title}</td>
+      <td>{sub}</td>
+      <td>{action}</td>
+    </RowContainer>
+  );
+}
+
 function PrivacyAndSafety(): JSX.Element {
-  const title = "Privacy and Safety";
+  const title = "Privacy & Safety";
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <Card elevation={Elevation.ONE}>
         <div className="clearfixr" style={{ marginBottom: "10px" }}>
           <H5 style={{ display: "inline" }}>{title}</H5>
-          <EditButton
-            href="#"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
-              e.preventDefault();
-              setIsOpen(true);
-            }}
-          >
-            EDIT
-          </EditButton>
         </div>
         <ResponsiveTable condensed={true}>
           <tbody>
-            <tr>
-              <td></td>
-            </tr>
+            <Row
+              title="Support PIN"
+              sub={
+                <Tooltip content={"Your support PIN is: 000000"}>
+                  <Tag minimal={true} interactive={true}>
+                    Hover To View
+                  </Tag>
+                </Tooltip>
+              }
+              action={<AnchorButton href="#" text="Reset" minimal={true} />}
+            />
+            <Row
+              title="Password"
+              sub={
+                <Tag minimal={true} interactive={true} intent={Intent.SUCCESS}>
+                  Secured
+                </Tag>
+              }
+              action={<AnchorButton href="#" text="Change" minimal={true} />}
+            />
+            <Row
+              title="Security Questions"
+              sub={
+                <Tag minimal={true} interactive={true}>
+                  Not Yet Available
+                </Tag>
+              }
+              action={
+                <AnchorButton href="#" text="Setup" minimal={true} disabled={true} />
+              }
+            />
+            <Row
+              title="Multi-factor Authentication"
+              sub={
+                <Tag minimal={true} interactive={true}>
+                  Not Yet Available
+                </Tag>
+              }
+              action={
+                <AnchorButton href="#" text="Setup" minimal={true} disabled={true} />
+              }
+            />
           </tbody>
         </ResponsiveTable>
       </Card>

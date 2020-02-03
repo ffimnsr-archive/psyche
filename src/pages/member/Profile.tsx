@@ -3,9 +3,22 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Card, H5, Elevation, Colors, Classes } from "@blueprintjs/core";
+import {
+  Card,
+  H5,
+  H1,
+  Elevation,
+  Colors,
+  Classes,
+  Text,
+  Tag,
+  Intent,
+  HTMLTable,
+} from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
+import { HapButton } from "@/components/HapButton";
 
 const PROFILE_QUERY = gql`
   query {
@@ -16,7 +29,7 @@ const PROFILE_QUERY = gql`
 `;
 
 const Container = styled.main`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -41,12 +54,46 @@ const ContainerProfile = styled.div`
   justify-content: flex-center;
 `;
 
+const ContainerTag = styled.div`
+  margin-bottom: 10px;
+
+  & > :first-child {
+    margin-right: 10px;
+  }
+`;
+
+const ContainerBio = styled.div`
+  max-width: 500px;
+`;
+
+const ContainerButton = styled.div`
+  margin: 10px 0;
+
+  & > :first-child {
+    margin-right: 10px;
+  }
+`;
+
 const ProfilePane = styled.div`
   background-color: ${Colors.WHITE};
 
   & > div.${Classes.CARD}:not(:last-child) {
     margin-bottom: 10px;
   }
+`;
+
+const Table = styled.table`
+  padding: 10px 60px 30px 60px;
+  width: 100%;
+
+  & > tbody > tr > td:first-child {
+    width: 30%;
+    text-align: center;
+  }
+`;
+
+const ImageAvatar = styled.img`
+  border-radius: 50%;
 `;
 
 function ProfileContent(): JSX.Element {
@@ -57,16 +104,70 @@ function ProfileContent(): JSX.Element {
 
   return (
     <ProfilePane>
+      <Table>
+        <tbody>
+          <tr>
+            <td>
+              <ImageAvatar src="https://via.placeholder.com/200" alt="avatar" />
+            </td>
+            <td>
+              <H1>Full Name</H1>
+              <ContainerTag>
+                <Tag
+                  icon={IconNames.ENDORSED}
+                  large={true}
+                  minimal={true}
+                  intent={Intent.SUCCESS}
+                >
+                  Public ID
+                </Tag>
+                <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
+                  Location
+                </Tag>
+              </ContainerTag>
+              <ContainerBio>
+                <Text ellipsize={true}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla
+                  erat quis molestie convallis. Cras elementum nunc a tellus dictum, sed
+                  porttitor nibh ultrices. Curabitur dolor mauris, mollis quis hendrerit
+                  eget, tincidunt sit amet eros. Sed cursus non felis non mollis. In
+                  fermentum leo eu luctus accumsan. Nulla in commodo enim, in vehicula
+                  massa. Suspendisse nibh neque, hendrerit fermentum nunc a, pretium
+                  vehicula sem. In egestas dapibus odio. Etiam at posuere lacus. Quisque
+                  ornare lacinia elit ac aliquet. Suspendisse eu cursus libero. Donec
+                  vitae ante pellentesque, commodo dui commodo, fringilla ex. Vivamus
+                  dictum dolor fermentum, fringilla nunc sed, gravida erat.
+                </Text>
+              </ContainerBio>
+              <ContainerButton>
+                <HapButton
+                  to="/settings"
+                  icon={IconNames.SHARE}
+                  text="Shareable Link"
+                  large={true}
+                  intent={Intent.PRIMARY}
+                />
+                <HapButton
+                  to="/settings"
+                  icon={IconNames.EDIT}
+                  text="Edit Profile"
+                  large={true}
+                />
+              </ContainerButton>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
       <Card elevation={Elevation.ONE}>
-        <img src="https://via.placeholder.com/200" />
-        Full Name Public ID
-      </Card>
-      <Card elevation={Elevation.ONE}>
-        <H5>Hello</H5>
+        <H5>Work Experiences</H5>
         <p>Hello</p>
       </Card>
       <Card elevation={Elevation.ONE}>
-        <H5>Hello</H5>
+        <H5>Work Functions</H5>
+        <p>Hello</p>
+      </Card>
+      <Card elevation={Elevation.ONE}>
+        <H5>Issues Resolved</H5>
         <p>Hello</p>
       </Card>
     </ProfilePane>
