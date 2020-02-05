@@ -14,6 +14,7 @@ import {
   Tag,
   Intent,
   HTMLTable,
+  Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
@@ -24,6 +25,7 @@ const PROFILE_QUERY = gql`
   query {
     memberMyProfile {
       id
+      publicId
     }
   }
 `;
@@ -74,12 +76,20 @@ const ContainerButton = styled.div`
   }
 `;
 
+const CustomDivider = styled(Divider)`
+  margin: 5px 0;
+`;
+
 const ProfilePane = styled.div`
   background-color: ${Colors.WHITE};
 
   & > div.${Classes.CARD}:not(:last-child) {
     margin-bottom: 10px;
   }
+`;
+
+const ResponsiveTable = styled(HTMLTable)`
+  width: 100%;
 `;
 
 const Table = styled.table`
@@ -97,10 +107,13 @@ const ImageAvatar = styled.img`
 `;
 
 function ProfileContent(): JSX.Element {
-  const { loading, error } = useQuery(PROFILE_QUERY);
+  const { loading, error, data } = useQuery(PROFILE_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
+
+  const { publicId } =
+    data && data.memberMyProfile ? data.memberMyProfile : { publicId: "" };
 
   return (
     <ProfilePane>
@@ -119,7 +132,7 @@ function ProfileContent(): JSX.Element {
                   minimal={true}
                   intent={Intent.SUCCESS}
                 >
-                  Public ID
+                  {publicId}
                 </Tag>
                 <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
                   Location
@@ -141,7 +154,7 @@ function ProfileContent(): JSX.Element {
               </ContainerBio>
               <ContainerButton>
                 <HapButton
-                  to="/settings"
+                  to={`/u/share/${publicId}`}
                   icon={IconNames.SHARE}
                   text="Shareable Link"
                   large={true}
@@ -159,16 +172,37 @@ function ProfileContent(): JSX.Element {
         </tbody>
       </Table>
       <Card elevation={Elevation.ONE}>
-        <H5>Work Experiences</H5>
+        <div className="clearfixr" style={{ marginBottom: "10px" }}>
+          <H5 style={{ display: "inline" }}>Work Experiences</H5>
+        </div>
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            <tr>
+              <td>Hello</td>
+              <td>Hello</td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
+      <Card elevation={Elevation.ONE}>
+        <div className="clearfixr" style={{ marginBottom: "10px" }}>
+          <H5 style={{ display: "inline" }}>Work Functions</H5>
+        </div>
+        <CustomDivider />
         <p>Hello</p>
       </Card>
       <Card elevation={Elevation.ONE}>
-        <H5>Work Functions</H5>
-        <p>Hello</p>
-      </Card>
-      <Card elevation={Elevation.ONE}>
-        <H5>Issues Resolved</H5>
-        <p>Hello</p>
+        <div className="clearfixr" style={{ marginBottom: "10px" }}>
+          <H5 style={{ display: "inline" }}>Issues Resolved</H5>
+        </div>
+        <ResponsiveTable condensed={true}>
+          <tbody>
+            <tr>
+              <td>Hello</td>
+              <td>Hello</td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
       </Card>
     </ProfilePane>
   );

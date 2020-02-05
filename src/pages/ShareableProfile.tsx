@@ -8,12 +8,17 @@ import { useQuery } from "react-apollo";
 import {
   Card,
   H5,
+  H1,
   Elevation,
   Spinner,
   Intent,
   NonIdealState,
   Colors,
   Classes,
+  Tag,
+  Text,
+  HTMLTable,
+  Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
@@ -62,6 +67,40 @@ const ContainerProfile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-center;
+`;
+
+const ContainerTag = styled.div`
+  margin-bottom: 10px;
+
+  & > :first-child {
+    margin-right: 10px;
+  }
+`;
+
+const ContainerBio = styled.div`
+  max-width: 500px;
+`;
+
+const ResponsiveTable = styled(HTMLTable)`
+  width: 100%;
+`;
+
+const Table = styled.table`
+  padding: 10px 60px 30px 60px;
+  width: 100%;
+
+  & > tbody > tr > td:first-child {
+    width: 30%;
+    text-align: center;
+  }
+`;
+
+const ImageAvatar = styled.img`
+  border-radius: 50%;
+`;
+
+const CustomDivider = styled(Divider)`
+  margin: 5px 0;
 `;
 
 const ProfilePane = styled.div`
@@ -131,10 +170,15 @@ function ShareableProfile(): JSX.Element {
   if (loading) return <ShareableProfileLoading />;
   if (error) return <ShareableProfileError />;
 
-  if (_.isNil(data.requestProfile)) return <ShareableProfileError />;
+  if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
+    return <ShareableProfileError />;
 
   const { profile } = data.requestProfile;
-  const formattedProfile = camelizeKeys(profile);
+  const cleanData = camelizeKeys(profile);
+
+  console.log(cleanData);
+
+  const { publicId } = cleanData;
 
   return (
     <Container>
@@ -144,15 +188,82 @@ function ShareableProfile(): JSX.Element {
       <ContainerMain>
         <ContainerProfile>
           <ProfilePane>
+            <Table>
+              <tbody>
+                <tr>
+                  <td>
+                    <ImageAvatar src="https://via.placeholder.com/200" alt="avatar" />
+                  </td>
+                  <td>
+                    <div style={{ float: "right" }}>Hello</div>
+                    <div>
+                      <H1>Full Name</H1>
+                      <ContainerTag>
+                        <Tag
+                          icon={IconNames.ENDORSED}
+                          large={true}
+                          minimal={true}
+                          intent={Intent.SUCCESS}
+                        >
+                          {publicId}
+                        </Tag>
+                        <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
+                          Location
+                        </Tag>
+                      </ContainerTag>
+                      <ContainerBio>
+                        <Text ellipsize={true}>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                          fringilla erat quis molestie convallis. Cras elementum nunc a
+                          tellus dictum, sed porttitor nibh ultrices. Curabitur dolor
+                          mauris, mollis quis hendrerit eget, tincidunt sit amet eros. Sed
+                          cursus non felis non mollis. In fermentum leo eu luctus
+                          accumsan. Nulla in commodo enim, in vehicula massa. Suspendisse
+                          nibh neque, hendrerit fermentum nunc a, pretium vehicula sem. In
+                          egestas dapibus odio. Etiam at posuere lacus. Quisque ornare
+                          lacinia elit ac aliquet. Suspendisse eu cursus libero. Donec
+                          vitae ante pellentesque, commodo dui commodo, fringilla ex.
+                          Vivamus dictum dolor fermentum, fringilla nunc sed, gravida
+                          erat.
+                        </Text>
+                      </ContainerBio>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
             <Card elevation={Elevation.ONE}>
-              <img src="https://via.placeholder.com/200" />
-              Full Name
-              {formattedProfile.socialSecurityNumber}
-              {formattedProfile.email}
+              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+                <H5 style={{ display: "inline" }}>Work Experiences</H5>
+              </div>
+              <ResponsiveTable condensed={true}>
+                <tbody>
+                  <tr>
+                    <td>Hello</td>
+                    <td>Hello</td>
+                  </tr>
+                </tbody>
+              </ResponsiveTable>
             </Card>
             <Card elevation={Elevation.ONE}>
-              <H5>Work Experience</H5>
+              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+                <H5 style={{ display: "inline" }}>Work Functions</H5>
+              </div>
+              <CustomDivider />
               <p>Hello</p>
+            </Card>
+            <Card elevation={Elevation.ONE}>
+              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+                <H5 style={{ display: "inline" }}>Issues Resolved</H5>
+              </div>
+              <ResponsiveTable condensed={true}>
+                <tbody>
+                  <tr>
+                    <td>Hello</td>
+                    <td>Hello</td>
+                  </tr>
+                </tbody>
+              </ResponsiveTable>
             </Card>
           </ProfilePane>
         </ContainerProfile>

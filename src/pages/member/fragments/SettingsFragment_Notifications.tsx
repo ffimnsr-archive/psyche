@@ -34,6 +34,10 @@ const ResponsiveList = styled(UL)`
   }
 `;
 
+const CustomDivider = styled(Divider)`
+  margin: 5px 0;
+`;
+
 const EditButton = styled.a`
   float: right;
 `;
@@ -70,7 +74,7 @@ function Notifications(): JSX.Element {
             EDIT
           </EditButton>
         </div>
-        <Divider />
+        <CustomDivider />
         <ResponsiveList>
           <li>
             <CheckboxContainer>
