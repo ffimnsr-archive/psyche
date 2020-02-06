@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-// import { Card, H5, Button, Elevation } from "@blueprintjs/core";
+import { HTMLTable, H5 } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -23,6 +23,48 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
+const ContainerProjects = styled.div`
+  flex: 1 1 auto;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-center;
+`;
+
+const ResponsiveTable = styled(HTMLTable)`
+  width: 100%;
+`;
+
+function JoinedProjects(): JSX.Element {
+  return (
+    <>
+      <H5>Joined Projects</H5>
+      <ResponsiveTable condensed={true} bordered={true} interactive={true} striped={true}>
+        <tbody>
+          <tr>
+            <td>Hello</td>
+          </tr>
+        </tbody>
+      </ResponsiveTable>
+    </>
+  );
+}
+
+function MyProjects(): JSX.Element {
+  return (
+    <>
+      <H5>My Projects</H5>
+      <ResponsiveTable condensed={true} bordered={true} interactive={true} striped={true}>
+        <tbody>
+          <tr>
+            <td>Hello</td>
+          </tr>
+        </tbody>
+      </ResponsiveTable>
+    </>
+  );
+}
+
 function Projects(): JSX.Element {
   return (
     <Container>
@@ -32,6 +74,10 @@ function Projects(): JSX.Element {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
+        <ContainerProjects>
+          <JoinedProjects />
+          <MyProjects />
+        </ContainerProjects>
       </ContainerMain>
     </Container>
   );

@@ -55,6 +55,7 @@ const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
 const LazySignIn = React.lazy(() => import("@/pages/SignIn"));
 const LazySignUp = React.lazy(() => import("@/pages/SignUp"));
 const LazySignUpVerify = React.lazy(() => import("@/pages/SignUpVerify"));
+const LazySignUpResend = React.lazy(() => import("@/pages/SignUpResend"));
 const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
 const LazyRecoverAccountVerify = React.lazy(() => import("@/pages/RecoverAccountVerify"));
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
@@ -97,10 +98,9 @@ export function Router(): JSX.Element {
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
         <AuthRoute no={true} path="/sign_in" component={LazySignIn} />
-        <AuthRoute no={true} path="/oauth/success" component={LazySignIn} />
-        <AuthRoute no={true} path="/oauth/error" component={LazySignIn} />
         <AuthRoute no={true} exact path="/sign_up" component={LazySignUp} />
         <AuthRoute no={true} path="/sign_up/verify/:code" component={LazySignUpVerify} />
+        <AuthRoute no={true} path="/sign_up/resend" component={LazySignUpResend} />
         <AuthRoute
           no={true}
           exact

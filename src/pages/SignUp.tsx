@@ -261,6 +261,8 @@ function SignUpForm({
       <ContainerOptions>
         <Link to="/sign_in">Already have an account?</Link>
         <br />
+        <Link to="/sign_up/resend">Didn&apos;t get your verification code?</Link>
+        <br />
         <Link to="/recover_account">Forgot your password?</Link>
       </ContainerOptions>
     </>

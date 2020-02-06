@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { render as Render } from "react-dom";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloClient } from "apollo-client";
@@ -12,8 +13,9 @@ import { App } from "@/App";
 import { resolvers } from "@/resolvers";
 import "@/assets/styles/main.scss";
 
-const ENDPOINT_URI = "http://localhost:4000/api";
+const ENDPOINT_URI = process.env.REACT_APP_REST_URI || "http://localhost:4000/api";
 const GRAPH_URI = process.env.REACT_APP_GRAPH_URI || "http://localhost:4000/graphql";
+const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
 
 const cache = new InMemoryCache();
 
@@ -67,10 +69,12 @@ function render(): void {
   );
 }
 
-render();
+if (_.includes(WHITELIST_DOMAINS, window.location.hostname)) {
+  render();
 
-if (module.hot) {
-  module.hot.accept("@/App", () => {
-    render();
-  });
+  if (module.hot) {
+    module.hot.accept("@/App", () => {
+      render();
+    });
+  }
 }

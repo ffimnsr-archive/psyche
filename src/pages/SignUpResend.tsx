@@ -19,10 +19,10 @@ import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
-const RECOVER_ACCOUNT_MUTATION = gql`
-  mutation recoverAccount($input: RecoverAccountInput!) {
-    recoverAccount(input: $input)
-      @rest(type: "RecoverAccount", method: "POST", path: "/recover_account") {
+const SIGNUP_RESEND_MUTATION = gql`
+  mutation signUpResend($input: SignUpResendInput!) {
+    signUpResend(input: $input)
+      @rest(type: "SignUpResend", method: "POST", path: "/sign_up/resend") {
       success
     }
   }
@@ -66,17 +66,18 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-const RecoverAccountSchema = Yup.object().shape({
+const SignUpResendSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
     .required("Email is required"),
 });
 
-function RecoverAccountNonTrivialResponse({ email }: { email: string }): JSX.Element {
+function SignUpResendNonTrivialResponse({ email }: { email: string }): JSX.Element {
   const description = (
     <div>
-      An email has been sent to <b>{email}</b>. Please check your inbox for a recovery
-      email, else you may not receive it if the email is not registered on this platform.
+      An email has been sent to <b>{email}</b>. Please check your inbox for an account
+      verification email, else you may not receive it if the email is not registered with
+      platform. Follow the instructions inside the email to activate your account.
     </div>
   );
 
@@ -96,28 +97,26 @@ function RecoverAccountNonTrivialResponse({ email }: { email: string }): JSX.Ele
   );
 }
 
-function RecoverAccountLoading(): JSX.Element {
+function SignUpResendLoading(): JSX.Element {
   return <Spinner size={Spinner.SIZE_LARGE} />;
 }
 
-function RecoverAccountForm(): JSX.Element {
+function SignUpResendForm(): JSX.Element {
   const [capturedEmail, setCapturedEmail] = useState("undefined");
-  const [recoverAccount, { loading, error, data }] = useMutation(
-    RECOVER_ACCOUNT_MUTATION,
-  );
+  const [recoverAccount, { loading, error, data }] = useMutation(SIGNUP_RESEND_MUTATION);
 
-  if (loading) return <RecoverAccountLoading />;
-  if (error) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  if (loading) return <SignUpResendLoading />;
+  if (error) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
 
   const { success } = !_.isNil(data) ? data.recoverAccount : { success: false };
 
-  if (success) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  if (success) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
 
   return (
     <>
       <Formik
         initialValues={{ email: "" }}
-        validationSchema={RecoverAccountSchema}
+        validationSchema={SignUpResendSchema}
         onSubmit={({ email }, { setSubmitting }): void => {
           setSubmitting(false);
           setCapturedEmail(email);
@@ -156,7 +155,7 @@ function RecoverAccountForm(): JSX.Element {
                 disabled={isSubmitting}
                 type="submit"
               >
-                Recover Account
+                Resend Verification Code
               </Button>
             </FormGroup>
           </form>
@@ -169,17 +168,17 @@ function RecoverAccountForm(): JSX.Element {
   );
 }
 
-function RecoverAccount(): JSX.Element {
+function SignUpResend(): JSX.Element {
   return (
     <Container>
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerForm>
-          <RecoverAccountForm />
+          <SignUpResendForm />
         </ContainerForm>
       </ContainerSidePane>
     </Container>
   );
 }
 
-export default RecoverAccount;
+export default SignUpResend;

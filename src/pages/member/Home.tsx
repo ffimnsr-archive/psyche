@@ -58,7 +58,7 @@ const ContainerCallout = styled.div`
   margin-bottom: 10px;
 `;
 
-function Home(): JSX.Element {
+function ProfileStillEmpty(): JSX.Element {
   const action = (
     <>
       <Button intent={Intent.SUCCESS} fill={true} large={true} text="Join" />
@@ -79,6 +79,30 @@ function Home(): JSX.Element {
   );
 
   return (
+    <ContainerHome>
+      <ContainerCallout>
+        <Callout intent={Intent.WARNING} title="Fill up your profile!">
+          In order to use our services you need to complete your initial private profile.
+          Your profile will not be shared with any of the clients nor other third party
+          services.
+        </Callout>
+      </ContainerCallout>
+      <ContainerContent>
+        <Card elevation={Elevation.ONE}>
+          <NonIdealState
+            icon={IconNames.MOUNTAIN}
+            title="Join Search Pool"
+            description={description}
+            action={action}
+          />
+        </Card>
+      </ContainerContent>
+    </ContainerHome>
+  );
+}
+
+function Home(): JSX.Element {
+  return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
         <title>Home</title>
@@ -86,25 +110,7 @@ function Home(): JSX.Element {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ContainerHome>
-          <ContainerCallout>
-            <Callout intent={Intent.WARNING} title="Fill up your profile!">
-              In order to use our services you need to complete your initial private
-              profile. Your profile will not be shared with any of the clients nor other
-              third party services.
-            </Callout>
-          </ContainerCallout>
-          <ContainerContent>
-            <Card elevation={Elevation.ONE}>
-              <NonIdealState
-                icon={IconNames.MOUNTAIN}
-                title="Join Search Pool"
-                description={description}
-                action={action}
-              />
-            </Card>
-          </ContainerContent>
-        </ContainerHome>
+        <ProfileStillEmpty />
       </ContainerMain>
     </Container>
   );

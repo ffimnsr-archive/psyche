@@ -19,8 +19,24 @@ import {
   Text,
   HTMLTable,
   Divider,
+  Button,
+  Popover,
+  Position,
+  Menu,
+  Icon,
+  MenuItem,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
+import {
+  PDFDownloadLink,
+  Document,
+  Page,
+  View,
+  Image,
+  Text as Transcript,
+  StyleSheet,
+} from "@react-pdf/renderer";
+import classNames from "classnames";
 import { HapButton } from "@/components/HapButton";
 
 const REQUEST_PROFILE_QUERY = gql`
@@ -57,7 +73,7 @@ const ContainerMain = styled.div`
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   align-content: stretch;
 `;
 
@@ -67,6 +83,8 @@ const ContainerProfile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-center;
+  max-width: 1000px;
+  width: 960px;
 `;
 
 const ContainerTag = styled.div`
@@ -90,7 +108,7 @@ const Table = styled.table`
   width: 100%;
 
   & > tbody > tr > td:first-child {
-    width: 30%;
+    width: 60%;
     text-align: center;
   }
 `;
@@ -110,6 +128,16 @@ const ProfilePane = styled.div`
     margin-bottom: 10px;
   }
 `;
+
+// Design was mock inside React-PDF REPL
+// https://react-pdf.org/repl
+const PdfStyles = StyleSheet.create({
+  body: {
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 45,
+  },
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function camelizeKeys(obj: any): any {
@@ -161,6 +189,19 @@ function ShareableProfileError(): JSX.Element {
   );
 }
 
+function ProfilePdfDocument(): JSX.Element {
+  return (
+    <Document>
+      <Page size="A4" style={PdfStyles.body}>
+        <View>
+          <Image src="via.placeholder.com/200" />
+          <Transcript>Hello</Transcript>
+        </View>
+      </Page>
+    </Document>
+  );
+}
+
 function ShareableProfile(): JSX.Element {
   const { id } = useParams();
   const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
@@ -174,11 +215,33 @@ function ShareableProfile(): JSX.Element {
     return <ShareableProfileError />;
 
   const { profile } = data.requestProfile;
-  const cleanData = camelizeKeys(profile);
+  const processedProfile = camelizeKeys(profile);
 
-  console.log(cleanData);
+  console.log(processedProfile);
 
-  const { publicId } = cleanData;
+  const { publicId } = processedProfile;
+
+  const shareMenu = (
+    <Menu>
+      <PDFDownloadLink
+        document={<ProfilePdfDocument />}
+        className={classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS)}
+        fileName={`CV-${publicId}.pdf`}
+      >
+        {({ loading }: { loading: boolean }): JSX.Element | string =>
+          loading ? (
+            <Text ellipsize={true}>Generating Document</Text>
+          ) : (
+            <>
+              <Icon icon={IconNames.DOWNLOAD} />
+              <Text>Download PDF</Text>
+            </>
+          )
+        }
+      </PDFDownloadLink>
+      <MenuItem icon={IconNames.SOCIAL_MEDIA} text="Share to Social Media" />
+    </Menu>
+  );
 
   return (
     <Container>
@@ -195,7 +258,11 @@ function ShareableProfile(): JSX.Element {
                     <ImageAvatar src="https://via.placeholder.com/200" alt="avatar" />
                   </td>
                   <td>
-                    <div style={{ float: "right" }}>Hello</div>
+                    <div style={{ float: "right" }}>
+                      <Popover content={shareMenu} position={Position.BOTTOM}>
+                        <Button icon={IconNames.MORE} minimal={true} />
+                      </Popover>
+                    </div>
                     <div>
                       <H1>Full Name</H1>
                       <ContainerTag>
