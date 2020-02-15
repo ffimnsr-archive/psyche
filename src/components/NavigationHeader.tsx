@@ -67,11 +67,10 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
         <NavbarHeading>Open Sesame</NavbarHeading>
         <NavbarDivider />
         <AnchorButton
-          href="/"
+          href="http://docs.se-same.com/"
           text="Docs"
           target="_blank"
           minimal={true}
-          rightIcon={IconNames.SHARE}
         />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>

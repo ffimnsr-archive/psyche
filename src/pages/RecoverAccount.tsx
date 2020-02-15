@@ -13,7 +13,7 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import _ from "lodash";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
@@ -76,7 +76,7 @@ function RecoverAccountNonTrivialResponse({ email }: { email: string }): JSX.Ele
   const description = (
     <div>
       An email has been sent to <b>{email}</b>. Please check your inbox for a recovery
-      email, else you may not receive it if the email is not registered on this platform.
+      email, else you may not receive it if the email is not registered with platform.
     </div>
   );
 
@@ -130,14 +130,8 @@ function RecoverAccountForm(): JSX.Element {
           });
         }}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }): JSX.Element => (
-          <form onSubmit={handleSubmit}>
+        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+          <Form>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
                 id="email"
@@ -159,7 +153,7 @@ function RecoverAccountForm(): JSX.Element {
                 Recover Account
               </Button>
             </FormGroup>
-          </form>
+          </Form>
         )}
       </Formik>
       <ContainerOptions>

@@ -35,7 +35,7 @@ const defaultDialogOptions = {
   usePortal: true,
 };
 
-const PrivacyAndSafetyUpdateSchema = Yup.object().shape({
+const PrivacyAndSafetyUpdatePasswordSchema = Yup.object().shape({
   workPreferences: Yup.array()
     .ensure()
     .required("Work preference is required"),
@@ -61,7 +61,7 @@ function Row({
 
 function PrivacyAndSafety(): JSX.Element {
   const title = "Privacy & Safety";
-  const [isOpen, setIsOpen] = useState(false);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   return (
     <>
       <Card elevation={Elevation.ONE}>
@@ -79,7 +79,7 @@ function PrivacyAndSafety(): JSX.Element {
                   </Tag>
                 </Tooltip>
               }
-              action={<AnchorButton href="#" text="Reset" minimal={true} />}
+              action={<AnchorButton href="#" text="Reroll PIN" minimal={true} />}
             />
             <Row
               title="Password"
@@ -88,7 +88,7 @@ function PrivacyAndSafety(): JSX.Element {
                   Secured
                 </Tag>
               }
-              action={<AnchorButton href="#" text="Change" minimal={true} />}
+              action={<AnchorButton href="#" text="Change Password" minimal={true} />}
             />
             <Row
               title="Security Questions"
@@ -118,20 +118,17 @@ function PrivacyAndSafety(): JSX.Element {
       <Dialog
         icon={IconNames.INFO_SIGN}
         title={title}
-        onClose={(): void => setIsOpen(!isOpen)}
-        isOpen={isOpen}
+        onClose={(): void => setIsChangePasswordOpen(!isChangePasswordOpen)}
+        isOpen={isChangePasswordOpen}
         {...defaultDialogOptions}
       >
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
-            gender: "",
-            birthDate: "",
-            phoneNumber: "",
-            bio: "",
+            oldPassword: "",
+            newPassword: "",
+            confirmNewPassword: "",
           }}
-          validationSchema={PrivacyAndSafetyUpdateSchema}
+          validationSchema={PrivacyAndSafetyUpdatePasswordSchema}
           onSubmit={(_, { setSubmitting }): void => {
             setSubmitting(false);
           }}

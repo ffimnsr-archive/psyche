@@ -20,12 +20,14 @@ import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import { HapButton } from "@/components/HapButton";
+import { generateHash } from "@/utils";
 
 const PROFILE_QUERY = gql`
   query {
     memberMyProfile {
       id
       publicId
+      email
     }
   }
 `;
@@ -112,8 +114,9 @@ function ProfileContent(): JSX.Element {
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
-  const { publicId } =
-    data && data.memberMyProfile ? data.memberMyProfile : { publicId: "" };
+  const { publicId, email } =
+    data && data.memberMyProfile ? data.memberMyProfile : { publicId: "", email: "" };
+  const emailHash = generateHash(email);
 
   return (
     <ProfilePane>
@@ -121,7 +124,10 @@ function ProfileContent(): JSX.Element {
         <tbody>
           <tr>
             <td>
-              <ImageAvatar src="https://via.placeholder.com/200" alt="avatar" />
+              <ImageAvatar
+                src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`}
+                alt="avatar"
+              />
             </td>
             <td>
               <H1>Full Name</H1>

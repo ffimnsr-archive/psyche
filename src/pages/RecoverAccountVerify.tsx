@@ -14,7 +14,7 @@ import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
 import _ from "lodash";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
@@ -156,14 +156,8 @@ function RecoverAccountVerifyForm(): JSX.Element {
           });
         }}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }): JSX.Element => (
-          <form onSubmit={handleSubmit}>
+        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+          <Form>
             <FormGroup label="New Password" labelFor="password">
               <InputGroup
                 id="password"
@@ -196,7 +190,7 @@ function RecoverAccountVerifyForm(): JSX.Element {
                 Change Password
               </Button>
             </FormGroup>
-          </form>
+          </Form>
         )}
       </Formik>
       <ContainerOptions>

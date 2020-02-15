@@ -38,6 +38,7 @@ import {
 } from "@react-pdf/renderer";
 import classNames from "classnames";
 import { HapButton } from "@/components/HapButton";
+import { generateHash } from "@/utils";
 
 const REQUEST_PROFILE_QUERY = gql`
   query($id: String!) {
@@ -194,7 +195,7 @@ function ProfilePdfDocument(): JSX.Element {
     <Document>
       <Page size="A4" style={PdfStyles.body}>
         <View>
-          <Image src="via.placeholder.com/200" />
+          <Image src="https://via.placeholder.com/200" />
           <Transcript>Hello</Transcript>
         </View>
       </Page>
@@ -219,7 +220,8 @@ function ShareableProfile(): JSX.Element {
 
   console.log(processedProfile);
 
-  const { publicId } = processedProfile;
+  const { publicId, email } = processedProfile;
+  const emailHash = generateHash(email);
 
   const shareMenu = (
     <Menu>
@@ -255,7 +257,10 @@ function ShareableProfile(): JSX.Element {
               <tbody>
                 <tr>
                   <td>
-                    <ImageAvatar src="https://via.placeholder.com/200" alt="avatar" />
+                    <ImageAvatar
+                      src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`}
+                      alt="avatar"
+                    />
                   </td>
                   <td>
                     <div style={{ float: "right" }}>

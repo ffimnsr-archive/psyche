@@ -17,7 +17,7 @@ import {
   TextArea,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
@@ -177,14 +177,8 @@ function Account({
             });
           }}
         >
-          {({
-            values,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }): JSX.Element => (
-            <form onSubmit={handleSubmit}>
+          {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+            <Form>
               <div className={Classes.DIALOG_BODY}>
                 <FormGroup
                   label="First &amp; Middle Name"
@@ -224,7 +218,7 @@ function Account({
                     onBlur={handleBlur}
                     value={values.gender}
                     options={[
-                      { label: "Unknown", value: "unknown" },
+                      { label: "Don't Specify", value: "unknown" },
                       { label: "Male", value: "male" },
                       { label: "Female", value: "female" },
                     ]}
@@ -275,7 +269,7 @@ function Account({
                   </Button>
                 </div>
               </div>
-            </form>
+            </Form>
           )}
         </Formik>
       </Dialog>

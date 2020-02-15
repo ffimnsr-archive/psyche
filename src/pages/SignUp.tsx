@@ -15,7 +15,7 @@ import {
   Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
 import _ from "lodash";
@@ -188,14 +188,8 @@ function SignUpForm({
           });
         }}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }): JSX.Element => (
-          <form onSubmit={handleSubmit}>
+        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+          <Form>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
                 id="email"
@@ -255,7 +249,7 @@ function SignUpForm({
                 Sign Up
               </Button>
             </FormGroup>
-          </form>
+          </Form>
         )}
       </Formik>
       <ContainerOptions>

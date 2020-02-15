@@ -76,7 +76,7 @@ export function Sidebar(): JSX.Element {
 
   const moreMenu = (
     <Menu>
-      <MenuItem icon={IconNames.GRAPH} text="Graph" />
+      <MenuItem icon={IconNames.GRAPH} text="Work Statistics" />
     </Menu>
   );
 

@@ -31,11 +31,12 @@ const ContainerMain = styled.div`
   flex-direction: column;
   align-items: stretch;
   align-content: stretch;
+  overflow: hidden;
 `;
 
 const ContainerIssues = styled.div`
   flex: 1 1 auto;
-  margin: 20px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -46,7 +47,9 @@ const ContainerIssues = styled.div`
 const ContainerBoard = styled.div`
   height: 100%;
   width: 100%;
+  padding: 20px;
   display: inline-flex;
+  overflow: auto;
 `;
 
 const ContainerColumn = styled.div`

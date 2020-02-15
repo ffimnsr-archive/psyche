@@ -13,7 +13,7 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import _ from "lodash";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
@@ -129,14 +129,8 @@ function SignUpResendForm(): JSX.Element {
           });
         }}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }): JSX.Element => (
-          <form onSubmit={handleSubmit}>
+        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+          <Form>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
                 id="email"
@@ -158,7 +152,7 @@ function SignUpResendForm(): JSX.Element {
                 Resend Verification Code
               </Button>
             </FormGroup>
-          </form>
+          </Form>
         )}
       </Formik>
       <ContainerOptions>
