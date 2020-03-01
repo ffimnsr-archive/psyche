@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
   Card,
@@ -12,10 +12,31 @@ import {
   Checkbox,
   FormGroup,
   Divider,
+  IToasterProps,
+  IToaster,
+  IToastProps,
+  Position,
+  Toaster,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form, FieldArray, FieldArrayRenderProps } from "formik";
 import * as Yup from "yup";
+import gql from "graphql-tag";
+import { useMutation } from "react-apollo";
+
+const WORK_PREFERENCE_UPDATE_MUTATION = gql`
+  mutation _workPreferenceUpdate($interests: [Int!]!) {
+    syncMyProjectPrefs(interests: $interests) {
+      id
+      email
+      publicId
+      workPreference {
+        interests
+        projectLimit
+      }
+    }
+  }
+`;
 
 const CheckboxContainer = styled.div`
   & > label.${Classes.CONTROL}.${Classes.DISABLED} {
@@ -44,7 +65,7 @@ const EditButton = styled.a`
 `;
 
 const WorkPreferencesUpdateSchema = Yup.object().shape({
-  workPreferences: Yup.array()
+  interests: Yup.array()
     .ensure()
     .required("Work preference is required"),
 });
@@ -57,26 +78,61 @@ const defaultDialogOptions = {
   usePortal: true,
 };
 
+const toasterProps: IToasterProps = {
+  autoFocus: true,
+  canEscapeKeyClear: true,
+  position: Position.TOP,
+};
+
+const toaster: IToaster = Toaster.create(toasterProps);
+
 function WorkPreference({
   data,
 }: {
-  data: { wf: { id: string; name: string }[] };
+  data: {
+    profile: {
+      workPreference?: {
+        interests: number[];
+        projectLimit: number;
+      };
+    };
+    workFunctions: { id: string; name: string }[];
+  };
 }): JSX.Element {
   const title = "Work Preference";
   const [isOpen, setIsOpen] = useState(false);
-  const workFunctionsDisabled = data.wf.map(
+  const [workPreferenceUpdate, { error }] = useMutation(WORK_PREFERENCE_UPDATE_MUTATION);
+
+  useEffect(() => {
+    const toastProps: IToastProps = {
+      intent: Intent.DANGER,
+      timeout: 5000,
+      message:
+        "An error occurred while updating your project preference. \
+          The system already notified the system administrator about the error.",
+    };
+
+    if (error) toaster.show(toastProps);
+  }, [error]);
+
+  const initialValues: { interests: string[] } = {
+    interests: data.profile.workPreference?.interests.map(String) ?? [],
+  };
+
+  const workFunctionsDisabled = data.workFunctions.map(
     ({ id, name }: { id: string; name: string }) => (
       <li key={id}>
         <CheckboxContainer>
-          <Checkbox label={name} defaultIndeterminate={false} disabled={true} />
+          <Checkbox
+            label={name}
+            checked={initialValues.interests.includes(id)}
+            defaultIndeterminate={false}
+            disabled={true}
+          />
         </CheckboxContainer>
       </li>
     ),
   );
-
-  const initialValues: { workPreferences: string[] } = {
-    workPreferences: [],
-  };
 
   return (
     <>
@@ -106,11 +162,14 @@ function WorkPreference({
         <Formik
           initialValues={initialValues}
           validationSchema={WorkPreferencesUpdateSchema}
-          onSubmit={({ workPreferences }, { setSubmitting }): void => {
+          onSubmit={({ interests }, { setSubmitting }): void => {
             setSubmitting(false);
-            setTimeout(() => {
-              console.log(JSON.stringify(workPreferences, null, 2));
-            }, 500);
+            workPreferenceUpdate({
+              variables: {
+                interests: interests.map(Number),
+              },
+            });
+            setIsOpen(false);
           }}
         >
           {({ values, isSubmitting }): JSX.Element => (
@@ -122,19 +181,20 @@ function WorkPreference({
                   labelInfo="(required)"
                 >
                   <FieldArray
-                    name="workPreferences"
+                    name="interests"
                     render={(arrayHelpers: FieldArrayRenderProps): JSX.Element[] =>
-                      data.wf.map(
+                      data.workFunctions.map(
                         ({ id, name }: { id: string; name: string }, index: number) => (
                           <Checkbox
                             key={id}
                             label={name}
-                            name={`wf.${index}`}
+                            name={`workFunctions.${index}`}
+                            checked={values.interests.includes(id)}
                             defaultIndeterminate={false}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                               if (e.target.checked) arrayHelpers.push(id);
                               else {
-                                const idx = values.workPreferences.indexOf(id);
+                                const idx = values.interests.indexOf(id);
                                 arrayHelpers.remove(idx);
                               }
                             }}

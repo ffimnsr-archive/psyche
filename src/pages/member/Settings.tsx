@@ -14,21 +14,29 @@ import {
 } from "@/pages/member/fragments/SettingsFragment";
 
 const SETTINGS_QUERY = gql`
-  query {
-    profile: memberMyProfile {
+  query _settings {
+    profile: myProfile {
       id
       socialSecurityNumber
+      workPreference {
+        interests
+        projectLimit
+      }
+      sitePreference {
+        optInMarketing
+        optInUsageStat
+      }
       clue {
         firstName
         lastName
         gender
         birthDate
         image
-        phoneNumber
         bio
+        phoneNumber
       }
     }
-    wf: memberListWorkFunctions {
+    workFunctions {
       id
       name
     }
@@ -86,7 +94,7 @@ function SettingsContent(): JSX.Element {
       <Account data={data} />
       <WorkPreference data={data} />
       <PrivacyAndSafety />
-      <Notifications />
+      <Notifications data={data} />
     </SettingsPane>
   );
 }

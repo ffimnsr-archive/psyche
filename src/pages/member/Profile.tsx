@@ -23,11 +23,19 @@ import { HapButton } from "@/components/HapButton";
 import { generateHash } from "@/utils";
 
 const PROFILE_QUERY = gql`
-  query {
-    memberMyProfile {
+  query _profile {
+    profile: myProfile {
       id
       publicId
+      isAccountVerified
       email
+      clue {
+        firstName
+        lastName
+        country {
+          name
+        }
+      }
     }
   }
 `;
@@ -106,7 +114,22 @@ const Table = styled.table`
 
 const ImageAvatar = styled.img`
   border-radius: 50%;
+  border: 1px dashed #000;
 `;
+
+interface MyProfile {
+  id: number;
+  publicId: string;
+  isAccountVerified: boolean;
+  email: string;
+  clue?: {
+    firstName: string;
+    lastName: string;
+    country?: {
+      name: string;
+    };
+  };
+}
 
 function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
@@ -114,8 +137,9 @@ function ProfileContent(): JSX.Element {
   if (loading) return <p>Loading</p>;
   if (error) return <p>Error</p>;
 
-  const { publicId, email } =
-    data && data.memberMyProfile ? data.memberMyProfile : { publicId: "", email: "" };
+  const { publicId, isAccountVerified, email, clue } =
+    (data.profile as MyProfile) ??
+    ({ id: 0, publicId: "", isAccountVerified: false, email: "" } as MyProfile);
   const emailHash = generateHash(email);
 
   return (
@@ -133,7 +157,7 @@ function ProfileContent(): JSX.Element {
               <H1>Full Name</H1>
               <ContainerTag>
                 <Tag
-                  icon={IconNames.ENDORSED}
+                  icon={isAccountVerified ? IconNames.ENDORSED : IconNames.BLANK}
                   large={true}
                   minimal={true}
                   intent={Intent.SUCCESS}
@@ -141,7 +165,7 @@ function ProfileContent(): JSX.Element {
                   {publicId}
                 </Tag>
                 <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
-                  Location
+                  {clue?.country?.name ?? "Location"}
                 </Tag>
               </ContainerTag>
               <ContainerBio>

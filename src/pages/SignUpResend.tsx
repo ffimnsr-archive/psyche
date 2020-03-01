@@ -11,16 +11,16 @@ import {
   Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import _ from "lodash";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNUP_RESEND_MUTATION = gql`
-  mutation signUpResend($input: SignUpResendInput!) {
+  mutation _signUpResend($input: SignUpResendInput!) {
     signUpResend(input: $input)
       @rest(type: "SignUpResend", method: "POST", path: "/sign_up/resend") {
       success
@@ -102,15 +102,16 @@ function SignUpResendLoading(): JSX.Element {
 }
 
 function SignUpResendForm(): JSX.Element {
-  const [capturedEmail, setCapturedEmail] = useState("undefined");
+  const [capturedEmail, setCapturedEmail] = useState("[email placeholder]");
   const [recoverAccount, { loading, error, data }] = useMutation(SIGNUP_RESEND_MUTATION);
 
   if (loading) return <SignUpResendLoading />;
   if (error) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
 
-  const { success } = !_.isNil(data) ? data.recoverAccount : { success: false };
-
-  if (success) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
+  if (data) {
+    const { success } = data.signUpResend ?? { success: false };
+    if (success) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
+  }
 
   return (
     <>
@@ -168,7 +169,9 @@ function SignUpResend(): JSX.Element {
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerForm>
-          <SignUpResendForm />
+          <ErrorBoundary>
+            <SignUpResendForm />
+          </ErrorBoundary>
         </ContainerForm>
       </ContainerSidePane>
     </Container>

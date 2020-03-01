@@ -262,9 +262,6 @@ function IssueBoard({
   orderedKeys: string[];
   columns: IssueMap;
 }): JSX.Element {
-  console.log(orderedKeys);
-  console.log(columns);
-
   return (
     <Droppable
       droppableId="board"

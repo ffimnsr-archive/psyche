@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import _ from "lodash";
 import {
   Card,
   Elevation,
@@ -11,23 +12,48 @@ import {
   Intent,
   FormGroup,
   InputGroup,
-  Spinner,
-  NonIdealState,
   HTMLSelect,
   TextArea,
+  IToasterProps,
+  IToaster,
+  IToastProps,
+  Position,
+  Toaster,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
-import { HapButton } from "@/components/HapButton";
 
 const ACCOUNT_UPDATE_MUTATION = gql`
-  mutation signIn($input: SignInInput!) {
-    signIn(input: $input) @rest(type: "SignIn", method: "POST", path: "/sign_in") {
-      success
-      token
+  mutation _accountUpdate(
+    $birthDate: Date!
+    $firstName: String!
+    $lastName: String!
+    $gender: String!
+    $bio: String!
+    $phoneNumber: String!
+  ) {
+    syncMyProfile(
+      birthDate: $birthDate
+      firstName: $firstName
+      lastName: $lastName
+      gender: $gender
+      bio: $bio
+      phoneNumber: $phoneNumber
+    ) {
+      id
+      email
+      publicId
+      clue {
+        id
+        firstName
+        lastName
+        gender
+        bio
+        phoneNumber
+      }
     }
   }
 `;
@@ -46,7 +72,7 @@ const ModifiedTextArea = styled(TextArea)`
 `;
 
 const AccountUpdateSchema = Yup.object().shape({
-  firstMidName: Yup.string().required("First and middle name is required"),
+  firstName: Yup.string().required("First and middle name is required"),
   lastName: Yup.string().required("Last name is required"),
   gender: Yup.string().required("Gender is required"),
   birthDate: Yup.string().required("Birth date is required"),
@@ -64,34 +90,6 @@ function format(value: string): string {
   return value.replace(/^(\w{4})(\w{4})(\w{4})(\w{4})$/, "$1-$2-$3-$4");
 }
 
-function AccountUpdateLoading(): JSX.Element {
-  return <Spinner size={Spinner.SIZE_LARGE} />;
-}
-
-function AccountUpdateError(): JSX.Element {
-  const description = (
-    <div>
-      An error occurred while trying to update your account. Kindly try to submit again
-      after several minutes.
-    </div>
-  );
-
-  const action = (
-    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
-      Go Back Home
-    </HapButton>
-  );
-
-  return (
-    <NonIdealState
-      icon={IconNames.WARNING_SIGN}
-      title="Account Update Error!"
-      description={description}
-      action={action}
-    />
-  );
-}
-
 function Row({ title, sub }: { title: string; sub: string }): JSX.Element {
   return (
     <tr>
@@ -101,46 +99,101 @@ function Row({ title, sub }: { title: string; sub: string }): JSX.Element {
   );
 }
 
+interface MyProfile {
+  socialSecurityNumber: string;
+  clue?: {
+    firstName: string;
+    lastName: string;
+    gender: string;
+    birthDate: string;
+    image: string;
+    bio: string;
+    phoneNumber: string;
+  };
+}
+
+function AccountUpdateOk({
+  title,
+  profile,
+  setIsOpen = (): void => {
+    console.log("unimplemented");
+  },
+}: {
+  title: string;
+  profile?: MyProfile;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element {
+  const { socialSecurityNumber, clue } =
+    profile ??
+    ({
+      socialSecurityNumber: "",
+      clue: undefined,
+    } as MyProfile);
+  return (
+    <Card elevation={Elevation.ONE}>
+      <div className="clearfixr" style={{ marginBottom: "10px" }}>
+        <H5 style={{ display: "inline" }}>{title}</H5>
+        <EditButton
+          href="#"
+          onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+            e.preventDefault();
+            setIsOpen(true);
+          }}
+        >
+          EDIT
+        </EditButton>
+      </div>
+      <ResponsiveTable condensed={true}>
+        <tbody>
+          <Row title="Social No." sub={format(socialSecurityNumber)} />
+          <Row title="First &amp; Middle Name" sub={_.startCase(clue?.firstName) ?? ""} />
+          <Row title="Last Name" sub={_.startCase(clue?.lastName) ?? ""} />
+          <Row title="Gender" sub={_.capitalize(clue?.gender) ?? ""} />
+          <Row title="Birth Date" sub={clue?.birthDate ?? ""} />
+          <Row title="Phone Number" sub={clue?.phoneNumber ?? ""} />
+          <Row title="Bio" sub={_.capitalize(clue?.bio) ?? ""} />
+        </tbody>
+      </ResponsiveTable>
+    </Card>
+  );
+}
+
+const toasterProps: IToasterProps = {
+  autoFocus: true,
+  canEscapeKeyClear: true,
+  position: Position.TOP,
+};
+
+const toaster: IToaster = Toaster.create(toasterProps);
+
 function Account({
   data,
 }: {
-  data: { profile: { socialSecurityNumber: string } };
+  data: {
+    profile: MyProfile;
+  };
 }): JSX.Element {
   const title = "Account";
   const [isOpen, setIsOpen] = useState(false);
-  const [accountUpdate, { loading, error }] = useMutation(ACCOUNT_UPDATE_MUTATION);
+  const [accountUpdate, { error }] = useMutation(ACCOUNT_UPDATE_MUTATION);
 
-  if (loading) return <AccountUpdateLoading />;
-  if (error) return <AccountUpdateError />;
+  useEffect(() => {
+    const toastProps: IToastProps = {
+      intent: Intent.DANGER,
+      timeout: 5000,
+      message:
+        "An error occurred while updating your profile. \
+          The system already notified the system administrator about the error.",
+    };
 
-  const { socialSecurityNumber } = data.profile;
+    if (error) toaster.show(toastProps);
+  }, [error]);
+
+  const { clue } = data.profile;
+
   return (
     <>
-      <Card elevation={Elevation.ONE}>
-        <div className="clearfixr" style={{ marginBottom: "10px" }}>
-          <H5 style={{ display: "inline" }}>{title}</H5>
-          <EditButton
-            href="#"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
-              e.preventDefault();
-              setIsOpen(true);
-            }}
-          >
-            EDIT
-          </EditButton>
-        </div>
-        <ResponsiveTable condensed={true}>
-          <tbody>
-            <Row title="Social No." sub={format(socialSecurityNumber)} />
-            <Row title="First &amp; Middle Name" sub={""} />
-            <Row title="Last Name" sub={""} />
-            <Row title="Gender" sub={""} />
-            <Row title="Birth Date" sub={""} />
-            <Row title="Phone Number" sub={""} />
-            <Row title="Bio" sub={""} />
-          </tbody>
-        </ResponsiveTable>
-      </Card>
+      <AccountUpdateOk title={title} profile={data.profile} setIsOpen={setIsOpen} />
       <Dialog
         icon={IconNames.INFO_SIGN}
         title={title}
@@ -150,31 +203,30 @@ function Account({
       >
         <Formik
           initialValues={{
-            firstMidName: "",
-            lastName: "",
-            gender: "",
-            birthDate: "",
-            phoneNumber: "",
-            bio: "",
+            firstName: clue?.firstName ?? "",
+            lastName: clue?.lastName ?? "",
+            gender: clue?.gender ?? "",
+            birthDate: clue?.birthDate ?? "",
+            phoneNumber: clue?.phoneNumber ?? "",
+            bio: clue?.bio ?? "",
           }}
           validationSchema={AccountUpdateSchema}
           onSubmit={(
-            { firstMidName, lastName, gender, birthDate, phoneNumber, bio },
+            { firstName, lastName, gender, birthDate, phoneNumber, bio },
             { setSubmitting },
           ): void => {
             setSubmitting(false);
             accountUpdate({
               variables: {
-                input: {
-                  firstMidName,
-                  lastName,
-                  gender,
-                  birthDate,
-                  phoneNumber,
-                  bio,
-                },
+                firstName,
+                lastName,
+                gender,
+                birthDate,
+                bio,
+                phoneNumber,
               },
             });
+            setIsOpen(false);
           }}
         >
           {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
@@ -182,17 +234,17 @@ function Account({
               <div className={Classes.DIALOG_BODY}>
                 <FormGroup
                   label="First &amp; Middle Name"
-                  labelFor="firstMidName"
+                  labelFor="firstName"
                   labelInfo="(required)"
                 >
                   <InputGroup
-                    id="firstMidName"
-                    name="firstMidName"
+                    id="firstName"
+                    name="firstName"
                     placeholder="Enter your first name..."
                     large={true}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.firstMidName}
+                    value={values.firstName}
                     type="text"
                   />
                 </FormGroup>
@@ -218,7 +270,7 @@ function Account({
                     onBlur={handleBlur}
                     value={values.gender}
                     options={[
-                      { label: "Don't Specify", value: "unknown" },
+                      { label: "Don't Specify", value: "unspecified" },
                       { label: "Male", value: "male" },
                       { label: "Female", value: "female" },
                     ]}

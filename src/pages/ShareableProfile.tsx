@@ -41,7 +41,7 @@ import { HapButton } from "@/components/HapButton";
 import { generateHash } from "@/utils";
 
 const REQUEST_PROFILE_QUERY = gql`
-  query($id: String!) {
+  query _requestProfile($id: String!) {
     requestProfile(id: $id)
       @rest(type: "RequestProfile", method: "GET", path: "/request_profile/{args.id}") {
       success
@@ -116,6 +116,7 @@ const Table = styled.table`
 
 const ImageAvatar = styled.img`
   border-radius: 50%;
+  border: 1px dashed #000;
 `;
 
 const CustomDivider = styled(Divider)`
@@ -190,17 +191,34 @@ function ShareableProfileError(): JSX.Element {
   );
 }
 
-function ProfilePdfDocument(): JSX.Element {
+function ProfilePdfDocument({ emailHash }: { emailHash: string }): JSX.Element {
   return (
     <Document>
       <Page size="A4" style={PdfStyles.body}>
         <View>
-          <Image src="https://via.placeholder.com/200" />
+          <Image src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`} />
           <Transcript>Hello</Transcript>
         </View>
       </Page>
     </Document>
   );
+}
+
+interface MyShareableProfile {
+  publicId: string;
+  socialSecurityNumber: string;
+  email: string;
+  joinedAt: string;
+  clue?: {
+    firstName: string;
+    lastName: string;
+    country?: {
+      name: string;
+    };
+  };
+  isAccountVerified: boolean;
+  workExperiences?: string;
+  kycState?: string;
 }
 
 function ShareableProfile(): JSX.Element {
@@ -218,15 +236,18 @@ function ShareableProfile(): JSX.Element {
   const { profile } = data.requestProfile;
   const processedProfile = camelizeKeys(profile);
 
-  console.log(processedProfile);
-
-  const { publicId, email } = processedProfile;
+  const {
+    publicId,
+    isAccountVerified,
+    email,
+    clue,
+  } = processedProfile as MyShareableProfile;
   const emailHash = generateHash(email);
 
   const shareMenu = (
     <Menu>
       <PDFDownloadLink
-        document={<ProfilePdfDocument />}
+        document={<ProfilePdfDocument emailHash={emailHash} />}
         className={classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS)}
         fileName={`CV-${publicId}.pdf`}
       >
@@ -272,7 +293,7 @@ function ShareableProfile(): JSX.Element {
                       <H1>Full Name</H1>
                       <ContainerTag>
                         <Tag
-                          icon={IconNames.ENDORSED}
+                          icon={isAccountVerified ? IconNames.ENDORSED : IconNames.BLANK}
                           large={true}
                           minimal={true}
                           intent={Intent.SUCCESS}
@@ -280,7 +301,7 @@ function ShareableProfile(): JSX.Element {
                           {publicId}
                         </Tag>
                         <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
-                          Location
+                          {clue?.country?.name ?? "Location"}
                         </Tag>
                       </ContainerTag>
                       <ContainerBio>

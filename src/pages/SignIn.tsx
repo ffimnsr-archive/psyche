@@ -17,14 +17,13 @@ import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
-import _ from "lodash";
 import { useApolloClient, useMutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNIN_MUTATION = gql`
-  mutation signIn($input: SignInInput!) {
+  mutation _signIn($input: SignInInput!) {
     signIn(input: $input) @rest(type: "SignIn", method: "POST", path: "/sign_in") {
       success
       token
@@ -76,6 +75,7 @@ const SignInSchema = Yup.object().shape({
     .required("Email is required"),
   password: Yup.string()
     .min(6, "Password too short")
+    .max(42, "Password too long")
     .required("Password is required"),
 });
 
@@ -135,22 +135,28 @@ function SignInFormContent({ history }: RouterProps): JSX.Element {
   return (
     <>
       <Formik
-        initialValues={{ email: "", password: "", rememberMe: [] }}
+        initialValues={{ email: "", password: "", remember: false }}
         validationSchema={SignInSchema}
-        onSubmit={({ email, password, rememberMe }, { setSubmitting }): void => {
+        onSubmit={({ email, password, remember }, { setSubmitting }): void => {
           setSubmitting(false);
           signIn({
             variables: {
               input: {
                 email,
                 password,
-                remember: _.isEmpty(rememberMe),
+                remember,
               },
             },
           });
         }}
       >
-        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+          setFieldValue,
+        }): JSX.Element => (
           <Form>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
@@ -179,10 +185,13 @@ function SignInFormContent({ history }: RouterProps): JSX.Element {
             </FormGroup>
             <FormGroup>
               <Switch
-                id="rememberMe"
-                name="rememberMe"
+                id="remember"
+                name="remember"
                 label="Remember Me?"
-                onChange={handleChange}
+                onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                  const target = e.target as HTMLInputElement;
+                  setFieldValue(target.id, target.checked);
+                }}
                 onBlur={handleBlur}
                 defaultChecked={false}
               />

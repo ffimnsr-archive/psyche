@@ -9,7 +9,7 @@ import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGN_UP_VERIFY_MUTATION = gql`
-  mutation signUpVerify($input: SignUpVerifyInput!) {
+  mutation _signUpVerify($input: SignUpVerifyInput!) {
     signUpVerify(input: $input)
       @rest(type: "SignUpVerify", method: "POST", path: "/sign_up/verify") {
       success
@@ -87,7 +87,9 @@ function SignUpVerifyContent(): JSX.Element {
   useEffect(() => {
     signUpVerify({
       variables: {
-        code,
+        input: {
+          code,
+        },
       },
     });
   }, [code, signUpVerify]);
@@ -97,8 +99,8 @@ function SignUpVerifyContent(): JSX.Element {
 
   const description = (
     <div>
-      An email has been sent to . Please check your inbox for a recovery email otherwise,
-      if you have not received it your email may not be registered to our platform.
+      Your account is now verified. Please visit the login page to start using your
+      account.
     </div>
   );
 

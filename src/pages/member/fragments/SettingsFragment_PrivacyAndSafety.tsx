@@ -91,6 +91,19 @@ function PrivacyAndSafety(): JSX.Element {
               action={<AnchorButton href="#" text="Change Password" minimal={true} />}
             />
             <Row
+              title="Email"
+              sub={
+                <Tag minimal={true} interactive={true} intent={Intent.SUCCESS}>
+                  Confirmed
+                </Tag>
+              }
+              action={<AnchorButton href="#" text="Change Email" minimal={true} />}
+            />
+            <Row
+              title="Active Sessions"
+              action={<AnchorButton href="#" text="View Sessions" minimal={true} />}
+            />
+            <Row
               title="Security Questions"
               sub={
                 <Tag minimal={true} interactive={true}>

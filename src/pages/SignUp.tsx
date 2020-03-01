@@ -15,7 +15,7 @@ import {
   Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
 import _ from "lodash";
@@ -24,7 +24,7 @@ import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const SIGNUP_MUTATION = gql`
-  mutation signUp($input: SignInInput!) {
+  mutation _signUp($input: SignInInput!) {
     signUp(input: $input) @rest(type: "SignUp", method: "POST", path: "/sign_up") {
       success
       token
@@ -76,10 +76,19 @@ const SignUpSchema = Yup.object().shape({
     .required("Email is required"),
   password: Yup.string()
     .min(6, "Password too short")
+    .max(42, "Password too long")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      "Must contain 6 characters, one uppercase, one lowercase, one number",
+    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords do not match")
-    .required("Confirm Password is required"),
+    .required("Confirm password is required"),
+  tncAgreement: Yup.boolean()
+    .oneOf([true], "Must accept terms and conditions")
+    .required("Terms and condition is required"),
+  optInMarketing: Yup.boolean().required("Opt-in marketing is required"),
 });
 
 function SignUpLoading(): JSX.Element {
@@ -172,8 +181,8 @@ function SignUpForm({
           email: "",
           password: "",
           confirmPassword: "",
-          tncAgreement: [],
-          optinMarketing: [],
+          tncAgreement: false,
+          optInMarketing: false,
         }}
         validationSchema={SignUpSchema}
         onSubmit={({ email, password }, { setSubmitting }): void => {
@@ -188,7 +197,13 @@ function SignUpForm({
           });
         }}
       >
-        {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+          setFieldValue,
+        }): JSX.Element => (
           <Form>
             <FormGroup label="Email" labelFor="email">
               <InputGroup
@@ -200,6 +215,9 @@ function SignUpForm({
                 value={values.email}
                 type="text"
               />
+              <small>
+                <ErrorMessage name="email" />
+              </small>
             </FormGroup>
             <FormGroup label="Password" labelFor="password">
               <InputGroup
@@ -211,6 +229,9 @@ function SignUpForm({
                 value={values.password}
                 type="password"
               />
+              <small>
+                <ErrorMessage name="password" />
+              </small>
             </FormGroup>
             <FormGroup label="Confirm Password" labelFor="confirmPassword">
               <InputGroup
@@ -222,22 +243,37 @@ function SignUpForm({
                 value={values.confirmPassword}
                 type="password"
               />
+              <small>
+                <ErrorMessage name="confirmPassword" />
+              </small>
             </FormGroup>
             <FormGroup>
               <Switch
                 id="tncAgreement"
                 labelElement={agreement}
-                onChange={handleChange}
+                onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                  const target = e.target as HTMLInputElement;
+                  setFieldValue(target.id, target.checked);
+                }}
                 onBlur={handleBlur}
                 defaultChecked={false}
               />
+              <small>
+                <ErrorMessage name="tncAgreement" />
+              </small>
               <Switch
-                id="optinMarketing"
+                id="optInMarketing"
                 label="Opt&#8208;in to notifications and promotions."
-                onChange={handleChange}
+                onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                  const target = e.target as HTMLInputElement;
+                  setFieldValue(target.id, target.checked);
+                }}
                 onBlur={handleBlur}
                 defaultChecked={false}
               />
+              <small>
+                <ErrorMessage name="optInMarketing" />
+              </small>
             </FormGroup>
             <FormGroup>
               <Button

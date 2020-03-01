@@ -12,16 +12,15 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import gql from "graphql-tag";
-import _ from "lodash";
 import * as Yup from "yup";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const RECOVER_ACCOUNT_VERIFY_CODE_QUERY = gql`
-  query recoverAccountVerifyCode($code: String!) {
+  query _recoverAccountVerifyCode($code: String!) {
     recoverAccountVerifyCode(code: $code)
       @rest(
         type: "RecoverAccountVerifyCode"
@@ -34,7 +33,7 @@ const RECOVER_ACCOUNT_VERIFY_CODE_QUERY = gql`
 `;
 
 const RECOVER_ACCOUNT_VERIFY_MUTATION = gql`
-  mutation recoverAccountVerify($input: RecoverAccountVerifyInput!) {
+  mutation _recoverAccountVerify($input: RecoverAccountVerifyInput!) {
     recoverAccountVerify(input: $input)
       @rest(
         type: "RecoverAccountVerify"
@@ -87,6 +86,11 @@ const ContainerOptions = styled.div`
 const RecoverAccountVerifySchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password too short")
+    .max(42, "Password too long")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      "Must contain 6 characters, one uppercase, one lowercase, one number",
+    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords do not match")
@@ -121,23 +125,52 @@ function RecoverAccountVerifyError(): JSX.Element {
   );
 }
 
+function RecoverAccountVerifySuccess(): JSX.Element {
+  const description = (
+    <div>You can now login using your new credential on the sign-in page.</div>
+  );
+
+  const action = (
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <NonIdealState
+      icon={IconNames.TICK_CIRCLE}
+      title="Account Recovery Success!"
+      description={description}
+      action={action}
+    />
+  );
+}
+
 function RecoverAccountVerifyForm(): JSX.Element {
   const { code } = useParams();
 
-  const { loading, error, data } = useQuery(RECOVER_ACCOUNT_VERIFY_CODE_QUERY, {
+  const query = useQuery(RECOVER_ACCOUNT_VERIFY_CODE_QUERY, {
     variables: { code },
   });
 
-  const [recoverAccountVerify, mutationProps] = useMutation(
-    RECOVER_ACCOUNT_VERIFY_MUTATION,
-  );
+  const [recoverAccountVerify, mutation] = useMutation(RECOVER_ACCOUNT_VERIFY_MUTATION);
 
-  if (mutationProps.loading || loading) return <RecoverAccountVerifyLoading />;
-  if (mutationProps.error || error) return <RecoverAccountVerifyError />;
+  if (mutation.loading || query.loading) return <RecoverAccountVerifyLoading />;
+  if (mutation.error || query.error) {
+    console.log(mutation.error);
+    console.log(query.error);
+    return <RecoverAccountVerifyError />;
+  }
 
-  const { success } = !_.isNil(data) ? data.recoverAccountVerifyCode : { success: false };
+  if (query.data) {
+    const { success } = query.data.recoverAccountVerifyCode ?? { success: false };
+    if (!success) return <RecoverAccountVerifyError />;
+  }
 
-  if (!success) return <RecoverAccountVerifyError />;
+  if (mutation.data) {
+    const { success } = mutation.data.recoverAccountVerify ?? { success: false };
+    if (success) return <RecoverAccountVerifySuccess />;
+  }
 
   return (
     <>
@@ -168,6 +201,9 @@ function RecoverAccountVerifyForm(): JSX.Element {
                 value={values.password}
                 type="password"
               />
+              <small>
+                <ErrorMessage name="password" />
+              </small>
             </FormGroup>
             <FormGroup label="Confirm New Password" labelFor="confirmPassword">
               <InputGroup
@@ -179,6 +215,9 @@ function RecoverAccountVerifyForm(): JSX.Element {
                 value={values.confirmPassword}
                 type="password"
               />
+              <small>
+                <ErrorMessage name="confirmPassword" />
+              </small>
             </FormGroup>
             <FormGroup>
               <Button

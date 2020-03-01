@@ -11,7 +11,6 @@ import {
   Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import _ from "lodash";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import gql from "graphql-tag";
@@ -20,7 +19,7 @@ import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
 
 const RECOVER_ACCOUNT_MUTATION = gql`
-  mutation recoverAccount($input: RecoverAccountInput!) {
+  mutation _recoverAccount($input: RecoverAccountInput!) {
     recoverAccount(input: $input)
       @rest(type: "RecoverAccount", method: "POST", path: "/recover_account") {
       success
@@ -101,7 +100,7 @@ function RecoverAccountLoading(): JSX.Element {
 }
 
 function RecoverAccountForm(): JSX.Element {
-  const [capturedEmail, setCapturedEmail] = useState("undefined");
+  const [capturedEmail, setCapturedEmail] = useState("[email placeholder]");
   const [recoverAccount, { loading, error, data }] = useMutation(
     RECOVER_ACCOUNT_MUTATION,
   );
@@ -109,9 +108,10 @@ function RecoverAccountForm(): JSX.Element {
   if (loading) return <RecoverAccountLoading />;
   if (error) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
 
-  const { success } = !_.isNil(data) ? data.recoverAccount : { success: false };
-
-  if (success) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  if (data) {
+    const { success } = data.recoverAccount ?? { success: false };
+    if (success) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  }
 
   return (
     <>

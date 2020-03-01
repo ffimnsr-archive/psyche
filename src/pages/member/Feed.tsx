@@ -8,7 +8,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
 const FEED_QUERY = gql`
-  query {
+  query _feed {
     industries {
       id
     }

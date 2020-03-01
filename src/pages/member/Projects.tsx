@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { HTMLTable, H5 } from "@blueprintjs/core";
+import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
 
@@ -38,14 +38,16 @@ const ResponsiveTable = styled(HTMLTable)`
 function JoinedProjects(): JSX.Element {
   return (
     <>
-      <H5>Joined Projects</H5>
-      <ResponsiveTable condensed={true} bordered={true} interactive={true} striped={true}>
-        <tbody>
-          <tr>
-            <td>Hello</td>
-          </tr>
-        </tbody>
-      </ResponsiveTable>
+      <Card elevation={Elevation.ONE}>
+        <H5>Projects That I Joined</H5>
+        <ResponsiveTable condensed={true} bordered={true}>
+          <tbody>
+            <tr>
+              <td>Hello</td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
     </>
   );
 }
@@ -53,14 +55,16 @@ function JoinedProjects(): JSX.Element {
 function MyProjects(): JSX.Element {
   return (
     <>
-      <H5>My Projects</H5>
-      <ResponsiveTable condensed={true} bordered={true} interactive={true} striped={true}>
-        <tbody>
-          <tr>
-            <td>Hello</td>
-          </tr>
-        </tbody>
-      </ResponsiveTable>
+      <Card elevation={Elevation.ONE}>
+        <H5>My Hosted Projects</H5>
+        <ResponsiveTable condensed={true} bordered={true}>
+          <tbody>
+            <tr>
+              <td>Hello</td>
+            </tr>
+          </tbody>
+        </ResponsiveTable>
+      </Card>
     </>
   );
 }
