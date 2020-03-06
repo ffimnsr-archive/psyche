@@ -26,7 +26,7 @@ import { useMutation } from "react-apollo";
 
 const WORK_PREFERENCE_UPDATE_MUTATION = gql`
   mutation _workPreferenceUpdate($interests: [Int!]!) {
-    syncMyProjectPrefs(interests: $interests) {
+    syncMyWorkPrefs(interests: $interests) {
       id
       email
       publicId

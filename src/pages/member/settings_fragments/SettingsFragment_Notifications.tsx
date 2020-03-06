@@ -136,7 +136,6 @@ function Notifications({
               <Checkbox
                 label="Opt&#8208;in anonymous usage statistics"
                 checked={data.profile.sitePreference?.optInUsageStat ?? false}
-                defaultIndeterminate={false}
                 disabled={true}
               />
             </CheckboxContainer>
@@ -146,7 +145,6 @@ function Notifications({
               <Checkbox
                 label="Opt&#8208;in marketing and promotions (through email)"
                 checked={data.profile.sitePreference?.optInMarketing ?? false}
-                defaultIndeterminate={false}
                 disabled={true}
               />
             </CheckboxContainer>
@@ -171,8 +169,8 @@ function Notifications({
       >
         <Formik
           initialValues={{
-            optInUsageStat: data.profile.sitePreference?.optInUsageStat,
-            optInMarketing: data.profile.sitePreference?.optInMarketing,
+            optInUsageStat: data.profile.sitePreference?.optInUsageStat ?? false,
+            optInMarketing: data.profile.sitePreference?.optInMarketing ?? false,
             experimentalFeatures: false,
           }}
           validationSchema={NotificationsUpdateSchema}
@@ -200,7 +198,6 @@ function Notifications({
                       setFieldValue(target.id, target.checked);
                     }}
                     onBlur={handleBlur}
-                    defaultIndeterminate={false}
                   />
                   <Checkbox
                     id="optInMarketing"
@@ -211,7 +208,6 @@ function Notifications({
                       setFieldValue(target.id, target.checked);
                     }}
                     onBlur={handleBlur}
-                    defaultIndeterminate={false}
                   />
                   <Checkbox
                     id="experimentalFeatures"
@@ -222,7 +218,6 @@ function Notifications({
                       setFieldValue(target.id, target.checked);
                     }}
                     onBlur={handleBlur}
-                    defaultIndeterminate={false}
                   />
                 </FormGroup>
               </div>

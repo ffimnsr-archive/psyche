@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -157,8 +158,8 @@ function RecoverAccountVerifyForm(): JSX.Element {
 
   if (mutation.loading || query.loading) return <RecoverAccountVerifyLoading />;
   if (mutation.error || query.error) {
-    console.log(mutation.error);
-    console.log(query.error);
+    log.error(mutation.error);
+    log.error(query.error);
     return <RecoverAccountVerifyError />;
   }
 

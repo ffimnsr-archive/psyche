@@ -11,7 +11,7 @@ import {
   Notifications,
   PrivacyAndSafety,
   WorkPreference,
-} from "@/pages/member/fragments/SettingsFragment";
+} from "@/pages/member/settings_fragments/SettingsFragment";
 
 const SETTINGS_QUERY = gql`
   query _settings {
@@ -71,6 +71,16 @@ const ContainerSettings = styled.div`
   overflow-y: none;
 `;
 
+const ContainerNonTrivial = styled.div`
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+`;
+
 const SettingsPane = styled.div`
   background-color: ${Colors.WHITE};
 
@@ -80,7 +90,11 @@ const SettingsPane = styled.div`
 `;
 
 function SettingsLoading(): JSX.Element {
-  return <Spinner size={Spinner.SIZE_LARGE} />;
+  return (
+    <ContainerNonTrivial>
+      <Spinner size={Spinner.SIZE_LARGE} />
+    </ContainerNonTrivial>
+  );
 }
 
 function SettingsContent(): JSX.Element {

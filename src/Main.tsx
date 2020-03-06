@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import _ from "lodash";
 import { render as Render } from "react-dom";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -13,6 +14,8 @@ import { App } from "@/App";
 import { resolvers } from "@/resolvers";
 import "@/assets/styles/main.scss";
 
+log.setLevel(log.levels.INFO);
+
 const ENDPOINT_URI = process.env.REACT_APP_REST_URI || "http://localhost:4000/api";
 const GRAPH_URI = process.env.REACT_APP_GRAPH_URI || "http://localhost:4000/graphql";
 const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
@@ -22,12 +25,12 @@ const cache = new InMemoryCache();
 const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
-      console.log(`[GraphQL error]: M: ${message} L: ${locations} P: ${path}`);
+      log.error(`[GraphQL error]: M: ${message} L: ${locations} P: ${path}`);
     });
   }
 
   if (networkError) {
-    console.log(`[Network error ${operation.operationName}]: ${networkError}`);
+    log.error(`[Network error ${operation.operationName}]: ${networkError}`);
   }
 });
 

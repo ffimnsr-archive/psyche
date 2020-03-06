@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import _ from "lodash";
 import {
@@ -28,18 +29,18 @@ import { useMutation } from "react-apollo";
 
 const ACCOUNT_UPDATE_MUTATION = gql`
   mutation _accountUpdate(
-    $birthDate: Date!
     $firstName: String!
     $lastName: String!
     $gender: String!
+    $birthDate: Date!
     $bio: String!
     $phoneNumber: String!
   ) {
     syncMyProfile(
-      birthDate: $birthDate
       firstName: $firstName
       lastName: $lastName
       gender: $gender
+      birthDate: $birthDate
       bio: $bio
       phoneNumber: $phoneNumber
     ) {
@@ -50,6 +51,7 @@ const ACCOUNT_UPDATE_MUTATION = gql`
         id
         firstName
         lastName
+        birthDate
         gender
         bio
         phoneNumber
@@ -116,7 +118,7 @@ function AccountUpdateOk({
   title,
   profile,
   setIsOpen = (): void => {
-    console.log("unimplemented");
+    log.warn("unimplemented");
   },
 }: {
   title: string;
@@ -186,7 +188,10 @@ function Account({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   const { clue } = data.profile;
