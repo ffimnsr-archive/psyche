@@ -35,6 +35,7 @@ const ACCOUNT_UPDATE_MUTATION = gql`
     $birthDate: Date!
     $bio: String!
     $phoneNumber: String!
+    $countryId: Int!
   ) {
     syncMyProfile(
       firstName: $firstName
@@ -43,10 +44,12 @@ const ACCOUNT_UPDATE_MUTATION = gql`
       birthDate: $birthDate
       bio: $bio
       phoneNumber: $phoneNumber
+      countryId: $countryId
     ) {
       id
       email
       publicId
+      socialSecurityNumber
       clue {
         id
         firstName
@@ -55,6 +58,10 @@ const ACCOUNT_UPDATE_MUTATION = gql`
         gender
         bio
         phoneNumber
+        country {
+          id
+          name
+        }
       }
     }
   }
@@ -78,6 +85,7 @@ const AccountUpdateSchema = Yup.object().shape({
   lastName: Yup.string().required("Last name is required"),
   gender: Yup.string().required("Gender is required"),
   birthDate: Yup.string().required("Birth date is required"),
+  countryId: Yup.string().required("Country is required"),
 });
 
 const defaultDialogOptions = {
@@ -111,6 +119,10 @@ interface MyProfile {
     image: string;
     bio: string;
     phoneNumber: string;
+    country?: {
+      id: string;
+      name: string;
+    };
   };
 }
 
@@ -154,6 +166,7 @@ function AccountUpdateOk({
           <Row title="Birth Date" sub={clue?.birthDate ?? ""} />
           <Row title="Phone Number" sub={clue?.phoneNumber ?? ""} />
           <Row title="Bio" sub={_.capitalize(clue?.bio) ?? ""} />
+          <Row title="Country" sub={_.capitalize(clue?.country?.name) ?? ""} />
         </tbody>
       </ResponsiveTable>
     </Card>
@@ -173,6 +186,7 @@ function Account({
 }: {
   data: {
     profile: MyProfile;
+    countries: { id: string; name: string }[];
   };
 }): JSX.Element {
   const title = "Account";
@@ -195,6 +209,7 @@ function Account({
   }, [error]);
 
   const { clue } = data.profile;
+  console.log(clue);
 
   return (
     <>
@@ -214,10 +229,11 @@ function Account({
             birthDate: clue?.birthDate ?? "",
             phoneNumber: clue?.phoneNumber ?? "",
             bio: clue?.bio ?? "",
+            countryId: clue?.country?.id ?? "",
           }}
           validationSchema={AccountUpdateSchema}
           onSubmit={(
-            { firstName, lastName, gender, birthDate, phoneNumber, bio },
+            { firstName, lastName, gender, birthDate, phoneNumber, bio, countryId },
             { setSubmitting },
           ): void => {
             setSubmitting(false);
@@ -229,6 +245,7 @@ function Account({
                 birthDate,
                 bio,
                 phoneNumber,
+                countryId: _.parseInt(countryId),
               },
             });
             setIsOpen(false);
@@ -316,6 +333,24 @@ function Account({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.bio}
+                  />
+                </FormGroup>
+                <FormGroup label="Country" labelFor="countryId" labelInfo="(required)">
+                  <HTMLSelect
+                    id="countryId"
+                    name="countryId"
+                    large={true}
+                    fill={true}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.countryId}
+                    options={data.countries.map(
+                      ({ id, name }: { id: string; name: string }, index: number) => ({
+                        key: index,
+                        label: name,
+                        value: id,
+                      }),
+                    )}
                   />
                 </FormGroup>
               </div>

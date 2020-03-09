@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
   Card,
@@ -9,11 +9,15 @@ import {
   Classes,
   Button,
   Intent,
-  AnchorButton,
   Tag,
   Tooltip,
   FormGroup,
   InputGroup,
+  IToasterProps,
+  IToaster,
+  IToastProps,
+  Position,
+  Toaster,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form, ErrorMessage } from "formik";
@@ -49,6 +53,20 @@ const EMAIL_UPDATE_MUTATION = gql`
   }
 `;
 
+const SUPPORT_PIN_UPDATE_MUTATION = gql`
+  mutation _supportPinUpdate {
+    updateMySupportPin {
+      id
+      email
+      publicId
+      sitePreference {
+        optInUsageStat
+        optInMarketing
+      }
+    }
+  }
+`;
+
 const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
@@ -66,6 +84,14 @@ const defaultDialogOptions = {
   enforceFocus: true,
   usePortal: true,
 };
+
+const toasterProps: IToasterProps = {
+  autoFocus: true,
+  canEscapeKeyClear: true,
+  position: Position.TOP,
+};
+
+const toaster: IToaster = Toaster.create(toasterProps);
 
 const ChangeEmailSchema = Yup.object().shape({
   email: Yup.string()
@@ -118,6 +144,20 @@ function ChangeEmailDialog({
   isOpen: boolean;
   setIsOpen: Function;
 }): JSX.Element {
+  const [emailUpdate, { error }] = useMutation(EMAIL_UPDATE_MUTATION);
+
+  useEffect(() => {
+    const toastProps: IToastProps = {
+      intent: Intent.DANGER,
+      timeout: 5000,
+      message:
+        "An error occurred while updating your account email. \
+          The system already notified the system administrator about the error.",
+    };
+
+    if (error) toaster.show(toastProps);
+  }, [error]);
+
   return (
     <Dialog
       icon={IconNames.INFO_SIGN}
@@ -132,8 +172,14 @@ function ChangeEmailDialog({
           password: "",
         }}
         validationSchema={ChangeEmailSchema}
-        onSubmit={(_, { setSubmitting }): void => {
+        onSubmit={({ email, password }, { setSubmitting }): void => {
           setSubmitting(false);
+          emailUpdate({
+            variables: {
+              email,
+              password,
+            },
+          });
         }}
       >
         {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
@@ -195,6 +241,20 @@ function ChangePasswordDialog({
   isOpen: boolean;
   setIsOpen: Function;
 }): JSX.Element {
+  const [passwordUpdate, { error }] = useMutation(PASSWORD_UPDATE_MUTATION);
+
+  useEffect(() => {
+    const toastProps: IToastProps = {
+      intent: Intent.DANGER,
+      timeout: 5000,
+      message:
+        "An error occurred while updating your account password. \
+          The system already notified the system administrator about the error.",
+    };
+
+    if (error) toaster.show(toastProps);
+  }, [error]);
+
   return (
     <Dialog
       icon={IconNames.INFO_SIGN}
@@ -210,8 +270,14 @@ function ChangePasswordDialog({
           confirmNewPassword: "",
         }}
         validationSchema={ChangePasswordSchema}
-        onSubmit={(_, { setSubmitting }): void => {
+        onSubmit={({ oldPassword, newPassword }, { setSubmitting }): void => {
           setSubmitting(false);
+          passwordUpdate({
+            variables: {
+              oldPassword,
+              newPassword,
+            },
+          });
         }}
       >
         {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
@@ -277,13 +343,39 @@ function ChangePasswordDialog({
   );
 }
 
-function PrivacyAndSafety(): JSX.Element {
+function PrivacyAndSafety({
+  data,
+}: {
+  data: {
+    profile: {
+      sitePreference?: {
+        supportPin: string;
+      };
+    };
+  };
+}): JSX.Element {
   const title = "Privacy & Safety";
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const [isChangeEmailOpen, setIsChangeEmailOpen] = useState(false);
   // const [isChangeSecurityQuestionsOpen, setIsChangeSecurityQuestionsOpen] = useState(false);
   // const [isChangeMFAOpen, setIsChangeMFAOpen] = useState(false);
   // const [isViewSessionsOpen, setIsViewSessionsOpen] = useState(false);
+
+  const [supportPinUpdate, { error }] = useMutation(SUPPORT_PIN_UPDATE_MUTATION);
+
+  useEffect(() => {
+    const toastProps: IToastProps = {
+      intent: Intent.DANGER,
+      timeout: 5000,
+      message:
+        "An error occurred while updating your account support PIN. \
+          The system already notified the system administrator about the error.",
+    };
+
+    if (error) toaster.show(toastProps);
+  }, [error]);
+
+  const supportPin = data.profile.sitePreference?.supportPin ?? "0000";
 
   return (
     <>
@@ -296,13 +388,22 @@ function PrivacyAndSafety(): JSX.Element {
             <Row
               title="Support PIN"
               sub={
-                <Tooltip content={"Your support PIN is: 000000"}>
+                <Tooltip content={`Your support PIN is: ${supportPin}`}>
                   <Tag minimal={true} interactive={true}>
                     Hover To View
                   </Tag>
                 </Tooltip>
               }
-              action={<Button text="Reroll PIN" minimal={true} />}
+              action={
+                <Button
+                  text="Reroll PIN"
+                  onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>): void => {
+                    e.preventDefault();
+                    supportPinUpdate();
+                  }}
+                  minimal={true}
+                />
+              }
             />
             <Row
               title="Password"
@@ -344,7 +445,12 @@ function PrivacyAndSafety(): JSX.Element {
             />
             <Row
               title="Active Sessions"
-              action={<Button text="View Sessions" minimal={true} />}
+              sub={
+                <Tag minimal={true} interactive={true}>
+                  Not Yet Available
+                </Tag>
+              }
+              action={<Button text="View Sessions" minimal={true} disabled={true} />}
             />
             <Row
               title="Security Questions"
@@ -353,9 +459,7 @@ function PrivacyAndSafety(): JSX.Element {
                   Not Yet Available
                 </Tag>
               }
-              action={
-                <AnchorButton href="#" text="Setup" minimal={true} disabled={true} />
-              }
+              action={<Button text="Setup" minimal={true} disabled={true} />}
             />
             <Row
               title="Multi-factor Authentication"
@@ -364,9 +468,7 @@ function PrivacyAndSafety(): JSX.Element {
                   Not Yet Available
                 </Tag>
               }
-              action={
-                <AnchorButton href="#" text="Setup" minimal={true} disabled={true} />
-              }
+              action={<Button text="Setup" minimal={true} disabled={true} />}
             />
           </tbody>
         </ResponsiveTable>

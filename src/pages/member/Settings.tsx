@@ -17,6 +17,8 @@ const SETTINGS_QUERY = gql`
   query _settings {
     profile: myProfile {
       id
+      email
+      publicId
       socialSecurityNumber
       workPreference {
         interests
@@ -25,8 +27,11 @@ const SETTINGS_QUERY = gql`
       sitePreference {
         optInMarketing
         optInUsageStat
+        experimentalFeatures
+        supportPin
       }
       clue {
+        id
         firstName
         lastName
         gender
@@ -34,7 +39,15 @@ const SETTINGS_QUERY = gql`
         image
         bio
         phoneNumber
+        country {
+          id
+          name
+        }
       }
+    }
+    countries {
+      id
+      name
     }
     workFunctions {
       id
@@ -107,7 +120,7 @@ function SettingsContent(): JSX.Element {
     <SettingsPane>
       <Account data={data} />
       <WorkPreference data={data} />
-      <PrivacyAndSafety />
+      <PrivacyAndSafety data={data} />
       <Notifications data={data} />
     </SettingsPane>
   );

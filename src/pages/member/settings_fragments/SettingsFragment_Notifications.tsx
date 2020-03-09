@@ -33,6 +33,7 @@ const NOTIFICATIONS_UPDATE_MUTATION = gql`
       sitePreference {
         optInUsageStat
         optInMarketing
+        experimentalFeatures
       }
     }
   }
@@ -94,6 +95,7 @@ function Notifications({
       sitePreference?: {
         optInMarketing: boolean;
         optInUsageStat: boolean;
+        experimentalFeatures: boolean;
       };
     };
   };
@@ -113,6 +115,10 @@ function Notifications({
 
     if (error) toaster.show(toastProps);
   }, [error]);
+
+  const optInUsageStat = data.profile.sitePreference?.optInUsageStat ?? false;
+  const optInMarketing = data.profile.sitePreference?.optInMarketing ?? false;
+  const experimentalFeatures = data.profile.sitePreference?.experimentalFeatures ?? false;
 
   return (
     <>
@@ -135,7 +141,7 @@ function Notifications({
             <CheckboxContainer>
               <Checkbox
                 label="Opt&#8208;in anonymous usage statistics"
-                checked={data.profile.sitePreference?.optInUsageStat ?? false}
+                checked={optInUsageStat}
                 disabled={true}
               />
             </CheckboxContainer>
@@ -144,7 +150,7 @@ function Notifications({
             <CheckboxContainer>
               <Checkbox
                 label="Opt&#8208;in marketing and promotions (through email)"
-                checked={data.profile.sitePreference?.optInMarketing ?? false}
+                checked={optInMarketing}
                 disabled={true}
               />
             </CheckboxContainer>
@@ -153,7 +159,7 @@ function Notifications({
             <CheckboxContainer>
               <Checkbox
                 label="Enable experimental features"
-                defaultIndeterminate={false}
+                checked={experimentalFeatures}
                 disabled={true}
               />
             </CheckboxContainer>
@@ -169,17 +175,21 @@ function Notifications({
       >
         <Formik
           initialValues={{
-            optInUsageStat: data.profile.sitePreference?.optInUsageStat ?? false,
-            optInMarketing: data.profile.sitePreference?.optInMarketing ?? false,
-            experimentalFeatures: false,
+            optInUsageStat,
+            optInMarketing,
+            experimentalFeatures,
           }}
           validationSchema={NotificationsUpdateSchema}
-          onSubmit={({ optInUsageStat, optInMarketing }, { setSubmitting }): void => {
+          onSubmit={(
+            { optInUsageStat, optInMarketing, experimentalFeatures },
+            { setSubmitting },
+          ): void => {
             setSubmitting(false);
             notificationsUpdate({
               variables: {
                 optInUsageStat,
                 optInMarketing,
+                experimentalFeatures,
               },
             });
             setIsOpen(false);
