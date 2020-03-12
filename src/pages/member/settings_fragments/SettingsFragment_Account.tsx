@@ -209,7 +209,6 @@ function Account({
   }, [error]);
 
   const { clue } = data.profile;
-  console.log(clue);
 
   return (
     <>

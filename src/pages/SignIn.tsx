@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import log from "loglevel";
 import { Link } from "react-router-dom";
 import { RouterProps } from "react-router";
 import styled from "styled-components";
@@ -130,7 +131,10 @@ function SignInFormContent({ history }: RouterProps): JSX.Element {
   );
 
   if (loading) return <SignInLoading />;
-  if (error) return <SignInError />;
+  if (error) {
+    log.error(error);
+    return <SignInError />;
+  }
 
   return (
     <>

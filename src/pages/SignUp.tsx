@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import log from "loglevel";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -168,7 +169,10 @@ function SignUpForm({
   );
 
   if (loading) return <SignUpLoading />;
-  if (error) return <SignUpError />;
+  if (error) {
+    log.error(error);
+    return <SignUpError />;
+  }
 
   const { success } = !_.isNil(data) ? data.signUp : { success: false };
 

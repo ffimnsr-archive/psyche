@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
@@ -114,7 +115,10 @@ function SettingsContent(): JSX.Element {
   const { loading, error, data } = useQuery(SETTINGS_QUERY);
 
   if (loading) return <SettingsLoading />;
-  if (error) return <SettingsLoading />;
+  if (error) {
+    log.error(error);
+    return <SettingsLoading />;
+  }
 
   return (
     <SettingsPane>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import log from "loglevel";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -106,7 +107,10 @@ function SignUpResendForm(): JSX.Element {
   const [recoverAccount, { loading, error, data }] = useMutation(SIGNUP_RESEND_MUTATION);
 
   if (loading) return <SignUpResendLoading />;
-  if (error) return <SignUpResendNonTrivialResponse email={capturedEmail} />;
+  if (error) {
+    log.error(error);
+    return <SignUpResendNonTrivialResponse email={capturedEmail} />;
+  }
 
   if (data) {
     const { success } = data.signUpResend ?? { success: false };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import {
   Card,
@@ -112,7 +113,10 @@ function WorkPreference({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   const initialValues: { interests: string[] } = {

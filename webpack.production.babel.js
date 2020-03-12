@@ -1,7 +1,7 @@
 import webpack from "webpack";
 import path from "path";
 import merge from "webpack-merge";
-import UglifyJSWebpackPlugin from "uglifyjs-webpack-plugin";
+import TerserWebpackPlugin from "terser-webpack-plugin";
 import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import common from "./webpack.common.babel";
@@ -13,8 +13,9 @@ module.exports = merge(common, {
     hints: false,
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJSWebpackPlugin({
+      new TerserWebpackPlugin({
         parallel: true,
         cache: true,
         sourceMap: false,

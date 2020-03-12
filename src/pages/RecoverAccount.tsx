@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import log from "loglevel";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -106,7 +107,10 @@ function RecoverAccountForm(): JSX.Element {
   );
 
   if (loading) return <RecoverAccountLoading />;
-  if (error) return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  if (error) {
+    log.error(error);
+    return <RecoverAccountNonTrivialResponse email={capturedEmail} />;
+  }
 
   if (data) {
     const { success } = data.recoverAccount ?? { success: false };

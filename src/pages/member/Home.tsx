@@ -1,7 +1,6 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
-// import gql from "graphql-tag";
-// import { useQuery } from "react-apollo";
 import { Helmet } from "react-helmet-async";
 import {
   Card,
@@ -15,14 +14,43 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
+import gql from "graphql-tag";
+import { useQuery } from "react-apollo";
 
-// const INDUSTRY_QUERY = gql`
-//   query {
-//     industries {
-//       id
-//     }
-//   }
-// `;
+const HOME_QUERY = gql`
+  query _home {
+    profile: myProfile {
+      id
+      email
+      publicId
+      socialSecurityNumber
+      workPreference {
+        interests
+        projectLimit
+      }
+      sitePreference {
+        optInMarketing
+        optInUsageStat
+        experimentalFeatures
+        supportPin
+      }
+      clue {
+        id
+        firstName
+        lastName
+        gender
+        birthDate
+        image
+        bio
+        phoneNumber
+        country {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const Container = styled.main`
   min-height: 100vh;
@@ -101,6 +129,18 @@ function ProfileStillEmpty(): JSX.Element {
   );
 }
 
+function ProfileContent(): JSX.Element {
+  const { loading, error } = useQuery(HOME_QUERY);
+
+  if (loading) return <ProfileStillEmpty />;
+  if (error) {
+    log.error(error);
+    return <ProfileStillEmpty />;
+  }
+
+  return <ProfileStillEmpty />;
+}
+
 function Home(): JSX.Element {
   return (
     <Container>
@@ -110,7 +150,7 @@ function Home(): JSX.Element {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ProfileStillEmpty />
+        <ProfileContent />
       </ContainerMain>
     </Container>
   );

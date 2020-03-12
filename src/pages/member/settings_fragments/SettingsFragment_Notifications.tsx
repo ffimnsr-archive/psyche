@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import {
   Card,
@@ -25,8 +26,16 @@ import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
 
 const NOTIFICATIONS_UPDATE_MUTATION = gql`
-  mutation _notificationsUpdate($optInUsageStat: Boolean!, $optInMarketing: Boolean!) {
-    syncMySitePrefs(optInUsageStat: $optInUsageStat, optInMarketing: $optInMarketing) {
+  mutation _notificationsUpdate(
+    $optInUsageStat: Boolean!
+    $optInMarketing: Boolean!
+    $experimentalFeatures: Boolean!
+  ) {
+    syncMySitePrefs(
+      optInUsageStat: $optInUsageStat
+      optInMarketing: $optInMarketing
+      experimentalFeatures: $experimentalFeatures
+    ) {
       id
       email
       publicId
@@ -102,7 +111,11 @@ function Notifications({
 }): JSX.Element {
   const title = "Site Preference & Notifications";
   const [isOpen, setIsOpen] = useState(false);
-  const [notificationsUpdate, { error }] = useMutation(NOTIFICATIONS_UPDATE_MUTATION);
+  const [notificationsUpdate, { error }] = useMutation(NOTIFICATIONS_UPDATE_MUTATION, {
+    onCompleted({ syncMySitePrefs }) {
+      log.trace(syncMySitePrefs);
+    },
+  });
 
   useEffect(() => {
     const toastProps: IToastProps = {
@@ -113,7 +126,10 @@ function Notifications({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   const optInUsageStat = data.profile.sitePreference?.optInUsageStat ?? false;
@@ -201,6 +217,7 @@ function Notifications({
                 <FormGroup label="Select your site and notification preference">
                   <Checkbox
                     id="optInUsageStat"
+                    name="optInUsageStat"
                     label="Opt&#8208;in anonymous usage statistics"
                     checked={values.optInUsageStat}
                     onChange={(e: React.FormEvent<HTMLInputElement>): void => {
@@ -211,6 +228,7 @@ function Notifications({
                   />
                   <Checkbox
                     id="optInMarketing"
+                    name="optInMarketing"
                     label="Opt&#8208;in marketing and promotions (through email)"
                     checked={values.optInMarketing}
                     onChange={(e: React.FormEvent<HTMLInputElement>): void => {
@@ -221,6 +239,7 @@ function Notifications({
                   />
                   <Checkbox
                     id="experimentalFeatures"
+                    name="experimentalFeatures"
                     label="Enable experimental features"
                     checked={values.experimentalFeatures}
                     onChange={(e: React.FormEvent<HTMLInputElement>): void => {

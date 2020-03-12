@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import { Intent, NonIdealState, Spinner, Colors } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
@@ -95,7 +96,10 @@ function SignUpVerifyContent(): JSX.Element {
   }, [code, signUpVerify]);
 
   if (loading) return <SignUpVerifyLoading />;
-  if (error) return <SignUpVerifyError />;
+  if (error) {
+    log.error(error);
+    return <SignUpVerifyError />;
+  }
 
   const description = (
     <div>

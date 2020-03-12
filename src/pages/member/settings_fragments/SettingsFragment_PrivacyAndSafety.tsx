@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import {
   Card,
@@ -155,7 +156,10 @@ function ChangeEmailDialog({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   return (
@@ -252,7 +256,10 @@ function ChangePasswordDialog({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   return (
@@ -372,7 +379,10 @@ function PrivacyAndSafety({
           The system already notified the system administrator about the error.",
     };
 
-    if (error) toaster.show(toastProps);
+    if (error) {
+      log.error(error);
+      toaster.show(toastProps);
+    }
   }, [error]);
 
   const supportPin = data.profile.sitePreference?.supportPin ?? "0000";

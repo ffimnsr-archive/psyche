@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
@@ -135,7 +136,10 @@ function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
 
   if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+  if (error) {
+    log.error(error);
+    return <p>Error</p>;
+  }
 
   const { publicId, isAccountVerified, email, clue } =
     (data.profile as MyProfile) ??

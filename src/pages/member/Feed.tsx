@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
@@ -55,7 +56,10 @@ function Feeds(): JSX.Element {
   const { loading, error, data } = useQuery(FEED_QUERY);
 
   if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
+  if (error) {
+    log.error(error);
+    return <p>Error</p>;
+  }
 
   const feed = data.industries.map(({ id }: { id: number }) => (
     <Card key={id} elevation={Elevation.ONE}>

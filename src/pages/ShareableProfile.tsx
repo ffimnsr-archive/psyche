@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import _ from "lodash";
@@ -228,7 +229,10 @@ function ShareableProfile(): JSX.Element {
   });
 
   if (loading) return <ShareableProfileLoading />;
-  if (error) return <ShareableProfileError />;
+  if (error) {
+    log.error(error);
+    return <ShareableProfileError />;
+  }
 
   if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
     return <ShareableProfileError />;
