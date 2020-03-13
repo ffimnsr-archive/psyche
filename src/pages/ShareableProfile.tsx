@@ -110,7 +110,7 @@ const Table = styled.table`
   width: 100%;
 
   & > tbody > tr > td:first-child {
-    width: 60%;
+    width: 40%;
     text-align: center;
   }
 `;
@@ -213,6 +213,7 @@ interface MyShareableProfile {
   clue?: {
     firstName: string;
     lastName: string;
+    bio: string;
     country?: {
       name: string;
     };
@@ -294,7 +295,9 @@ function ShareableProfile(): JSX.Element {
                       </Popover>
                     </div>
                     <div>
-                      <H1>Full Name</H1>
+                      <H1>
+                        {clue?.firstName} {clue?.lastName}
+                      </H1>
                       <ContainerTag>
                         <Tag
                           icon={isAccountVerified ? IconNames.ENDORSED : IconNames.BLANK}
@@ -305,24 +308,11 @@ function ShareableProfile(): JSX.Element {
                           {publicId}
                         </Tag>
                         <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
-                          {clue?.country?.name ?? "Location"}
+                          {clue?.country?.name ?? "Unknown Location"}
                         </Tag>
                       </ContainerTag>
                       <ContainerBio>
-                        <Text ellipsize={true}>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                          fringilla erat quis molestie convallis. Cras elementum nunc a
-                          tellus dictum, sed porttitor nibh ultrices. Curabitur dolor
-                          mauris, mollis quis hendrerit eget, tincidunt sit amet eros. Sed
-                          cursus non felis non mollis. In fermentum leo eu luctus
-                          accumsan. Nulla in commodo enim, in vehicula massa. Suspendisse
-                          nibh neque, hendrerit fermentum nunc a, pretium vehicula sem. In
-                          egestas dapibus odio. Etiam at posuere lacus. Quisque ornare
-                          lacinia elit ac aliquet. Suspendisse eu cursus libero. Donec
-                          vitae ante pellentesque, commodo dui commodo, fringilla ex.
-                          Vivamus dictum dolor fermentum, fringilla nunc sed, gravida
-                          erat.
-                        </Text>
+                        <Text ellipsize={true}>{clue?.bio ?? "A Great Talent"}</Text>
                       </ContainerBio>
                     </div>
                   </td>

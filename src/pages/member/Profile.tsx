@@ -16,6 +16,7 @@ import {
   Intent,
   HTMLTable,
   Divider,
+  Spinner,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
@@ -31,9 +32,13 @@ const PROFILE_QUERY = gql`
       isAccountVerified
       email
       clue {
+        id
         firstName
         lastName
+        fullName
+        bio
         country {
+          id
           name
         }
       }
@@ -65,6 +70,16 @@ const ContainerProfile = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-center;
+`;
+
+const ContainerNonTrivial = styled.div`
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
 `;
 
 const ContainerTag = styled.div`
@@ -126,19 +141,29 @@ interface MyProfile {
   clue?: {
     firstName: string;
     lastName: string;
+    fullName: string;
+    bio: string;
     country?: {
       name: string;
     };
   };
 }
 
+function ProfileLoading(): JSX.Element {
+  return (
+    <ContainerNonTrivial>
+      <Spinner size={Spinner.SIZE_LARGE} />
+    </ContainerNonTrivial>
+  );
+}
+
 function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
 
-  if (loading) return <p>Loading</p>;
+  if (loading) return <ProfileLoading />;
   if (error) {
     log.error(error);
-    return <p>Error</p>;
+    return <ProfileLoading />;
   }
 
   const { publicId, isAccountVerified, email, clue } =
@@ -158,7 +183,7 @@ function ProfileContent(): JSX.Element {
               />
             </td>
             <td>
-              <H1>Full Name</H1>
+              <H1>{clue?.fullName}</H1>
               <ContainerTag>
                 <Tag
                   icon={isAccountVerified ? IconNames.ENDORSED : IconNames.BLANK}
@@ -169,22 +194,11 @@ function ProfileContent(): JSX.Element {
                   {publicId}
                 </Tag>
                 <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
-                  {clue?.country?.name ?? "Location"}
+                  {clue?.country?.name ?? "Unknown Location"}
                 </Tag>
               </ContainerTag>
               <ContainerBio>
-                <Text ellipsize={true}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla
-                  erat quis molestie convallis. Cras elementum nunc a tellus dictum, sed
-                  porttitor nibh ultrices. Curabitur dolor mauris, mollis quis hendrerit
-                  eget, tincidunt sit amet eros. Sed cursus non felis non mollis. In
-                  fermentum leo eu luctus accumsan. Nulla in commodo enim, in vehicula
-                  massa. Suspendisse nibh neque, hendrerit fermentum nunc a, pretium
-                  vehicula sem. In egestas dapibus odio. Etiam at posuere lacus. Quisque
-                  ornare lacinia elit ac aliquet. Suspendisse eu cursus libero. Donec
-                  vitae ante pellentesque, commodo dui commodo, fringilla ex. Vivamus
-                  dictum dolor fermentum, fringilla nunc sed, gravida erat.
-                </Text>
+                <Text ellipsize={true}>{clue?.bio ?? "A Great Talent"}</Text>
               </ContainerBio>
               <ContainerButton>
                 <HapButton

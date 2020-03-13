@@ -22,10 +22,12 @@ const SETTINGS_QUERY = gql`
       publicId
       socialSecurityNumber
       workPreference {
+        id
         interests
         projectLimit
       }
       sitePreference {
+        id
         optInMarketing
         optInUsageStat
         experimentalFeatures

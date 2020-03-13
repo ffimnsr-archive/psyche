@@ -110,6 +110,7 @@ function Row({ title, sub }: { title: string; sub: string }): JSX.Element {
 }
 
 interface MyProfile {
+  email: string;
   socialSecurityNumber: string;
   clue?: {
     firstName: string;

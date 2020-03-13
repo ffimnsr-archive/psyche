@@ -40,6 +40,7 @@ const NOTIFICATIONS_UPDATE_MUTATION = gql`
       email
       publicId
       sitePreference {
+        id
         optInUsageStat
         optInMarketing
         experimentalFeatures

@@ -30,12 +30,6 @@ const PASSWORD_UPDATE_MUTATION = gql`
   mutation _passwordUpdate($oldPassword: String!, $newPassword: String!) {
     updateMyPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
       id
-      email
-      publicId
-      sitePreference {
-        optInUsageStat
-        optInMarketing
-      }
     }
   }
 `;
@@ -45,11 +39,6 @@ const EMAIL_UPDATE_MUTATION = gql`
     updateMyEmail(email: $email, password: $password) {
       id
       email
-      publicId
-      sitePreference {
-        optInUsageStat
-        optInMarketing
-      }
     }
   }
 `;
@@ -58,11 +47,8 @@ const SUPPORT_PIN_UPDATE_MUTATION = gql`
   mutation _supportPinUpdate {
     updateMySupportPin {
       id
-      email
-      publicId
       sitePreference {
-        optInUsageStat
-        optInMarketing
+        supportPin
       }
     }
   }
@@ -110,10 +96,10 @@ const ChangePasswordSchema = Yup.object().shape({
   mewPassword: Yup.string()
     .min(6, "New password too short")
     .max(42, "New password too long")
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-    //   "Must contain 6 characters, one uppercase, one lowercase, one number",
-    // )
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      "Must contain 6 characters, one uppercase, one lowercase, one number",
+    )
     .required("New password is required"),
   confirmNewPassword: Yup.string()
     .oneOf([Yup.ref("newPassword"), null], "Passwords do not match")
@@ -184,6 +170,7 @@ function ChangeEmailDialog({
               password,
             },
           });
+          setIsOpen(false);
         }}
       >
         {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
@@ -285,6 +272,7 @@ function ChangePasswordDialog({
               newPassword,
             },
           });
+          setIsOpen(false);
         }}
       >
         {({ values, handleChange, handleBlur, isSubmitting }): JSX.Element => (
@@ -355,6 +343,7 @@ function PrivacyAndSafety({
 }: {
   data: {
     profile: {
+      email: string;
       sitePreference?: {
         supportPin: string;
       };
@@ -437,9 +426,11 @@ function PrivacyAndSafety({
             <Row
               title="Email"
               sub={
-                <Tag minimal={true} interactive={true} intent={Intent.SUCCESS}>
-                  Confirmed
-                </Tag>
+                <Tooltip content={`Your email address is: ${data.profile.email}`}>
+                  <Tag minimal={true} interactive={true} intent={Intent.SUCCESS}>
+                    Confirmed
+                  </Tag>
+                </Tooltip>
               }
               action={
                 <Button

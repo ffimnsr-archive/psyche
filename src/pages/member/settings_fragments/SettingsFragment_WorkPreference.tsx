@@ -32,6 +32,7 @@ const WORK_PREFERENCE_UPDATE_MUTATION = gql`
       email
       publicId
       workPreference {
+        id
         interests
         projectLimit
       }

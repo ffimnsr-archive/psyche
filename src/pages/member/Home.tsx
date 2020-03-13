@@ -9,6 +9,7 @@ import {
   Callout,
   Intent,
   NonIdealState,
+  Spinner,
   Colors,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
@@ -25,10 +26,12 @@ const HOME_QUERY = gql`
       publicId
       socialSecurityNumber
       workPreference {
+        id
         interests
         projectLimit
       }
       sitePreference {
+        id
         optInMarketing
         optInUsageStat
         experimentalFeatures
@@ -43,6 +46,7 @@ const HOME_QUERY = gql`
         image
         bio
         phoneNumber
+        isReady
         country {
           id
           name
@@ -78,6 +82,16 @@ const ContainerHome = styled.div`
   justify-content: flex-start;
 `;
 
+const ContainerNonTrivial = styled.div`
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+`;
+
 const ContainerContent = styled.div`
   background-color: ${Colors.WHITE};
 `;
@@ -85,6 +99,14 @@ const ContainerContent = styled.div`
 const ContainerCallout = styled.div`
   margin-bottom: 10px;
 `;
+
+function HomeLoading(): JSX.Element {
+  return (
+    <ContainerNonTrivial>
+      <Spinner size={Spinner.SIZE_LARGE} />
+    </ContainerNonTrivial>
+  );
+}
 
 function ProfileStillEmpty(): JSX.Element {
   const action = (
@@ -130,9 +152,9 @@ function ProfileStillEmpty(): JSX.Element {
 }
 
 function ProfileContent(): JSX.Element {
-  const { loading, error } = useQuery(HOME_QUERY);
+  const { loading, error, data } = useQuery(HOME_QUERY);
 
-  if (loading) return <ProfileStillEmpty />;
+  if (loading) return <HomeLoading />;
   if (error) {
     log.error(error);
     return <ProfileStillEmpty />;

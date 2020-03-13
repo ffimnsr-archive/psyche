@@ -78,10 +78,10 @@ const SignUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password too short")
     .max(42, "Password too long")
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-    //   "Must contain 6 characters, one uppercase, one lowercase, one number",
-    // )
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+      "Must contain 6 characters, one uppercase, one lowercase, one number",
+    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords do not match")
