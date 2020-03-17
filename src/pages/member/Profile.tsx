@@ -17,6 +17,7 @@ import {
   HTMLTable,
   Divider,
   Spinner,
+  NonIdealState,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
@@ -157,13 +158,39 @@ function ProfileLoading(): JSX.Element {
   );
 }
 
+function ProfileError(): JSX.Element {
+  const description = (
+    <div>
+      The requested profile can not be found in the server. Please double check if you
+      have the correct profile address.
+    </div>
+  );
+
+  const action = (
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <ContainerNonTrivial>
+      <NonIdealState
+        icon={IconNames.WARNING_SIGN}
+        title="Profile Not Found!"
+        description={description}
+        action={action}
+      />
+    </ContainerNonTrivial>
+  );
+}
+
 function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(PROFILE_QUERY);
 
   if (loading) return <ProfileLoading />;
   if (error) {
     log.error(error);
-    return <ProfileLoading />;
+    return <ProfileError />;
   }
 
   const { publicId, isAccountVerified, email, clue } =

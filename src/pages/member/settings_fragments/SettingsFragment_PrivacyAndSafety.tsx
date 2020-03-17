@@ -428,7 +428,7 @@ function PrivacyAndSafety({
               sub={
                 <Tooltip content={`Your email address is: ${data.profile.email}`}>
                   <Tag minimal={true} interactive={true} intent={Intent.SUCCESS}>
-                    Confirmed
+                    Verified
                   </Tag>
                 </Tooltip>
               }

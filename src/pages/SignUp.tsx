@@ -19,7 +19,6 @@ import { IconNames } from "@blueprintjs/icons";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import gql from "graphql-tag";
-import _ from "lodash";
 import { useMutation } from "react-apollo";
 import { HapButton } from "@/components/HapButton";
 import bgPattern from "@/assets/images/pattern.svg";
@@ -174,9 +173,10 @@ function SignUpForm({
     return <SignUpError />;
   }
 
-  const { success } = !_.isNil(data) ? data.signUp : { success: false };
-
-  if (success) return <SignUpSuccess />;
+  if (data) {
+    const { success } = data.signUp ?? { success: false };
+    if (success) return <SignUpSuccess />;
+  }
 
   return (
     <>

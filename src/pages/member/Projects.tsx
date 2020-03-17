@@ -4,6 +4,46 @@ import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar } from "@/components/Sidebar";
 import { NavigationHeader } from "@/components/NavigationHeader";
+import gql from "graphql-tag";
+import { useQuery } from "react-apollo";
+
+const PROJECTS_QUERY = gql`
+  query _projects {
+    profile: myProfile {
+      id
+      email
+      publicId
+      socialSecurityNumber
+      workPreference {
+        id
+        interests
+        projectLimit
+      }
+      sitePreference {
+        id
+        optInMarketing
+        optInUsageStat
+        experimentalFeatures
+        supportPin
+      }
+      clue {
+        id
+        firstName
+        lastName
+        gender
+        birthDate
+        image
+        bio
+        phoneNumber
+        isReady
+        country {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const Container = styled.main`
   min-height: 100vh;
@@ -69,6 +109,17 @@ function MyProjects(): JSX.Element {
   );
 }
 
+function ProjectsContent(): JSX.Element {
+  const { loading, error, data } = useQuery(PROJECTS_QUERY);
+
+  return (
+    <ContainerProjects>
+      <JoinedProjects />
+      <MyProjects />
+    </ContainerProjects>
+  );
+}
+
 function Projects(): JSX.Element {
   return (
     <Container>
@@ -78,10 +129,7 @@ function Projects(): JSX.Element {
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <ContainerProjects>
-          <JoinedProjects />
-          <MyProjects />
-        </ContainerProjects>
+        <ProjectsContent />
       </ContainerMain>
     </Container>
   );

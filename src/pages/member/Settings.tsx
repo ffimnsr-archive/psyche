@@ -4,8 +4,10 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
-import { Colors, Classes, Spinner } from "@blueprintjs/core";
+import { Colors, Classes, Spinner, NonIdealState, Intent } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import { Sidebar } from "@/components/Sidebar";
+import { HapButton } from "@/components/HapButton";
 import { NavigationHeader } from "@/components/NavigationHeader";
 import {
   Account,
@@ -113,13 +115,36 @@ function SettingsLoading(): JSX.Element {
   );
 }
 
+function SettingsError(): JSX.Element {
+  const description = (
+    <div>The requested settings data can not be found in the server.</div>
+  );
+
+  const action = (
+    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
+      Go Back Home
+    </HapButton>
+  );
+
+  return (
+    <ContainerNonTrivial>
+      <NonIdealState
+        icon={IconNames.WARNING_SIGN}
+        title="Settings Data Not Found!"
+        description={description}
+        action={action}
+      />
+    </ContainerNonTrivial>
+  );
+}
+
 function SettingsContent(): JSX.Element {
   const { loading, error, data } = useQuery(SETTINGS_QUERY);
 
   if (loading) return <SettingsLoading />;
   if (error) {
     log.error(error);
-    return <SettingsLoading />;
+    return <SettingsError />;
   }
 
   return (

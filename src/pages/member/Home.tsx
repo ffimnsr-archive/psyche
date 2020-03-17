@@ -154,9 +154,14 @@ function ProfileStillEmpty(): JSX.Element {
 function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery(HOME_QUERY);
 
+  // FZ_TODO
   if (loading) return <HomeLoading />;
   if (error) {
     log.error(error);
+    return <ProfileStillEmpty />;
+  }
+
+  if (data.profile.clue?.isReady) {
     return <ProfileStillEmpty />;
   }
 
