@@ -145,7 +145,7 @@ const PdfStyles = StyleSheet.create({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function camelizeKeys(obj: any): any {
   if (Array.isArray(obj)) {
-    return obj.map(v => camelizeKeys(v));
+    return obj.map((v) => camelizeKeys(v));
   } else if (_.isPlainObject(obj)) {
     return Object.keys(obj).reduce(
       (result, key) => ({

@@ -81,9 +81,7 @@ const toasterProps: IToasterProps = {
 const toaster: IToaster = Toaster.create(toasterProps);
 
 const ChangeEmailSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .min(6, "New password too short")
     .required("Password is required"),

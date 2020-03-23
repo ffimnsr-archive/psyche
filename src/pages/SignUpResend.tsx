@@ -68,9 +68,7 @@ const ContainerOptions = styled.div`
 `;
 
 const SignUpResendSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
 function SignUpResendNonTrivialResponse({ email }: { email: string }): JSX.Element {

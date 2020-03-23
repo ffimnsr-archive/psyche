@@ -67,9 +67,7 @@ const ContainerOptions = styled.div`
 `;
 
 const RecoverAccountSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
 function RecoverAccountNonTrivialResponse({ email }: { email: string }): JSX.Element {

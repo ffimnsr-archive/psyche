@@ -67,9 +67,7 @@ const EditButton = styled.a`
 `;
 
 const WorkPreferencesUpdateSchema = Yup.object().shape({
-  interests: Yup.array()
-    .ensure()
-    .required("Work preference is required"),
+  interests: Yup.array().ensure().required("Work preference is required"),
 });
 
 const defaultDialogOptions = {
