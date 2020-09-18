@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import { version } from "./package.json";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const revision = require("child_process")
   .execSync("git rev-parse --short HEAD")
   .toString()

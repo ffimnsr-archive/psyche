@@ -19,6 +19,9 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import { useApolloClient } from "react-apollo";
 
+const REST_URI = process.env.REACT_APP_RS_URI;
+const AUTH_URI = process.env.REACT_APP_AS_URI;
+
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
@@ -29,9 +32,11 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   const userMenu = (
     <Menu>
       <MenuItem
-        onClick={(): void => history.push("/profile")}
+        onClick={(): void => {
+          window.location.href = `${AUTH_URI}/account/`;
+        }}
         icon={IconNames.PERSON}
-        text="My Profile"
+        text="Account Settings"
       />
       <MenuItem
         onClick={(): void => {
@@ -43,17 +48,9 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
       <MenuDivider />
       <MenuItem
         onClick={(): void => {
-          history.push("/settings");
-        }}
-        icon={IconNames.SETTINGS}
-        text="Settings"
-      />
-      <MenuDivider />
-      <MenuItem
-        onClick={(): void => {
-          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("osslocal-token");
           client.resetStore();
-          history.replace("/");
+          window.location.replace(`${REST_URI}/logout`);
         }}
         icon={IconNames.LOG_OUT}
         text="Sign out"

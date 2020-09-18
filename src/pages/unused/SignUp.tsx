@@ -81,7 +81,7 @@ const SignUpSchema = Yup.object().shape({
     )
     .required("Password is required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords do not match")
+    .oneOf([Yup.ref("password"), undefined], "Passwords do not match")
     .required("Confirm password is required"),
   tncAgreement: Yup.boolean()
     .oneOf([true], "Must accept terms and conditions")

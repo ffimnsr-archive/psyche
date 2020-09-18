@@ -15,7 +15,8 @@ const Container = styled.main`
   align-content: stretch;
 `;
 
-function NoMatch(): JSX.Element {
+function AuthFramer(): JSX.Element {
+  // FZ_TODO: update the description
   const description = (
     <div>
       Is probably the most annoying thing to look at, on a screen. This is a page nobody
@@ -33,12 +34,12 @@ function NoMatch(): JSX.Element {
 
   return (
     <Container>
-      <Helmet titleTemplate="%s | Open Sesame">
-        <title>Page Not Found</title>
+      <Helmet>
+        <title>Open Sesame</title>
       </Helmet>
       <NonIdealState
         icon={IconNames.PATH_SEARCH}
-        title="Page Not Found"
+        title="Connecting to SSO"
         description={description}
         action={action}
       />
@@ -46,4 +47,4 @@ function NoMatch(): JSX.Element {
   );
 }
 
-export default NoMatch;
+export default AuthFramer;

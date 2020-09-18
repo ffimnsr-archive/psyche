@@ -1,13 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-    "todo-tree.filtering.includeGlobs": [
-      "**/*.tsx",
-      "**/*.ts"
-    ]
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "todo-tree.filtering.includeGlobs": ["**/*.tsx", "**/*.ts"]
+  }
 }

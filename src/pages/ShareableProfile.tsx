@@ -44,7 +44,7 @@ import { generateHash } from "@/utils";
 const REQUEST_PROFILE_QUERY = gql`
   query _requestProfile($id: String!) {
     requestProfile(id: $id)
-      @rest(type: "RequestProfile", method: "GET", path: "/request_profile/{args.id}") {
+    @rest(type: "RequestProfile", method: "GET", path: "/request_profile/{args.id}") {
       success
       profile
     }
@@ -224,7 +224,7 @@ interface MyShareableProfile {
 }
 
 function ShareableProfile(): JSX.Element {
-  const { id } = useParams();
+  const { id } = useParams<{ id: any }>();
   const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
     variables: { id },
   });

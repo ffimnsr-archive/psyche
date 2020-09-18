@@ -100,7 +100,7 @@ const ChangePasswordSchema = Yup.object().shape({
     )
     .required("New password is required"),
   confirmNewPassword: Yup.string()
-    .oneOf([Yup.ref("newPassword"), null], "Passwords do not match")
+    .oneOf([Yup.ref("newPassword"), undefined], "Passwords do not match")
     .required("Confirm new password is required"),
 });
 
@@ -127,7 +127,7 @@ function ChangeEmailDialog({
   setIsOpen,
 }: {
   isOpen: boolean;
-  setIsOpen: Function;
+  setIsOpen: (value: boolean) => void;
 }): JSX.Element {
   const [emailUpdate, { error }] = useMutation(EMAIL_UPDATE_MUTATION);
 
@@ -228,7 +228,7 @@ function ChangePasswordDialog({
   setIsOpen,
 }: {
   isOpen: boolean;
-  setIsOpen: Function;
+  setIsOpen: (value: boolean) => void;
 }): JSX.Element {
   const [passwordUpdate, { error }] = useMutation(PASSWORD_UPDATE_MUTATION);
 

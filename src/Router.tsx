@@ -11,8 +11,12 @@ import gql from "graphql-tag";
 import _ from "lodash";
 import { useQuery } from "react-apollo";
 import { motion } from "framer-motion";
+import AuthDispatcher from "@/pages/AuthDispatcher";
+import AuthFramer from "@/pages/AuthFramer";
 import NoMatch from "@/pages/NoMatch";
 import logoIcon from "@/assets/images/logo_icon.png";
+
+const REST_URI = process.env.REACT_APP_RS_URI;
 
 const IS_AUTHENTICATED_QUERY = gql`
   query isAuthenticated {
@@ -46,19 +50,12 @@ const LoadingPlaceholder = (
 );
 
 const LazyMain = React.lazy(() => import("@/pages/member/Home"));
-const LazyProfile = React.lazy(() => import("@/pages/member/Profile"));
 const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyProjects = React.lazy(() => import("@/pages/member/Projects"));
-const LazyIssues = React.lazy(() => import("@/pages/member/Issues"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
-const LazySettings = React.lazy(() => import("@/pages/member/Settings"));
-const LazySignIn = React.lazy(() => import("@/pages/SignIn"));
-const LazySignUp = React.lazy(() => import("@/pages/SignUp"));
-const LazySignUpVerify = React.lazy(() => import("@/pages/SignUpVerify"));
-const LazySignUpResend = React.lazy(() => import("@/pages/SignUpResend"));
-const LazyRecoverAccount = React.lazy(() => import("@/pages/RecoverAccount"));
-const LazyRecoverAccountVerify = React.lazy(() => import("@/pages/RecoverAccountVerify"));
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
+
+const LazyUsers = React.lazy(() => import("@/pages/manager/Users"));
 
 const OpenRoute = Route;
 
@@ -86,9 +83,25 @@ function AuthRoute({
   ) : (
     <Route
       {...otherProps}
-      render={<T,>(props: RouteComponentProps<T>): React.ReactNode =>
-        data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/sign_in" />
-      }
+      render={<T,>(props: RouteComponentProps<T>): React.ReactNode => {
+        if (data.isAuthenticated) {
+          return createOnNotNil(props);
+        } else {
+          const width = 500;
+          const height = 600;
+          const left = screen.width / 2 - width / 2;
+          const top = screen.height / 2 - height / 2;
+
+          const popup = window.open(
+            `${REST_URI}/login`,
+            "_blank",
+            `menubar=no,toolbar=no,status=no,width=${width},height=${height},left=${left},top=${top}`,
+          );
+
+          popup?.focus();
+          return <AuthFramer />;
+        }
+      }}
     />
   );
 }
@@ -97,29 +110,13 @@ export function Router(): JSX.Element {
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
-        <AuthRoute no={true} path="/sign_in" component={LazySignIn} />
-        <AuthRoute no={true} exact path="/sign_up" component={LazySignUp} />
-        <AuthRoute no={true} path="/sign_up/verify/:code" component={LazySignUpVerify} />
-        <AuthRoute no={true} path="/sign_up/resend" component={LazySignUpResend} />
-        <AuthRoute
-          no={true}
-          exact
-          path="/recover_account"
-          component={LazyRecoverAccount}
-        />
-        <AuthRoute
-          no={true}
-          path="/recover_account/verify/:code"
-          component={LazyRecoverAccountVerify}
-        />
         <AuthRoute exact path="/" component={LazyMain} />
-        <AuthRoute path="/profile" component={LazyProfile} />
         <AuthRoute path="/notifications" component={LazyNotifications} />
         <AuthRoute path="/projects" component={LazyProjects} />
-        <AuthRoute path="/issues" component={LazyIssues} />
+        <AuthRoute path="/users" component={LazyUsers} />
         <AuthRoute path="/schedules" component={LazySchedules} />
-        <AuthRoute path="/settings" component={LazySettings} />
         <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />
+        <OpenRoute path="/auth/callback" component={AuthDispatcher} />
         <OpenRoute component={NoMatch} />
       </Switch>
     </React.Suspense>

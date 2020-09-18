@@ -92,30 +92,31 @@ function JoinedProjects(): JSX.Element {
   );
 }
 
-function MyProjects(): JSX.Element {
-  return (
-    <>
-      <Card elevation={Elevation.ONE}>
-        <H5>My Hosted Projects</H5>
-        <ResponsiveTable condensed={true} bordered={true}>
-          <tbody>
-            <tr>
-              <td>Hello</td>
-            </tr>
-          </tbody>
-        </ResponsiveTable>
-      </Card>
-    </>
-  );
-}
+// function MyProjects(): JSX.Element {
+//   return (
+//     <>
+//       <Card elevation={Elevation.ONE}>
+//         <H5>My Hosted Projects</H5>
+//         <ResponsiveTable condensed={true} bordered={true}>
+//           <tbody>
+//             <tr>
+//               <td>Hello</td>
+//             </tr>
+//           </tbody>
+//         </ResponsiveTable>
+//       </Card>
+//     </>
+//   );
+// }
 
 function ProjectsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(PROJECTS_QUERY);
+  // FZ_TODO: process results
+  useQuery(PROJECTS_QUERY);
 
   return (
     <ContainerProjects>
       <JoinedProjects />
-      <MyProjects />
+      {/* <MyProjects /> */}
     </ContainerProjects>
   );
 }

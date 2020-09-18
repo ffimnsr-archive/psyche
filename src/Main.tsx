@@ -14,10 +14,14 @@ import { App } from "@/App";
 import { resolvers } from "@/resolvers";
 import "@/assets/styles/main.scss";
 
-log.setLevel(log.levels.INFO);
+if (process.env.NODE_ENV !== "production") {
+  log.setLevel(log.levels.INFO);
+} else {
+  log.setLevel(log.levels.INFO);
+}
 
-const ENDPOINT_URI = process.env.REACT_APP_REST_URI || "http://localhost:4000/api";
-const GRAPH_URI = process.env.REACT_APP_GRAPH_URI || "http://localhost:4000/graphql";
+const GRAPH_URI = process.env.REACT_APP_RS_URI + "/graphql";
+const REST_URI = process.env.REACT_APP_RS_URI;
 const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
 
 const cache = new InMemoryCache();
@@ -35,7 +39,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = sessionStorage.getItem("token");
+  const token = sessionStorage.getItem("osslocal-token");
   const context = {
     headers: {
       ...headers,
@@ -46,7 +50,7 @@ const authLink = setContext((_, { headers }) => {
   return context;
 });
 
-const restLink = new RestLink({ uri: ENDPOINT_URI });
+const restLink = new RestLink({ uri: REST_URI });
 
 const httpLink = new HttpLink({ uri: GRAPH_URI });
 
@@ -57,7 +61,7 @@ const client = new ApolloClient({
 });
 
 const data = {
-  isAuthenticated: !!sessionStorage.getItem("token"),
+  isAuthenticated: !!sessionStorage.getItem("osslocal-token"),
 };
 
 cache.writeData({ data });

@@ -111,7 +111,7 @@ function SignInFormContent({ history }: RouterProps): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [signIn, { loading, error }] = useMutation(SIGNIN_MUTATION, {
     onCompleted({ signIn }) {
-      sessionStorage.setItem("token", signIn.token);
+      sessionStorage.setItem("osslocal-token", signIn.token);
       client.writeData({ data: { isAuthenticated: true } });
       history.replace("/");
     },

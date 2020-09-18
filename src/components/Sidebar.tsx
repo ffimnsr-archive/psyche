@@ -62,9 +62,10 @@ interface SidebarNavigator {
 export function Sidebar(): JSX.Element {
   const navs: SidebarNavigator[] = [
     { icon: IconNames.HOME, display: "Home", to: "/" },
-    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "notifications" },
+    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/notifications" },
+    { icon: IconNames.PEOPLE, display: "People", to: "/users" },
     { icon: IconNames.PROJECTS, display: "Projects", to: "/projects" },
-    { icon: IconNames.PULSE, display: "Issues", to: "/issues" },
+    { icon: IconNames.PROJECTS, display: "Projects", to: "/projects" },
     { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/schedules" },
   ];
 

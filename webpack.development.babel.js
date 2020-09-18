@@ -14,7 +14,7 @@ module.exports = merge(common, {
     noInfo: false,
     hot: true,
     host: "127.0.0.1",
-    port: 8080,
+    port: 9009,
     index: "index.html",
   },
   stats: "normal",
