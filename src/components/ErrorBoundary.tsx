@@ -72,6 +72,7 @@ export class ErrorBoundary extends Component<Props, State> {
 export const withErrorBoundary = <T,>(
   Component: React.ComponentType<T>,
   onError?: (error: Error | null, componentStack: string) => void,
+  // eslint-disable-next-line @typescript-eslint/ban-types
 ): Function => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Wrapped = (props: any): React.ReactNode => (
