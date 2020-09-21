@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import { Sidebar, NavigationHeader } from "@/components";
 
 const Container = styled.main`
   min-height: 100vh;
@@ -39,7 +38,7 @@ function RecentNotifications(): JSX.Element {
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>Recent Notifications</H5>
+        <H5>RECENT NOTIFICATIONS</H5>
         <ResponsiveTable
           condensed={true}
           bordered={true}

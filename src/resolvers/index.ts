@@ -1,7 +1,9 @@
+import Cookies from "js-cookie";
+
 export const resolvers = {
   Query: {
     isAuthenticated(): boolean {
-      return !!sessionStorage.getItem("osslocal-token");
+      return !!Cookies.get("OSSLOCAL_SESSION_TOKEN");
     },
   },
 };

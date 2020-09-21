@@ -38,7 +38,7 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 import classNames from "classnames";
-import { HapButton } from "@/components/HapButton";
+import { HapButton } from "@/components";
 import { generateHash } from "@/utils";
 
 const REQUEST_PROFILE_QUERY = gql`
@@ -224,7 +224,7 @@ interface MyShareableProfile {
 }
 
 function ShareableProfile(): JSX.Element {
-  const { id } = useParams<{ id: any }>();
+  const { id } = useParams<{ id: string }>();
   const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
     variables: { id },
   });

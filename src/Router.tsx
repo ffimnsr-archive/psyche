@@ -6,6 +6,7 @@ import {
   RouteProps,
   RouteComponentProps,
 } from "react-router-dom";
+import log from "loglevel";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import _ from "lodash";
@@ -92,6 +93,7 @@ function AuthRoute({
           const left = screen.width / 2 - width / 2;
           const top = screen.height / 2 - height / 2;
 
+          log.trace("Opening authorization window");
           const popup = window.open(
             `${REST_URI}/login`,
             "_blank",

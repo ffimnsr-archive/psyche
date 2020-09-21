@@ -1,5 +1,6 @@
 import React from "react";
 import log from "loglevel";
+import Cookies from "js-cookie";
 import _ from "lodash";
 import { render as Render } from "react-dom";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -39,7 +40,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = sessionStorage.getItem("osslocal-token");
+  const token = Cookies.get("OSSLOCAL_SESSION_TOKEN");
   const context = {
     headers: {
       ...headers,
@@ -61,7 +62,7 @@ const client = new ApolloClient({
 });
 
 const data = {
-  isAuthenticated: !!sessionStorage.getItem("osslocal-token"),
+  isAuthenticated: !!Cookies.get("OSSLOCAL_SESSION_TOKEN"),
 };
 
 cache.writeData({ data });

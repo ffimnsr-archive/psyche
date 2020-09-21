@@ -1,4 +1,4 @@
-export type ProijectClue = {
+export type ProjectClue = {
   id: string;
   projectId: string;
   requirements: string;

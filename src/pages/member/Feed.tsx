@@ -5,8 +5,7 @@ import gql from "graphql-tag";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "react-apollo";
 import { Card, H5, Button, Elevation, Colors, Classes } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import { Sidebar, NavigationHeader } from "@/components";
 
 const FEED_QUERY = gql`
   query _feed {

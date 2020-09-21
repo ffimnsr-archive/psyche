@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { NonIdealState, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { HapButton } from "@/components/HapButton";
+import { HapButton } from "@/components";
 
 const Container = styled.main`
   height: 100vh;

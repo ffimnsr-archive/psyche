@@ -2,10 +2,10 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
-import { UserClue } from "@/models/UserClue";
+import { HTMLTable, H5, Card, Elevation, Icon } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
+import { Sidebar, NavigationHeader } from "@/components";
+import { UserClue } from "@/models";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
@@ -52,13 +52,26 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
+const GlobalData = styled.td`
+  text-transform: uppercase;
+`;
+
+const MoreData = styled.td`
+  text-align: right !important;
+`;
+
 function UserList({ list }: { list: UserClue[] }): JSX.Element {
   const users = list.map(({ id, globalId, username, avatar }: UserClue) => (
     <tr key={id}>
       <td>{id}</td>
-      <td>{globalId}</td>
+      <GlobalData>{globalId}</GlobalData>
       <td>{username}</td>
       <td>{avatar}</td>
+      <MoreData>
+        <a>
+          <Icon icon={IconNames.MORE} />
+        </a>
+      </MoreData>
     </tr>
   ));
 
@@ -83,7 +96,6 @@ function UsersContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerUsers>
       <UserList list={data.userClue.userClues} />

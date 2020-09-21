@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { NonIdealState, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { HapButton } from "@/components/HapButton";
+import { HapButton } from "@/components";
 
 const REST_URI = process.env.REACT_APP_RS_URI;
 
@@ -57,10 +57,11 @@ function AuthDispatcher(): JSX.Element {
         (result) => {
           log.info(result.data);
 
-          sessionStorage.setItem("osslocal-token", result.data.id_token);
-          if (window.opener !== null) {
-            window.opener.sessionStorage.setItem("osslocal-token", result.data.id_token);
-          }
+          // OLD WAY
+          // sessionStorage.setItem("osslocal-token", result.data.id_token);
+          // if (window.opener !== null) {
+          //   window.opener.sessionStorage.setItem("osslocal-token", result.data.id_token);
+          // }
           client.writeData({ data: { isAuthenticated: true } });
 
           setTimeout(() => {

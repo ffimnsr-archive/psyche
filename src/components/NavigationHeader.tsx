@@ -48,7 +48,6 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
       <MenuDivider />
       <MenuItem
         onClick={(): void => {
-          sessionStorage.removeItem("osslocal-token");
           client.resetStore();
           window.location.replace(`${REST_URI}/logout`);
         }}

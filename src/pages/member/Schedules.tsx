@@ -4,8 +4,7 @@ import moment from "moment";
 import { Helmet } from "react-helmet-async";
 // import { Card, H5, Button, Elevation } from "@blueprintjs/core";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import { Sidebar, NavigationHeader } from "@/components";
 
 const localizer = momentLocalizer(moment);
 

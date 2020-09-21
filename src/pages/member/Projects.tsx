@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import { Sidebar, NavigationHeader } from "@/components";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
@@ -79,7 +78,7 @@ function JoinedProjects(): JSX.Element {
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>Projects That I Joined</H5>
+        <H5>JOINED PROJECTS</H5>
         <ResponsiveTable condensed={true} bordered={true}>
           <tbody>
             <tr>

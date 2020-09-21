@@ -3,8 +3,8 @@ import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
-import { Sidebar } from "@/components/Sidebar";
-import { NavigationHeader } from "@/components/NavigationHeader";
+import { Sidebar, NavigationHeader } from "@/components";
+import { Organization } from "@/models";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
@@ -50,13 +50,13 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function UserList({ list }: { list: UserClue[] }): JSX.Element {
-  const users = list.map(({ id, globalId, username, avatar }: UserClue) => (
+function UserList({ list }: { list: Organization[] }): JSX.Element {
+  const users = list.map(({ id, name, description }: Organization) => (
     <tr key={id}>
       <td>{id}</td>
-      <td>{globalId}</td>
-      <td>{username}</td>
-      <td>{avatar}</td>
+      <td>{name}</td>
+      <td>{description}</td>
+      <td></td>
     </tr>
   ));
 
@@ -73,7 +73,7 @@ function UserList({ list }: { list: UserClue[] }): JSX.Element {
 }
 
 function UsersContent(): JSX.Element {
-  const { loading, error, data } = useQuery(USERS_QUERY);
+  const { loading, error, data } = useQuery(ORGANIZATIONS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
