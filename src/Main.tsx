@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== "production") {
   log.setLevel(log.levels.INFO);
 }
 
-const GRAPH_URI = process.env.REACT_APP_RS_URI + "/graphql";
+const GRAPH_URI = process.env.REACT_APP_RS_URI + "/_/graphql";
 const REST_URI = process.env.REACT_APP_RS_URI;
 const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
 

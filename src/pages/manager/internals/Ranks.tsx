@@ -4,22 +4,17 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
-import { WithdrawalRequest } from "@/models";
+import { Rank } from "@/models/internals";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
+const RANKS_QUERY = gql`
+  query _ranks {
+    rank {
+      ranks {
         id
-        userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
+        name
+        description
       }
     }
   }
@@ -43,7 +38,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerWithdrawalRequests = styled.div`
+const ContainerRanks = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -55,45 +50,30 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
-    ({
-      id,
-      userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
-      <tr key={id}>
-        <td>{id}</td>
-        <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
-      </tr>
-    ),
-  );
+function RankList({ list }: { list: Rank[] }): JSX.Element {
+  const ranks = list.map(({ id, name, description }: Rank) => (
+    <tr key={id}>
+      <td>{id}</td>
+      <td>{name}</td>
+      <td>{description}</td>
+      <td></td>
+    </tr>
+  ));
 
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>WITHDRAWAL REQUESTS</H5>
+        <H5>RANKS</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          <tbody>{ranks}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+function RanksContent(): JSX.Element {
+  const { loading, error, data } = useQuery(RANKS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -103,25 +83,25 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
-    </ContainerWithdrawalRequests>
+    <ContainerRanks>
+      <RankList list={data.rank.ranks} />
+    </ContainerRanks>
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function Ranks(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>Ranks</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <WithdrawalRequestsContent />
+        <RanksContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default WithdrawalRequests;
+export default Ranks;

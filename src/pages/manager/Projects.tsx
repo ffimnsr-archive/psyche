@@ -4,17 +4,21 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
+import { Project } from "@/models";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const USERS_QUERY = gql`
-  query _users {
-    userClue {
-      userClues {
+const PROJECTS_QUERY = gql`
+  query _projects {
+    project {
+      projects {
         id
-        globalId
-        username
-        avatar
+        publicCode
+        name
+        description
+        parentOrganizationId
+        managedById
+        createdById
       }
     }
   }
@@ -38,7 +42,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerUsers = styled.div`
+const ContainerProjects = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -50,37 +54,45 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-type UserClue = {
-  id: number;
-  globalId: string;
-  username: string;
-  avatar: string;
-};
-
-function UserList({ list }: { list: UserClue[] }): JSX.Element {
-  const users = list.map(({ id, globalId, username, avatar }: UserClue) => (
-    <tr key={id}>
-      <td>{id}</td>
-      <td>{globalId}</td>
-      <td>{username}</td>
-      <td>{avatar}</td>
-    </tr>
-  ));
+function ProjectList({ list }: { list: Project[] }): JSX.Element {
+  const projects = list.map(
+    ({
+      id,
+      publicCode,
+      name,
+      description,
+      parentOrganizationId,
+      managedById,
+      createdById,
+    }: Project) => (
+      <tr key={id}>
+        <td>{id}</td>
+        <td>{publicCode}</td>
+        <td>{name}</td>
+        <td>{description}</td>
+        <td>{parentOrganizationId}</td>
+        <td>{managedById}</td>
+        <td>{createdById}</td>
+        <td>{description}</td>
+        <td>{description}</td>
+      </tr>
+    ),
+  );
 
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>ALL USERS</H5>
+        <H5>PROJECTS</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{users}</tbody>
+          <tbody>{projects}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function UsersContent(): JSX.Element {
-  const { loading, error, data } = useQuery(USERS_QUERY);
+function ProjectsContent(): JSX.Element {
+  const { loading, error, data } = useQuery(PROJECTS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -90,25 +102,25 @@ function UsersContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerUsers>
-      <UserList list={data.userClue.userClues} />
-    </ContainerUsers>
+    <ContainerProjects>
+      <ProjectList list={data.project.projects} />
+    </ContainerProjects>
   );
 }
 
-function Users(): JSX.Element {
+function Projects(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Users</title>
+        <title>Projects</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <UsersContent />
+        <ProjectsContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default Users;
+export default Projects;

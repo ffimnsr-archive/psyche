@@ -4,22 +4,17 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
-import { WithdrawalRequest } from "@/models";
+import { ProjectCategory } from "@/models/internals";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
+const COUNTRIES_QUERY = gql`
+  query _projectCategories {
+    projectCategory {
+      projectCategories {
         id
-        userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
+        name
+        description
       }
     }
   }
@@ -43,7 +38,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerWithdrawalRequests = styled.div`
+const ContainerProjectCategories = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -55,45 +50,30 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
-    ({
-      id,
-      userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
-      <tr key={id}>
-        <td>{id}</td>
-        <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
-      </tr>
-    ),
-  );
+function ProjectCategoryList({ list }: { list: ProjectCategory[] }): JSX.Element {
+  const projectCategory = list.map(({ id, name, description }: ProjectCategory) => (
+    <tr key={id}>
+      <td>{id}</td>
+      <td>{name}</td>
+      <td>{description}</td>
+      <td></td>
+    </tr>
+  ));
 
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>WITHDRAWAL REQUESTS</H5>
+        <H5>COUNTRIES</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          <tbody>{projectCategory}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+function ProjectCategoriesContent(): JSX.Element {
+  const { loading, error, data } = useQuery(COUNTRIES_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -103,25 +83,25 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
-    </ContainerWithdrawalRequests>
+    <ContainerProjectCategories>
+      <ProjectCategoryList list={data.projectCategory.projectCategories} />
+    </ContainerProjectCategories>
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function ProjectCategories(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>ProjectCategories</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <WithdrawalRequestsContent />
+        <ProjectCategoriesContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default WithdrawalRequests;
+export default ProjectCategories;

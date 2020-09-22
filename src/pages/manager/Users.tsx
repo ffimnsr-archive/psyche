@@ -78,7 +78,7 @@ function UserList({ list }: { list: UserClue[] }): JSX.Element {
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>ALL USERS</H5>
+        <H5>USERS</H5>
         <ResponsiveTable condensed={true} striped={true}>
           <tbody>{users}</tbody>
         </ResponsiveTable>

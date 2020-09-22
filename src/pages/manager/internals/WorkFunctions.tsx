@@ -4,22 +4,17 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
-import { WithdrawalRequest } from "@/models";
+import { WorkFunction } from "@/models/internals";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
+const WORK_FUNCTIONS_QUERY = gql`
+  query _workFunctions {
+    workFunction {
+      workFunctions {
         id
-        userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
+        name
+        description
       }
     }
   }
@@ -43,7 +38,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerWithdrawalRequests = styled.div`
+const ContainerWorkFunctions = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -55,45 +50,30 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
-    ({
-      id,
-      userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
-      <tr key={id}>
-        <td>{id}</td>
-        <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
-      </tr>
-    ),
-  );
+function WorkFunctionList({ list }: { list: WorkFunction[] }): JSX.Element {
+  const workFunctions = list.map(({ id, name, description }: WorkFunction) => (
+    <tr key={id}>
+      <td>{id}</td>
+      <td>{name}</td>
+      <td>{description}</td>
+      <td></td>
+    </tr>
+  ));
 
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>WITHDRAWAL REQUESTS</H5>
+        <H5>WORK FUNCTIONS</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          <tbody>{workFunctions}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+function WorkFunctionsContent(): JSX.Element {
+  const { loading, error, data } = useQuery(WORK_FUNCTIONS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -103,25 +83,25 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
-    </ContainerWithdrawalRequests>
+    <ContainerWorkFunctions>
+      <WorkFunctionList list={data.workFunction.workFunctions} />
+    </ContainerWorkFunctions>
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function WorkFunctions(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>WorkFunctions</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <WithdrawalRequestsContent />
+        <WorkFunctionsContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default WithdrawalRequests;
+export default WorkFunctions;

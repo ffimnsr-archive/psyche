@@ -50,8 +50,8 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function UserList({ list }: { list: Organization[] }): JSX.Element {
-  const users = list.map(({ id, name, description }: Organization) => (
+function OrganizationList({ list }: { list: Organization[] }): JSX.Element {
+  const organizations = list.map(({ id, name, description }: Organization) => (
     <tr key={id}>
       <td>{id}</td>
       <td>{name}</td>
@@ -63,16 +63,16 @@ function UserList({ list }: { list: Organization[] }): JSX.Element {
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>ALL USERS</H5>
+        <H5>ORGANIZATIONS</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{users}</tbody>
+          <tbody>{organizations}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function UsersContent(): JSX.Element {
+function OrganizationsContent(): JSX.Element {
   const { loading, error, data } = useQuery(ORGANIZATIONS_QUERY);
 
   if (loading) return <p>Loading</p>;
@@ -84,24 +84,24 @@ function UsersContent(): JSX.Element {
   log.info();
   return (
     <ContainerOrganizations>
-      <UserList list={data.userClue.userClues} />
+      <OrganizationList list={data.organization.organizations} />
     </ContainerOrganizations>
   );
 }
 
-function Users(): JSX.Element {
+function Organizations(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Users</title>
+        <title>Organizations</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <UsersContent />
+        <OrganizationsContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default Users;
+export default Organizations;

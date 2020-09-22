@@ -4,22 +4,17 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
-import { WithdrawalRequest } from "@/models";
+import { Country } from "@/models/internals";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
+const COUNTRIES_QUERY = gql`
+  query _countries {
+    country {
+      countries {
         id
-        userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
+        name
+        description
       }
     }
   }
@@ -43,7 +38,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerWithdrawalRequests = styled.div`
+const ContainerCountries = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -55,27 +50,17 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
-    ({
-      id,
-      userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
+function CountryList({ list }: { list: Country[] }): JSX.Element {
+  const countries = list.map(
+    ({ id, name, alpha2, alpha3, phoneCode, currencyCode }: Country) => (
       <tr key={id}>
         <td>{id}</td>
-        <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
+        <td>{name}</td>
+        <td>{alpha2}</td>
+        <td>{alpha3}</td>
+        <td>{phoneCode}</td>
+        <td>{currencyCode}</td>
+        <td></td>
       </tr>
     ),
   );
@@ -83,17 +68,17 @@ function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Ele
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>WITHDRAWAL REQUESTS</H5>
+        <H5>COUNTRIES</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          <tbody>{countries}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+function CountriesContent(): JSX.Element {
+  const { loading, error, data } = useQuery(COUNTRIES_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -103,25 +88,25 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
-    </ContainerWithdrawalRequests>
+    <ContainerCountries>
+      <CountryList list={data.country.countries} />
+    </ContainerCountries>
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function Countries(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>Countries</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <WithdrawalRequestsContent />
+        <CountriesContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default WithdrawalRequests;
+export default Countries;

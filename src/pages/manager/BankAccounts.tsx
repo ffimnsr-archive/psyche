@@ -4,22 +4,23 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
-import { WithdrawalRequest } from "@/models";
+import { BankAccount } from "@/models";
 import gql from "graphql-tag";
 import { useQuery } from "react-apollo";
 
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
+const BANK_ACCOUNTS_QUERY = gql`
+  query _bankAccounts {
+    bankAccount {
+      bankAccounts {
         id
         userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
+        accountName
+        accountNo
+        bankAddress
+        bankBranch
+        bankName
+        bankSwiftCode
+        bankRoutingNumber
       }
     }
   }
@@ -43,7 +44,7 @@ const ContainerMain = styled.div`
   align-content: stretch;
 `;
 
-const ContainerWithdrawalRequests = styled.div`
+const ContainerBankAccounts = styled.div`
   flex: 1 1 auto;
   margin: 20px;
   display: flex;
@@ -55,27 +56,30 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
+function BankAccountList({ list }: { list: BankAccount[] }): JSX.Element {
+  const bankAccounts = list.map(
     ({
       id,
       userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
+      accountName,
+      accountNo,
+      bankAddress,
+      bankBranch,
+      bankName,
+      bankSwiftCode,
+      bankRoutingNumber,
+    }: BankAccount) => (
       <tr key={id}>
         <td>{id}</td>
         <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
+        <td>{accountName}</td>
+        <td>{accountNo}</td>
+        <td>{bankAddress}</td>
+        <td>{bankBranch}</td>
+        <td>{bankName}</td>
+        <td>{bankSwiftCode}</td>
+        <td>{bankRoutingNumber}</td>
+        <td></td>
       </tr>
     ),
   );
@@ -83,17 +87,17 @@ function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Ele
   return (
     <>
       <Card elevation={Elevation.ONE}>
-        <H5>WITHDRAWAL REQUESTS</H5>
+        <H5>BANK ACCOUNTS</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          <tbody>{bankAccounts}</tbody>
         </ResponsiveTable>
       </Card>
     </>
   );
 }
 
-function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+function BankAccountsContent(): JSX.Element {
+  const { loading, error, data } = useQuery(BANK_ACCOUNTS_QUERY);
 
   if (loading) return <p>Loading</p>;
   if (error) {
@@ -103,25 +107,25 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   log.info();
   return (
-    <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
-    </ContainerWithdrawalRequests>
+    <ContainerBankAccounts>
+      <BankAccountList list={data.bankAccount.bankAccounts} />
+    </ContainerBankAccounts>
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function BankAccounts(): JSX.Element {
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>BankAccounts</title>
       </Helmet>
       <Sidebar />
       <ContainerMain>
         <NavigationHeader />
-        <WithdrawalRequestsContent />
+        <BankAccountsContent />
       </ContainerMain>
     </Container>
   );
 }
 
-export default WithdrawalRequests;
+export default BankAccounts;

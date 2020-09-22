@@ -52,11 +52,17 @@ const LoadingPlaceholder = (
 
 const LazyMain = React.lazy(() => import("@/pages/member/Home"));
 const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
-const LazyProjects = React.lazy(() => import("@/pages/member/Projects"));
+const LazyUserProjects = React.lazy(() => import("@/pages/member/Projects"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 
+const LazyBankAccounts = React.lazy(() => import("@/pages/manager/BankAccounts"));
+const LazyOrganizations = React.lazy(() => import("@/pages/manager/Organizations"));
+const LazyProjects = React.lazy(() => import("@/pages/manager/Projects"));
 const LazyUsers = React.lazy(() => import("@/pages/manager/Users"));
+const LazyWithdrawalRequests = React.lazy(
+  () => import("@/pages/manager/WithdrawalRequests"),
+);
 
 const OpenRoute = Route;
 
@@ -114,8 +120,12 @@ export function Router(): JSX.Element {
       <Switch>
         <AuthRoute exact path="/" component={LazyMain} />
         <AuthRoute path="/notifications" component={LazyNotifications} />
+        <AuthRoute path="/u/projects" component={LazyUserProjects} />
+        <AuthRoute path="/bank_accounts" component={LazyBankAccounts} />
+        <AuthRoute path="/organizations" component={LazyOrganizations} />
         <AuthRoute path="/projects" component={LazyProjects} />
         <AuthRoute path="/users" component={LazyUsers} />
+        <AuthRoute path="/withdrawal_requests" component={LazyWithdrawalRequests} />
         <AuthRoute path="/schedules" component={LazySchedules} />
         <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />
         <OpenRoute path="/auth/callback" component={AuthDispatcher} />
