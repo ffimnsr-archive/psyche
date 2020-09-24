@@ -1,8 +1,8 @@
-export type { BankAccount } from "./BankAccount";
-export type { Organization } from "./Organization";
+export type { BankAccount } from "./bank_account";
+export type { Organization } from "./organization";
 export type { Project } from "./Project";
-export type { ProjectClue } from "./ProjectClue";
-export type { ProjectMember } from "./ProjectMember";
+export type { ProjectClue } from "./project_clue";
+export type { ProjectMember } from "./project_member";
 export type { SitePreference } from "./SitePreference";
 export type { UserClue } from "./UserClue";
 export type { WithdrawalRequest } from "./WithdrawalRequest";
