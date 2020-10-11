@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { RouterProps } from "react-router";
+import { useApolloClient } from "react-apollo";
 import {
   Alignment,
   AnchorButton,
@@ -17,10 +18,7 @@ import {
   Position,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { useApolloClient } from "react-apollo";
-
-const REST_URI = process.env.REACT_APP_RS_URI;
-const AUTH_URI = process.env.REACT_APP_AS_URI;
+import { useKeycloak } from "@react-keycloak/web";
 
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
@@ -28,12 +26,13 @@ const NoShadowNavbar = styled(Navbar)`
 
 function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   const client = useApolloClient();
+  const { keycloak } = useKeycloak();
 
   const userMenu = (
     <Menu>
       <MenuItem
         onClick={(): void => {
-          window.location.href = `${AUTH_URI}/account/`;
+          keycloak?.accountManagement();
         }}
         icon={IconNames.PERSON}
         text="Account Settings"
@@ -49,7 +48,7 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
       <MenuItem
         onClick={(): void => {
           client.resetStore();
-          window.location.replace(`${REST_URI}/logout`);
+          keycloak?.logout();
         }}
         icon={IconNames.LOG_OUT}
         text="Sign out"

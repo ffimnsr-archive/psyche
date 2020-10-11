@@ -8,22 +8,10 @@ import {
 } from "react-router-dom";
 import log from "loglevel";
 import styled from "styled-components";
-import gql from "graphql-tag";
-import _ from "lodash";
-import { useQuery } from "react-apollo";
 import { motion } from "framer-motion";
-import AuthDispatcher from "@/pages/AuthDispatcher";
-import AuthFramer from "@/pages/AuthFramer";
 import NoMatch from "@/pages/NoMatch";
 import logoIcon from "@/assets/images/logo_icon.png";
-
-const REST_URI = process.env.REACT_APP_RS_URI;
-
-const IS_AUTHENTICATED_QUERY = gql`
-  query isAuthenticated {
-    isAuthenticated @client(always: true)
-  }
-`;
+import { useKeycloak } from "@react-keycloak/web";
 
 const Container = styled.div`
   height: 100vh;
@@ -55,6 +43,7 @@ const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"
 const LazyUserProjects = React.lazy(() => import("@/pages/member/Projects"));
 const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
+const LazyLogin = React.lazy(() => import("@/pages/Login"));
 
 const LazyBankAccounts = React.lazy(() => import("@/pages/manager/BankAccounts"));
 const LazyOrganizations = React.lazy(() => import("@/pages/manager/Organizations"));
@@ -67,54 +56,34 @@ const LazyWithdrawalRequests = React.lazy(
 const OpenRoute = Route;
 
 interface AuthRouteProps extends RouteProps {
-  no?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<unknown>;
 }
 
-function AuthRoute({
-  component,
-  no = false,
-  ...otherProps
-}: AuthRouteProps): JSX.Element {
-  const { data } = useQuery(IS_AUTHENTICATED_QUERY);
-
-  const createOnNotNil = <T,>(props: RouteComponentProps<T>): React.ReactNode =>
-    !_.isUndefined(component) ? React.createElement(component, props) : null;
-
-  return no ? (
+function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
+  const { keycloak } = useKeycloak();
+  return (
     <Route
-      {...otherProps}
-      render={<T,>(props: RouteComponentProps<T>): React.ReactNode =>
-        !data.isAuthenticated ? createOnNotNil(props) : <Redirect to="/" />
+      {...rest}
+      render={(props) =>
+        keycloak?.authenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
+        )
       }
-    />
-  ) : (
-    <Route
-      {...otherProps}
-      render={<T,>(props: RouteComponentProps<T>): React.ReactNode => {
-        if (data.isAuthenticated) {
-          return createOnNotNil(props);
-        } else {
-          const width = 500;
-          const height = 600;
-          const left = screen.width / 2 - width / 2;
-          const top = screen.height / 2 - height / 2;
-
-          log.trace("Opening authorization window");
-          const popup = window.open(
-            `${REST_URI}/login`,
-            "_blank",
-            `menubar=no,toolbar=no,status=no,width=${width},height=${height},left=${left},top=${top}`,
-          );
-
-          popup?.focus();
-          return <AuthFramer />;
-        }
-      }}
     />
   );
 }
 
 export function Router(): JSX.Element {
+  const [, initialized] = useKeycloak();
+
+  if (!initialized) {
+    log.info("Keycloak loading");
+    return <div>Loading...</div>;
+  }
+
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
@@ -127,8 +96,8 @@ export function Router(): JSX.Element {
         <AuthRoute path="/users" component={LazyUsers} />
         <AuthRoute path="/withdrawal_requests" component={LazyWithdrawalRequests} />
         <AuthRoute path="/schedules" component={LazySchedules} />
+        <OpenRoute path="/login" component={LazyLogin} />
         <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />
-        <OpenRoute path="/auth/callback" component={AuthDispatcher} />
         <OpenRoute component={NoMatch} />
       </Switch>
     </React.Suspense>

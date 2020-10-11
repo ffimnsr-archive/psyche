@@ -1,10 +1,10 @@
 export type { BankAccount } from "./bank_account";
 export type { Organization } from "./organization";
-export type { Project } from "./Project";
+export type { Project } from "./project";
 export type { ProjectClue } from "./project_clue";
 export type { ProjectMember } from "./project_member";
-export type { SitePreference } from "./SitePreference";
-export type { UserClue } from "./UserClue";
-export type { WithdrawalRequest } from "./WithdrawalRequest";
-export type { WorkExperience } from "./WorkExperience";
-export type { WorkPreference } from "./WorkPreference";
+export type { SitePreference } from "./site_preference";
+export type { UserClue } from "./user_clue";
+export type { WithdrawalRequest } from "./withdrawal_request";
+export type { WorkExperience } from "./work_experience";
+export type { WorkPreference } from "./work_preference";
