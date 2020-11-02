@@ -4,29 +4,39 @@ import Cookies from "js-cookie";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useApolloClient } from "react-apollo";
-import { KeycloakProvider } from "@react-keycloak/web";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { Router } from "@/Router";
 import keycloak from "@/services/keycloak";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
+const eventLogger = (event: unknown, error: unknown) => {
+  log.info("onKeycloakEvent", event, error);
+};
+
 export function App(): JSX.Element {
   const client = useApolloClient();
 
   return (
     <HelmetProvider>
-      <KeycloakProvider
-        keycloak={keycloak}
-        onEvent={(eventType, error) => {
-          log.info("onKeycloakEvent", eventType, error);
-        }}
+      <ReactKeycloakProvider
+        authClient={keycloak}
+        onEvent={eventLogger}
         onTokens={(tokens) => {
           log.trace("onKeycloakTokens", tokens);
 
-          Cookies.set("OSSLOCAL_SESSION_TOKEN", tokens.token);
-          Cookies.set("OSSLOCAL_SESSION_ID_TOKEN", tokens.idToken);
-          Cookies.set("OSSLOCAL_SESSION_REFRESH_TOKEN", tokens.refreshToken);
+          if (tokens.token !== undefined) {
+            Cookies.set("OSSLOCAL_SESSION_TOKEN", tokens.token);
+          }
+
+          if (tokens.idToken !== undefined) {
+            Cookies.set("OSSLOCAL_SESSION_ID_TOKEN", tokens.idToken);
+          }
+
+          if (tokens.refreshToken !== undefined) {
+            Cookies.set("OSSLOCAL_SESSION_REFRESH_TOKEN", tokens.refreshToken);
+          }
 
           client.writeData({
             data: {
@@ -40,7 +50,7 @@ export function App(): JSX.Element {
         <BrowserRouter>
           <Router />
         </BrowserRouter>
-      </KeycloakProvider>
+      </ReactKeycloakProvider>
     </HelmetProvider>
   );
 }

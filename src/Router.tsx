@@ -57,7 +57,7 @@ const OpenRoute = Route;
 
 interface AuthRouteProps extends RouteProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<unknown>;
+  component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
 function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
@@ -77,7 +77,7 @@ function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
 }
 
 export function Router(): JSX.Element {
-  const [, initialized] = useKeycloak();
+  const { initialized } = useKeycloak();
 
   if (!initialized) {
     log.info("Keycloak loading");

@@ -17,6 +17,14 @@ Listed below are basic types that can be use on typescript for reference.
 - `null` and `undefined`
 - `never` (e.g. exceptions throws)
 
+### Extra Polyfill Package (Fallbacks)
+
+- stream-browserify
+- browserify-zlib
+- util
+- buffer
+- assert
+
 ## License
 
 Copyright (C) Open Sesame Pt. Ltd. - All Rights Reserved.

@@ -3,7 +3,7 @@ import path from "path";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import { version } from "./package.json";
+import pack from "./package.json";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const revision = require("child_process")
@@ -17,12 +17,12 @@ const config = {
   },
   optimization: {
     runtimeChunk: true,
-    moduleIds: "hashed",
+    moduleIds: "deterministic",
     splitChunks: {
       maxInitialRequests: Infinity,
       maxAsyncRequests: Infinity,
       cacheGroups: {
-        vendors: {
+        defaultVendors: {
           chunks: "initial",
           name: "vendors",
           test: /[\\/]node_modules[\\/]/,
@@ -30,7 +30,6 @@ const config = {
         },
       },
     },
-    occurrenceOrder: true,
   },
   module: {
     rules: [
@@ -89,6 +88,13 @@ const config = {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
+    fallback: {
+      stream: require.resolve("stream-browserify"),
+      zlib: require.resolve("browserify-zlib"),
+      util: require.resolve("util/"),
+      buffer: require.resolve("buffer/"),
+      assert: require.resolve("assert/"),
+    },
   },
   output: {
     filename: "[name].bundle.js",
@@ -109,10 +115,10 @@ const config = {
       minify: true,
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(version),
+      VERSION: JSON.stringify(pack.version),
       BUILD_HASH: JSON.stringify(revision),
     }),
-    new webpack.BannerPlugin(`Open Sesame v${version}.${revision}`),
+    new webpack.BannerPlugin(`Open Sesame v${pack.version}.${revision}`),
   ],
 };
 
