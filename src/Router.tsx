@@ -26,24 +26,30 @@ const LoadingPlaceholder = (
     <motion.img
       src={logoIcon}
       alt="logo"
-      width="90"
-      animate={{ scale: [0.5, 1, 1, 0.5] }}
+      width="89"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
       transition={{
-        duration: 2,
-        ease: "easeInOut",
-        loop: Infinity,
-        repeatDelay: 1,
+        repeat: Infinity,
+        repeatType: "mirror",
+        duration: 1,
       }}
     />
   </Container>
 );
 
-const LazyMain = React.lazy(() => import("@/pages/member/Home"));
-const LazyNotifications = React.lazy(() => import("@/pages/member/Notifications"));
-const LazyUserProjects = React.lazy(() => import("@/pages/member/Projects"));
-const LazySchedules = React.lazy(() => import("@/pages/member/Schedules"));
-const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 const LazyLogin = React.lazy(() => import("@/pages/Login"));
+const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
+const LazyMemberMain = React.lazy(() => import("@/pages/member/Home"));
+const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
+const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));
+const LazyMemberSchedules = React.lazy(() => import("@/pages/member/Schedules"));
+const LazyMemberBankAccounts = React.lazy(() => import("@/pages/member/BankAccounts"));
+const LazyMemberIssues = React.lazy(() => import("@/pages/member/Issues"));
+const LazyMemberStats = React.lazy(() => import("@/pages/member/Stats"));
+const LazyMemberWallet = React.lazy(() => import("@/pages/member/Wallet"));
+const LazyMemberProfile = React.lazy(() => import("@/pages/member/Profile"));
+const LazyMemberFeed = React.lazy(() => import("@/pages/member/Feed"));
 
 const LazyBankAccounts = React.lazy(() => import("@/pages/manager/BankAccounts"));
 const LazyOrganizations = React.lazy(() => import("@/pages/manager/Organizations"));
@@ -80,24 +86,30 @@ export function Router(): JSX.Element {
   const { initialized } = useKeycloak();
 
   if (!initialized) {
-    log.info("Keycloak loading");
-    return <div>Loading...</div>;
+    log.trace("Keycloak loading...");
+    return <div>{LoadingPlaceholder}</div>;
   }
 
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
-        <AuthRoute exact path="/" component={LazyMain} />
-        <AuthRoute path="/notifications" component={LazyNotifications} />
-        <AuthRoute path="/u/projects" component={LazyUserProjects} />
-        <AuthRoute path="/bank_accounts" component={LazyBankAccounts} />
-        <AuthRoute path="/organizations" component={LazyOrganizations} />
-        <AuthRoute path="/projects" component={LazyProjects} />
-        <AuthRoute path="/users" component={LazyUsers} />
-        <AuthRoute path="/withdrawal_requests" component={LazyWithdrawalRequests} />
-        <AuthRoute path="/schedules" component={LazySchedules} />
+        <AuthRoute exact path="/" component={LazyMemberMain} />
+        <AuthRoute path="/u/notifications" component={LazyMemberNotifications} />
+        <AuthRoute path="/u/schedules" component={LazyMemberSchedules} />
+        <AuthRoute path="/u/projects" component={LazyMemberProjects} />
+        <AuthRoute path="/u/bank_accounts" component={LazyMemberBankAccounts} />
+        <AuthRoute path="/u/issues" component={LazyMemberIssues} />
+        <AuthRoute path="/u/stats" component={LazyMemberStats} />
+        <AuthRoute path="/u/wallet" component={LazyMemberWallet} />
+        <AuthRoute path="/u/profile" component={LazyMemberProfile} />
+        <AuthRoute path="/u/feed" component={LazyMemberFeed} />
+        <AuthRoute path="/_/bank_accounts" component={LazyBankAccounts} />
+        <AuthRoute path="/_/projects" component={LazyProjects} />
+        <AuthRoute path="/_/users" component={LazyUsers} />
+        <AuthRoute path="/_/organizations" component={LazyOrganizations} />
+        <AuthRoute path="/_/withdrawal_requests" component={LazyWithdrawalRequests} />
         <OpenRoute path="/login" component={LazyLogin} />
-        <OpenRoute path="/u/share/:id" component={LazyShareableProfile} />
+        <OpenRoute path="/o/public/share/:id" component={LazyShareableProfile} />
         <OpenRoute component={NoMatch} />
       </Switch>
     </React.Suspense>

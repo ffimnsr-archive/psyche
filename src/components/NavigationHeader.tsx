@@ -39,10 +39,24 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
       />
       <MenuItem
         onClick={(): void => {
-          history.push("/projects");
+          history.push("/u/profile");
         }}
-        icon={IconNames.GRAPH}
+        icon={IconNames.ID_NUMBER}
+        text="My Profile"
+      />
+      <MenuItem
+        onClick={(): void => {
+          history.push("/u/projects");
+        }}
+        icon={IconNames.PROJECTS}
         text="Projects"
+      />
+      <MenuItem
+        onClick={(): void => {
+          history.push("/u/settings");
+        }}
+        icon={IconNames.SETTINGS}
+        text="Settings"
       />
       <MenuDivider />
       <MenuItem

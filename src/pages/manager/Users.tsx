@@ -52,6 +52,10 @@ const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
+const IdentityData = styled.td`
+  text-transform: uppercase;
+`;
+
 const GlobalData = styled.td`
   text-transform: uppercase;
 `;
@@ -63,7 +67,7 @@ const MoreData = styled.td`
 function UserList({ list }: { list: UserClue[] }): JSX.Element {
   const users = list.map(({ id, globalId, username, avatar }: UserClue) => (
     <tr key={id}>
-      <td>{id}</td>
+      <IdentityData>{id}</IdentityData>
       <GlobalData>{globalId}</GlobalData>
       <td>{username}</td>
       <td>{avatar}</td>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import {
   Alignment,
@@ -60,13 +61,15 @@ interface SidebarNavigator {
 }
 
 export function Sidebar(): JSX.Element {
+  const history = useHistory();
+
   const navs: SidebarNavigator[] = [
     { icon: IconNames.HOME, display: "Home", to: "/" },
-    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/notifications" },
-    { icon: IconNames.PEOPLE, display: "People", to: "/users" },
-    { icon: IconNames.PROJECTS, display: "Projects", to: "/projects" },
-    { icon: IconNames.PROJECTS, display: "Projects", to: "/projects" },
-    { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/schedules" },
+    { icon: IconNames.SATELLITE, display: "Feed", to: "/u/feed" },
+    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/u/notifications" },
+    { icon: IconNames.PROJECTS, display: "Projects", to: "/u/projects" },
+    { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/u/schedules" },
+    { icon: IconNames.BANK_ACCOUNT, display: "Wallet", to: "/u/wallet" },
   ];
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
@@ -77,7 +80,26 @@ export function Sidebar(): JSX.Element {
 
   const moreMenu = (
     <Menu>
-      <MenuItem icon={IconNames.GRAPH} text="Work Statistics" />
+      <MenuItem
+        onClick={() => history.push("/u/stats")}
+        icon={IconNames.CHART}
+        text="Work Statistics"
+      />
+      <MenuItem
+        onClick={() => history.push("/u/profile")}
+        icon={IconNames.ID_NUMBER}
+        text="My Profile"
+      />
+      <MenuItem
+        onClick={() => history.push("/u/issues")}
+        icon={IconNames.VIRUS}
+        text="Project Issues"
+      />
+      <MenuItem
+        onClick={() => history.push("/u/issues")}
+        icon={IconNames.HELP}
+        text="Help"
+      />
     </Menu>
   );
 

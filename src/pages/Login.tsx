@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import log from "loglevel";
 import styled from "styled-components";
-import { Colors } from "@blueprintjs/core";
+import { Colors, Button } from "@blueprintjs/core";
 import { Redirect, withRouter } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import bgPattern from "@/assets/images/pattern.svg";
@@ -63,9 +63,9 @@ function LoginDispatcherContent({ location }: any): JSX.Element {
   return (
     <>
       <ContainerOptions>
-        <button type="button" onClick={login}>
+        <Button large={true} fill={true} outlined={true} onClick={login}>
           Login
-        </button>
+        </Button>
       </ContainerOptions>
     </>
   );

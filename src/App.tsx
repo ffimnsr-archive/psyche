@@ -12,8 +12,13 @@ import keycloak from "@/services/keycloak";
 FocusStyleManager.onlyShowFocusOnTabs();
 
 const eventLogger = (event: unknown, error: unknown) => {
-  log.info("onKeycloakEvent", event, error);
+  log.trace("onKeycloakEvent", event, error);
 };
+
+let secureCookies = false;
+if (process.env.NODE_ENV !== "production") {
+  secureCookies = true;
+}
 
 export function App(): JSX.Element {
   const client = useApolloClient();
@@ -27,15 +32,24 @@ export function App(): JSX.Element {
           log.trace("onKeycloakTokens", tokens);
 
           if (tokens.token !== undefined) {
-            Cookies.set("OSSLOCAL_SESSION_TOKEN", tokens.token);
+            Cookies.set("OSSLOCAL_SESSION_TOKEN", tokens.token, {
+              sameSite: "Strict",
+              secure: secureCookies,
+            });
           }
 
           if (tokens.idToken !== undefined) {
-            Cookies.set("OSSLOCAL_SESSION_ID_TOKEN", tokens.idToken);
+            Cookies.set("OSSLOCAL_SESSION_ID_TOKEN", tokens.idToken, {
+              sameSite: "Strict",
+              secure: secureCookies,
+            });
           }
 
           if (tokens.refreshToken !== undefined) {
-            Cookies.set("OSSLOCAL_SESSION_REFRESH_TOKEN", tokens.refreshToken);
+            Cookies.set("OSSLOCAL_SESSION_REFRESH_TOKEN", tokens.refreshToken, {
+              sameSite: "Strict",
+              secure: secureCookies,
+            });
           }
 
           client.writeData({
