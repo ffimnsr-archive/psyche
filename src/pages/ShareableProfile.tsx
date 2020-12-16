@@ -1,11 +1,10 @@
 import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
-import gql from "graphql-tag";
 import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useQuery } from "react-apollo";
+import { useQuery, gql } from "@apollo/client";
 import {
   Card,
   H5,

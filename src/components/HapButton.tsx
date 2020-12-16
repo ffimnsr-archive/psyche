@@ -1,6 +1,5 @@
 import React from "react";
-import invariant from "invariant";
-import { __RouterContext as RouterContext } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import {
   createLocation,
   LocationDescriptor,
@@ -26,38 +25,31 @@ const normalizeToLocation = (
 };
 
 interface HapButtonProps extends AnchorButton {
-  to: LocationDescriptor | string;
+  to: string;
   replace?: boolean;
   innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function HapButton({ to, replace, ...rest }: HapButtonProps | any): JSX.Element {
-  return (
-    <RouterContext.Consumer>
-      {(context): JSX.Element => {
-        invariant(context, "You should not use <HapButton> outside a <Router>");
-
-        const { history } = context;
-        const location = normalizeToLocation(
-          resolveToLocation(to, context.location),
-          context.location,
-        );
-
-        const href = location ? history.createHref(location) : "";
-        const onClick = (
-          event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-        ): void => {
-          event.preventDefault();
-
-          const location = resolveToLocation(to, context.location);
-          const method = replace ? history.replace : history.push;
-
-          method(location);
-        };
-
-        return <AnchorButton {...rest} onClick={onClick} href={href} />;
-      }}
-    </RouterContext.Consumer>
+export const HapButton = ({
+  to,
+  replace,
+  ...rest
+}: HapButtonProps | any): JSX.Element => {
+  const history = useHistory();
+  const currentLocation = useLocation();
+  const location = normalizeToLocation(
+    resolveToLocation(to, currentLocation),
+    currentLocation,
   );
-}
+  const href = location ? history.createHref(location) : "";
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+
+    const location = resolveToLocation(to, currentLocation);
+    const method = replace ? history.replace : history.push;
+
+    method(location);
+  };
+  return <AnchorButton {...rest} onClick={handleClick} href={href} />;
+};

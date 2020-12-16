@@ -5,8 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
 import { Sidebar, NavigationHeader } from "@/components";
 import { Country } from "@/models/internals";
-import gql from "graphql-tag";
-import { useQuery } from "react-apollo";
+import { useQuery, gql } from "@apollo/client";
 
 const COUNTRIES_QUERY = gql`
   query _countries {

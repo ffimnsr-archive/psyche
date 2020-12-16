@@ -4,11 +4,16 @@ interface Window {
 }
 
 declare module "*.svg" {
-  const content: string;
-  export default content;
+  const content: any;
+  export = content;
 }
 
 declare module "*.png" {
-  const content: string;
-  export default content;
+  const content: any;
+  export = content;
+}
+
+declare module "*.graphql" {
+  const content: any;
+  export = content;
 }

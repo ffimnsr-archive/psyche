@@ -14,8 +14,7 @@ import {
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar, NavigationHeader } from "@/components";
-import gql from "graphql-tag";
-import { useQuery } from "react-apollo";
+import { useQuery, gql } from "@apollo/client";
 
 const HOME_QUERY = gql`
   query _home {

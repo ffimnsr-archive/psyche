@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { RouterProps } from "react-router";
-import { useApolloClient } from "react-apollo";
 import {
   Alignment,
   AnchorButton,
@@ -25,7 +24,6 @@ const NoShadowNavbar = styled(Navbar)`
 `;
 
 function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
-  const client = useApolloClient();
   const { keycloak } = useKeycloak();
 
   const userMenu = (
@@ -61,7 +59,6 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
       <MenuDivider />
       <MenuItem
         onClick={(): void => {
-          client.resetStore();
           keycloak?.logout();
         }}
         icon={IconNames.LOG_OUT}

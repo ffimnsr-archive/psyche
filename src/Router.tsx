@@ -27,7 +27,7 @@ const LoadingPlaceholder = (
       src={logoIcon}
       alt="logo"
       width="89"
-      initial={{ scale: 0 }}
+      initial={{ scale: 0.5 }}
       animate={{ scale: 1 }}
       transition={{
         repeat: Infinity,
@@ -40,6 +40,7 @@ const LoadingPlaceholder = (
 
 const LazyLogin = React.lazy(() => import("@/pages/Login"));
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
+
 const LazyMemberMain = React.lazy(() => import("@/pages/member/Home"));
 const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));

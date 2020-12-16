@@ -3,10 +3,10 @@ import log from "loglevel";
 import Cookies from "js-cookie";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { useApolloClient } from "react-apollo";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { Router } from "@/Router";
+import { globalStateVar } from "@/Cache";
 import keycloak from "@/services/keycloak";
 
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -21,8 +21,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export function App(): JSX.Element {
-  const client = useApolloClient();
-
   return (
     <HelmetProvider>
       <ReactKeycloakProvider
@@ -52,12 +50,10 @@ export function App(): JSX.Element {
             });
           }
 
-          client.writeData({
-            data: {
-              token: tokens.token,
-              idToken: tokens.idToken,
-              refreshToken: tokens.refreshToken,
-            },
+          globalStateVar({
+            token: tokens.token,
+            idToken: tokens.idToken,
+            refreshToken: tokens.refreshToken,
           });
         }}
       >

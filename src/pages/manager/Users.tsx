@@ -6,8 +6,7 @@ import { HTMLTable, H5, Card, Elevation, Icon } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { Sidebar, NavigationHeader } from "@/components";
 import { UserClue } from "@/models";
-import gql from "graphql-tag";
-import { useQuery } from "react-apollo";
+import { useQuery, gql } from "@apollo/client";
 
 const USERS_QUERY = gql`
   query _users {

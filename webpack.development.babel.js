@@ -8,14 +8,11 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "source-map",
   devServer: {
-    contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: true,
     compress: true,
-    noInfo: false,
     hot: true,
     host: "127.0.0.1",
     port: 9009,
-    index: "index.html",
   },
   stats: "normal",
   output: {
