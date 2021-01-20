@@ -18,37 +18,13 @@ import { useQuery, gql } from "@apollo/client";
 
 const HOME_QUERY = gql`
   query _home {
-    profile: myProfile {
-      id
-      email
-      publicId
-      socialSecurityNumber
-      workPreference {
+    userClue {
+      myProfile {
         id
-        interests
-        projectLimit
-      }
-      sitePreference {
-        id
-        optInMarketing
-        optInUsageStat
-        experimentalFeatures
-        supportPin
-      }
-      clue {
-        id
-        firstName
-        lastName
-        gender
-        birthDate
-        image
-        bio
-        phoneNumber
-        isReady
-        country {
-          id
-          name
-        }
+        globalId
+        publicCode
+        username
+        avatar
       }
     }
   }
@@ -159,7 +135,7 @@ function ProfileContent(): JSX.Element {
     return <ProfileStillEmpty />;
   }
 
-  if (data.profile.clue?.isReady) {
+  if (data.userClue.myProfile?.isReady) {
     return <ProfileStillEmpty />;
   }
 

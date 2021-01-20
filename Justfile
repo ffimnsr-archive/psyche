@@ -1,10 +1,10 @@
 set shell := ["powershell.exe", "-c"]
 
 run:
-  npm start
+  yarn start
 
 outdated:
-  npm outdated
+  yarn outdated
 
 update:
-  npm update
+  yarn update

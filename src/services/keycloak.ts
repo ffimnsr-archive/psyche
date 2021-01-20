@@ -2,7 +2,7 @@ import Keycloak from "keycloak-js";
 import log from "loglevel";
 
 const keycloak = Keycloak({
-  url: "http://localhost:8080/auth",
+  url: "http://157.245.74.124:18080/auth",
   realm: "sesame",
   clientId: "rusty",
 });
