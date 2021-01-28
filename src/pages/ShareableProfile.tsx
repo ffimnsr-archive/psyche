@@ -19,45 +19,32 @@ import {
   Text,
   HTMLTable,
   Divider,
-  Button,
-  Popover,
-  Position,
-  Menu,
-  Icon,
-  MenuItem,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import {
-  PDFDownloadLink,
-  Document,
-  Page,
-  View,
-  Image,
-  Text as Transcript,
-  StyleSheet,
-} from "@react-pdf/renderer";
-import classNames from "classnames";
-import { HapButton } from "@/components";
+// import {
+//   PDFDownloadLink,
+//   Document,
+//   Page,
+//   View,
+//   Image,
+//   Text as Transcript,
+//   StyleSheet,
+// } from "@react-pdf/renderer";
+import { ContainerRoot, HapButton } from "@/components";
 import { generateHash } from "@/utils";
 
 const REQUEST_PROFILE_QUERY = gql`
-  query _requestProfile($id: String!) {
-    requestProfile(id: $id)
-      @rest(type: "RequestProfile", method: "GET", path: "/request_profile/{args.id}") {
-      success
-      profile
+  query _requestProfile($publicCode: String!) {
+    userClue {
+      profile(publicCode: $publicCode) {
+        id
+        globalId
+        publicCode
+        username
+        avatar
+      }
     }
   }
-`;
-
-const Container = styled.main`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
 `;
 
 const ContainerNonTrivial = styled.main`
@@ -131,15 +118,15 @@ const ProfilePane = styled.div`
   }
 `;
 
-// Design was mock inside React-PDF REPL
-// https://react-pdf.org/repl
-const PdfStyles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 45,
-  },
-});
+// // Design was mock inside React-PDF REPL
+// // https://react-pdf.org/repl
+// const PdfStyles = StyleSheet.create({
+//   body: {
+//     paddingTop: 35,
+//     paddingBottom: 65,
+//     paddingHorizontal: 45,
+//   },
+// });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function camelizeKeys(obj: any): any {
@@ -191,18 +178,18 @@ function ShareableProfileError(): JSX.Element {
   );
 }
 
-function ProfilePdfDocument({ emailHash }: { emailHash: string }): JSX.Element {
-  return (
-    <Document>
-      <Page size="A4" style={PdfStyles.body}>
-        <View>
-          <Image src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`} />
-          <Transcript>Hello</Transcript>
-        </View>
-      </Page>
-    </Document>
-  );
-}
+// function ProfilePdfDocument({ emailHash }: { emailHash: string }): JSX.Element {
+//   return (
+//     <Document>
+//       <Page size="A4" style={PdfStyles.body}>
+//         <View>
+//           <Image src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`} />
+//           <Transcript>Hello</Transcript>
+//         </View>
+//       </Page>
+//     </Document>
+//   );
+// }
 
 interface MyShareableProfile {
   publicId: string;
@@ -248,30 +235,30 @@ function ShareableProfile(): JSX.Element {
   } = processedProfile as MyShareableProfile;
   const emailHash = generateHash(email);
 
-  const shareMenu = (
-    <Menu>
-      <PDFDownloadLink
-        document={<ProfilePdfDocument emailHash={emailHash} />}
-        className={classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS)}
-        fileName={`CV-${publicId}.pdf`}
-      >
-        {({ loading }: { loading: boolean }): JSX.Element | string =>
-          loading ? (
-            <Text ellipsize={true}>Generating Document</Text>
-          ) : (
-            <>
-              <Icon icon={IconNames.DOWNLOAD} />
-              <Text>Download PDF</Text>
-            </>
-          )
-        }
-      </PDFDownloadLink>
-      <MenuItem icon={IconNames.SOCIAL_MEDIA} text="Share to Social Media" />
-    </Menu>
-  );
+  // const shareMenu = (
+  //   <Menu>
+  //     <PDFDownloadLink
+  //       document={<ProfilePdfDocument emailHash={emailHash} />}
+  //       className={classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS)}
+  //       fileName={`CV-${publicId}.pdf`}
+  //     >
+  //       {({ loading }: { loading: boolean }): JSX.Element | string =>
+  //         loading ? (
+  //           <Text ellipsize={true}>Generating Document</Text>
+  //         ) : (
+  //           <>
+  //             <Icon icon={IconNames.DOWNLOAD} />
+  //             <Text>Download PDF</Text>
+  //           </>
+  //         )
+  //       }
+  //     </PDFDownloadLink>
+  //     <MenuItem icon={IconNames.SOCIAL_MEDIA} text="Share to Social Media" />
+  //   </Menu>
+  // );
 
   return (
-    <Container>
+    <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
         <title>Profile</title>
       </Helmet>
@@ -289,9 +276,9 @@ function ShareableProfile(): JSX.Element {
                   </td>
                   <td>
                     <div style={{ float: "right" }}>
-                      <Popover content={shareMenu} position={Position.BOTTOM}>
+                      {/* <Popover content={shareMenu} position={Position.BOTTOM}>
                         <Button icon={IconNames.MORE} minimal={true} />
-                      </Popover>
+                      </Popover> */}
                     </div>
                     <div>
                       <H1>
@@ -354,7 +341,7 @@ function ShareableProfile(): JSX.Element {
           </ProfilePane>
         </ContainerProfile>
       </ContainerMain>
-    </Container>
+    </ContainerRoot>
   );
 }
 

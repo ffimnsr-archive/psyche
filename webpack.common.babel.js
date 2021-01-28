@@ -89,11 +89,11 @@ const config = {
       "@": path.resolve(__dirname, "src"),
     },
     fallback: {
-      stream: require.resolve("stream-browserify"),
-      zlib: require.resolve("browserify-zlib"),
-      util: require.resolve("util/"),
-      buffer: require.resolve("buffer/"),
-      assert: require.resolve("assert/"),
+      // stream: require.resolve("stream-browserify"),
+      // zlib: require.resolve("browserify-zlib"),
+      // util: require.resolve("util/"),
+      // buffer: require.resolve("buffer/"),
+      // assert: require.resolve("assert/"),
     },
   },
   output: {

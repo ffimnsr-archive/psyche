@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useHistory, useLocation } from "react-router";
 import {
@@ -30,7 +31,6 @@ interface HapButtonProps extends AnchorButton {
   innerRef?: React.Ref<HTMLAnchorElement>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const HapButton = ({
   to,
   replace,

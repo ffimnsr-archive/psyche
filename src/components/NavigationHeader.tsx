@@ -23,6 +23,11 @@ const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
 `;
 
+const CustomNavbarHeading = styled(NavbarHeading)`
+  margin-left: 8px;
+  margin-right: 8px;
+`;
+
 function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   const { keycloak } = useKeycloak();
 
@@ -70,7 +75,7 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   return (
     <NoShadowNavbar>
       <NavbarGroup align={Alignment.LEFT}>
-        <NavbarHeading>Open Sesame</NavbarHeading>
+        <CustomNavbarHeading>Open Sesame</CustomNavbarHeading>
         <NavbarDivider />
         <AnchorButton
           href="http://docs.se-same.com/"

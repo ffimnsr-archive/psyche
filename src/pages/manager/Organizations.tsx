@@ -3,7 +3,12 @@ import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
-import { Sidebar, NavigationHeader } from "@/components";
+import {
+  ContainerRoot,
+  ContainerRootInner,
+  Sidebar,
+  NavigationHeader,
+} from "@/components";
 import { Organization } from "@/models";
 import { useQuery, gql } from "@apollo/client";
 
@@ -17,24 +22,6 @@ const ORGANIZATIONS_QUERY = gql`
       }
     }
   }
-`;
-
-const Container = styled.main`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  align-content: stretch;
-`;
-
-const ContainerMain = styled.div`
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  align-content: stretch;
 `;
 
 const ContainerOrganizations = styled.div`
@@ -90,16 +77,16 @@ function OrganizationsContent(): JSX.Element {
 
 function Organizations(): JSX.Element {
   return (
-    <Container>
+    <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
         <title>Organizations</title>
       </Helmet>
       <Sidebar />
-      <ContainerMain>
+      <ContainerRootInner>
         <NavigationHeader />
         <OrganizationsContent />
-      </ContainerMain>
-    </Container>
+      </ContainerRootInner>
+    </ContainerRoot>
   );
 }
 

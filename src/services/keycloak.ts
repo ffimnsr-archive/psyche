@@ -1,15 +1,18 @@
 import Keycloak from "keycloak-js";
 import log from "loglevel";
 
+const MINIMUM_TOKEN_VALIDITY = 5;
+const AS_URI = process.env.REACT_APP_AS_URI;
+
 const keycloak = Keycloak({
-  url: "http://157.245.74.124:18080/auth",
+  url: AS_URI,
   realm: "sesame",
   clientId: "rusty",
 });
 
 keycloak.onTokenExpired = () => {
   log.info("Token is expired");
-  keycloak.updateToken(5).then(
+  keycloak.updateToken(MINIMUM_TOKEN_VALIDITY).then(
     () => {
       log.info("Successfully refreshed token");
     },

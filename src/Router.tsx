@@ -109,6 +109,7 @@ export function Router(): JSX.Element {
         <AuthRoute path="/_/users" component={LazyUsers} />
         <AuthRoute path="/_/organizations" component={LazyOrganizations} />
         <AuthRoute path="/_/withdrawal_requests" component={LazyWithdrawalRequests} />
+        <AuthRoute path="/docs/help" component={LazyWithdrawalRequests} />
         <OpenRoute path="/login" component={LazyLogin} />
         <OpenRoute path="/o/public/share/:id" component={LazyShareableProfile} />
         <OpenRoute component={NoMatch} />
