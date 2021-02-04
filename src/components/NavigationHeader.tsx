@@ -13,9 +13,9 @@ import {
   Menu,
   MenuItem,
   MenuDivider,
-  Popover,
   Position,
 } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/popover2";
 import { IconNames } from "@blueprintjs/icons";
 import { useKeycloak } from "@react-keycloak/web";
 
@@ -85,9 +85,9 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
         />
       </NavbarGroup>
       <NavbarGroup align={Alignment.RIGHT}>
-        <Popover content={userMenu} position={Position.BOTTOM}>
+        <Popover2 content={userMenu} placement={Position.BOTTOM}>
           <Button minimal={true} rightIcon={IconNames.USER} />
-        </Popover>
+        </Popover2>
       </NavbarGroup>
     </NoShadowNavbar>
   );

@@ -2,10 +2,11 @@ import React, { useCallback } from "react";
 import { useLocation } from "react-router";
 import log from "loglevel";
 import styled from "styled-components";
-import { Colors, Button } from "@blueprintjs/core";
+import { Colors, Button, Classes } from "@blueprintjs/core";
 import { Redirect, withRouter } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import bgPattern from "@/assets/images/pattern.svg";
+import logo from "@/assets/images/logo.png";
 
 const ContainerRoot = styled.main`
   min-height: 100vh;
@@ -52,6 +53,27 @@ function LoginDispatcherContent(): JSX.Element {
 
   return (
     <>
+      <img
+        src={logo}
+        alt="logo"
+        width={286}
+        style={{
+          marginLeft: "8px",
+          marginBottom: "1rem",
+        }}
+      />
+      <p
+        className={Classes.RUNNING_TEXT}
+        style={{
+          textAlign: "justify",
+          textJustify: "inter-word",
+        }}
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ullamcorper
+        sapien ac dolor ultrices, eget convallis dui fermentum. Donec imperdiet iaculis
+        elit quis placerat. Aliquam nec mattis urna. Sed egestas nunc vitae tellus rutrum
+        aliquam.
+      </p>
       <ContainerOptions>
         <Button large={false} fill={true} outlined={true} onClick={login}>
           Login

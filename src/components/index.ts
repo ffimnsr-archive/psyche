@@ -22,3 +22,8 @@ export const ContainerRootInner = styled.div`
   align-items: stretch;
   align-content: stretch;
 `;
+
+export const ImageAvatar = styled.img`
+  border-radius: 50%;
+  border: 1px dashed #000;
+`;

@@ -44,6 +44,9 @@ const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile")
 const LazyMemberMain = React.lazy(() => import("@/pages/member/Home"));
 const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));
+const LazyMemberProjectDetails = React.lazy(
+  () => import("@/pages/member/ProjectDetails"),
+);
 const LazyMemberSchedules = React.lazy(() => import("@/pages/member/Schedules"));
 const LazyMemberBankAccounts = React.lazy(() => import("@/pages/member/BankAccounts"));
 const LazyMemberIssues = React.lazy(() => import("@/pages/member/Issues"));
@@ -51,6 +54,7 @@ const LazyMemberStats = React.lazy(() => import("@/pages/member/Stats"));
 const LazyMemberWallet = React.lazy(() => import("@/pages/member/Wallet"));
 const LazyMemberProfile = React.lazy(() => import("@/pages/member/Profile"));
 const LazyMemberFeed = React.lazy(() => import("@/pages/member/Feed"));
+const LazyMemberSettings = React.lazy(() => import("@/pages/member/Settings"));
 
 const LazyBankAccounts = React.lazy(() => import("@/pages/manager/BankAccounts"));
 const LazyOrganizations = React.lazy(() => import("@/pages/manager/Organizations"));
@@ -96,19 +100,31 @@ export function Router(): JSX.Element {
       <Switch>
         <AuthRoute exact path="/" component={LazyMemberMain} />
         <AuthRoute path="/u/notifications" component={LazyMemberNotifications} />
+        <AuthRoute path="/u/notification/:id" component={LazyMemberNotifications} />
         <AuthRoute path="/u/schedules" component={LazyMemberSchedules} />
         <AuthRoute path="/u/projects" component={LazyMemberProjects} />
+        <AuthRoute path="/u/project/:id" component={LazyMemberProjectDetails} />
         <AuthRoute path="/u/bank_accounts" component={LazyMemberBankAccounts} />
+        <AuthRoute path="/u/bank_account/:id" component={LazyMemberBankAccounts} />
+        <AuthRoute path="/u/offers" component={LazyMemberIssues} />
+        <AuthRoute path="/u/offer/:id" component={LazyMemberIssues} />
         <AuthRoute path="/u/issues" component={LazyMemberIssues} />
+        <AuthRoute path="/u/issue/:id" component={LazyMemberIssues} />
         <AuthRoute path="/u/stats" component={LazyMemberStats} />
         <AuthRoute path="/u/wallet" component={LazyMemberWallet} />
         <AuthRoute path="/u/profile" component={LazyMemberProfile} />
         <AuthRoute path="/u/feed" component={LazyMemberFeed} />
+        <AuthRoute path="/u/settings" component={LazyMemberSettings} />
         <AuthRoute path="/_/bank_accounts" component={LazyBankAccounts} />
+        <AuthRoute path="/_/bank_account/:id" component={LazyBankAccounts} />
         <AuthRoute path="/_/projects" component={LazyProjects} />
+        <AuthRoute path="/_/project/:id" component={LazyProjects} />
         <AuthRoute path="/_/users" component={LazyUsers} />
+        <AuthRoute path="/_/user/:id" component={LazyUsers} />
         <AuthRoute path="/_/organizations" component={LazyOrganizations} />
+        <AuthRoute path="/_/organization/:id" component={LazyOrganizations} />
         <AuthRoute path="/_/withdrawal_requests" component={LazyWithdrawalRequests} />
+        <AuthRoute path="/_/withdrawal_request/:id" component={LazyWithdrawalRequests} />
         <AuthRoute path="/docs/help" component={LazyWithdrawalRequests} />
         <OpenRoute path="/login" component={LazyLogin} />
         <OpenRoute path="/o/public/share/:id" component={LazyShareableProfile} />

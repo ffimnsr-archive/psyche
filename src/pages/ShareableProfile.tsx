@@ -21,17 +21,8 @@ import {
   Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-// import {
-//   PDFDownloadLink,
-//   Document,
-//   Page,
-//   View,
-//   Image,
-//   Text as Transcript,
-//   StyleSheet,
-// } from "@react-pdf/renderer";
-import { ContainerRoot, HapButton } from "@/components";
-import { generateHash } from "@/utils";
+import { ContainerRoot, HapButton, ImageAvatar } from "@/components";
+import { generateHash, camelizeKeys } from "@/utils";
 
 const REQUEST_PROFILE_QUERY = gql`
   query _requestProfile($publicCode: String!) {
@@ -101,11 +92,6 @@ const Table = styled.table`
   }
 `;
 
-const ImageAvatar = styled.img`
-  border-radius: 50%;
-  border: 1px dashed #000;
-`;
-
 const CustomDivider = styled(Divider)`
   margin: 5px 0;
 `;
@@ -117,32 +103,6 @@ const ProfilePane = styled.div`
     margin-bottom: 10px;
   }
 `;
-
-// // Design was mock inside React-PDF REPL
-// // https://react-pdf.org/repl
-// const PdfStyles = StyleSheet.create({
-//   body: {
-//     paddingTop: 35,
-//     paddingBottom: 65,
-//     paddingHorizontal: 45,
-//   },
-// });
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function camelizeKeys(obj: any): any {
-  if (Array.isArray(obj)) {
-    return obj.map((v) => camelizeKeys(v));
-  } else if (_.isPlainObject(obj)) {
-    return Object.keys(obj).reduce(
-      (result, key) => ({
-        ...result,
-        [_.camelCase(key)]: camelizeKeys(obj[key]),
-      }),
-      {},
-    );
-  }
-  return obj;
-}
 
 function ShareableProfileLoading(): JSX.Element {
   return (
@@ -178,19 +138,6 @@ function ShareableProfileError(): JSX.Element {
   );
 }
 
-// function ProfilePdfDocument({ emailHash }: { emailHash: string }): JSX.Element {
-//   return (
-//     <Document>
-//       <Page size="A4" style={PdfStyles.body}>
-//         <View>
-//           <Image src={`https://www.gravatar.com/avatar/${emailHash}?s=200&d=robohash`} />
-//           <Transcript>Hello</Transcript>
-//         </View>
-//       </Page>
-//     </Document>
-//   );
-// }
-
 interface MyShareableProfile {
   publicId: string;
   socialSecurityNumber: string;
@@ -210,22 +157,40 @@ interface MyShareableProfile {
 }
 
 function ShareableProfile(): JSX.Element {
-  const { id } = useParams<{ id: string }>();
-  const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
-    variables: { id },
-  });
+  // const { id } = useParams<{ id: string }>();
+  // const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
+  //   variables: { id },
+  // });
 
-  if (loading) return <ShareableProfileLoading />;
-  if (error) {
-    log.error(error);
-    return <ShareableProfileError />;
-  }
+  // if (loading) return <ShareableProfileLoading />;
+  // if (error) {
+  //   log.error(error);
+  //   return <ShareableProfileError />;
+  // }
 
-  if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
-    return <ShareableProfileError />;
+  // if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
+  //   return <ShareableProfileError />;
 
-  const { profile } = data.requestProfile;
-  const processedProfile = camelizeKeys(profile);
+  // const { profile } = data.requestProfile;
+  // const processedProfile = camelizeKeys(profile);
+
+  const processedProfile: MyShareableProfile = {
+    publicId: "Hello",
+    socialSecurityNumber: "string",
+    email: "loremipsum",
+    joinedAt: "06/11/94",
+    clue: {
+      firstName: "John",
+      lastName: "Doe",
+      bio: "Lorem Ipsum",
+      country: {
+        name: "Philippines",
+      },
+    },
+    isAccountVerified: false,
+    workExperiences: "Hello",
+    kycState: "Valid",
+  };
 
   const {
     publicId,
@@ -234,28 +199,6 @@ function ShareableProfile(): JSX.Element {
     clue,
   } = processedProfile as MyShareableProfile;
   const emailHash = generateHash(email);
-
-  // const shareMenu = (
-  //   <Menu>
-  //     <PDFDownloadLink
-  //       document={<ProfilePdfDocument emailHash={emailHash} />}
-  //       className={classNames(Classes.MENU_ITEM, Classes.POPOVER_DISMISS)}
-  //       fileName={`CV-${publicId}.pdf`}
-  //     >
-  //       {({ loading }: { loading: boolean }): JSX.Element | string =>
-  //         loading ? (
-  //           <Text ellipsize={true}>Generating Document</Text>
-  //         ) : (
-  //           <>
-  //             <Icon icon={IconNames.DOWNLOAD} />
-  //             <Text>Download PDF</Text>
-  //           </>
-  //         )
-  //       }
-  //     </PDFDownloadLink>
-  //     <MenuItem icon={IconNames.SOCIAL_MEDIA} text="Share to Social Media" />
-  //   </Menu>
-  // );
 
   return (
     <ContainerRoot>
@@ -275,11 +218,7 @@ function ShareableProfile(): JSX.Element {
                     />
                   </td>
                   <td>
-                    <div style={{ float: "right" }}>
-                      {/* <Popover content={shareMenu} position={Position.BOTTOM}>
-                        <Button icon={IconNames.MORE} minimal={true} />
-                      </Popover> */}
-                    </div>
+                    <div style={{ float: "right" }}>Hello</div>
                     <div>
                       <H1>
                         {clue?.firstName} {clue?.lastName}

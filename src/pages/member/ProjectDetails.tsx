@@ -10,7 +10,6 @@ import {
 } from "@/components";
 import { AutoSizer, List } from "react-virtualized";
 import { useQuery, gql } from "@apollo/client";
-import { Link } from "react-router-dom";
 
 const PROJECTS_QUERY = gql`
   query _projects {
@@ -69,85 +68,10 @@ const list = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function joinedProjectsRowRenderer({ key, index, style }: any) {
+function rowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <div>
-            <Link to="/u/project/12313">
-              <b>Project Name</b>
-            </Link>
-          </div>
-        </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
-          <div>Active</div>
-        </div>
-      </div>
-      <div>Current Role</div>
-      <div>Mar 2019 - Present . 1 yr 11 mos</div>
-      <div>{list[index]}</div>
-    </div>
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function hostedProjectsRowRenderer({ key, index, style }: any) {
-  return (
-    <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <div>
-            <a href="#">
-              <b>Project Name</b>
-            </a>
-          </div>
-        </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
-          <div>Active</div>
-        </div>
-      </div>
-      <div>Organization</div>
-      <div>Mar 2019 - Present . 1 yr 11 mos</div>
-      <div>{list[index]}</div>
+      {list[index]}
     </div>
   );
 }
@@ -160,10 +84,10 @@ function JoinedProjects(): JSX.Element {
         <AutoSizer disableHeight>
           {({ width }) => (
             <List
-              height={list.length * 100}
+              height={list.length * 30}
               rowCount={list.length}
-              rowHeight={100}
-              rowRenderer={joinedProjectsRowRenderer}
+              rowHeight={30}
+              rowRenderer={rowRenderer}
               width={width}
             />
           )}
@@ -181,10 +105,10 @@ function HostedProjects(): JSX.Element {
         <AutoSizer disableHeight>
           {({ width }) => (
             <List
-              height={list.length * 100}
+              height={list.length * 30}
               rowCount={list.length}
-              rowHeight={100}
-              rowRenderer={hostedProjectsRowRenderer}
+              rowHeight={30}
+              rowRenderer={rowRenderer}
               width={width}
             />
           )}

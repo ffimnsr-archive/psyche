@@ -2,7 +2,6 @@ import React from "react";
 // import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-// import { useQuery, gql } from "@apollo/client";
 import { AutoSizer, List } from "react-virtualized";
 import { Card } from "@blueprintjs/core";
 import {
@@ -11,14 +10,6 @@ import {
   Sidebar,
   NavigationHeader,
 } from "@/components";
-
-// const FEED_QUERY = gql`
-//   query _feed {
-//     industries {
-//       id
-//     }
-//   }
-// `;
 
 const ContainerNewsFeed = styled.div`
   flex: 1 1 auto;

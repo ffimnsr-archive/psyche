@@ -8,12 +8,10 @@ import {
   Colors,
   Menu,
   MenuItem,
-  Popover,
   Position,
-  Tooltip,
 } from "@blueprintjs/core";
-import { IconNames } from "@blueprintjs/icons";
-import { IconName } from "@blueprintjs/icons";
+import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { IconName, IconNames } from "@blueprintjs/icons";
 import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
 
@@ -73,9 +71,9 @@ export function Sidebar(): JSX.Element {
   ];
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
-    <Tooltip key={i} content={<span>{v.display}</span>} position={Position.RIGHT}>
+    <Tooltip2 key={i} content={<span>{v.display}</span>} placement={Position.RIGHT}>
       <PaleWhiteHapButton to={v.to} icon={v.icon} />
-    </Tooltip>
+    </Tooltip2>
   ));
 
   const moreMenu = (
@@ -104,9 +102,9 @@ export function Sidebar(): JSX.Element {
   );
 
   const moreButton = (
-    <Popover content={moreMenu} position={Position.LEFT}>
+    <Popover2 content={moreMenu} placement={Position.LEFT}>
       <PaleWhiteButton icon={IconNames.MORE} />
-    </Popover>
+    </Popover2>
   );
 
   return (

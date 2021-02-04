@@ -12,7 +12,7 @@ module.exports = merge(common, {
     compress: true,
     hot: true,
     host: "127.0.0.1",
-    port: 9009,
+    port: 8080,
   },
   stats: "normal",
   output: {

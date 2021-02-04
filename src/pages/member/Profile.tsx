@@ -10,7 +10,9 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
+  ImageAvatar,
 } from "@/components";
+import { generateHash } from "@/utils";
 
 // const MY_PROFILE_QUERY = gql`
 //   query __myProfile {
@@ -98,6 +100,8 @@ function rowRenderer({ key, index, style }: any) {
 }
 
 function Profile(): JSX.Element {
+  const emailHash = generateHash("loremipsum");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -109,7 +113,10 @@ function Profile(): JSX.Element {
         <ContainerProfile>
           <div>
             <Card>
-              <img src="https://ui-avatars.com/api/?size=210" />
+              <ImageAvatar
+                src={`https://www.gravatar.com/avatar/${emailHash}?s=210&d=robohash`}
+                alt="avatar"
+              />
               <ProfileMb20 />
               <ProfileMb10>
                 <b>Name</b>
