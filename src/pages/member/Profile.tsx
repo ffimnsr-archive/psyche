@@ -13,6 +13,7 @@ import {
   ImageAvatar,
 } from "@/components";
 import { generateHash } from "@/utils";
+import { Link } from "react-router-dom";
 
 // const MY_PROFILE_QUERY = gql`
 //   query __myProfile {
@@ -132,7 +133,9 @@ function Profile(): JSX.Element {
               </ProfileMb10>
               <ProfileMb10>
                 <b>Shareable Profile</b>
-                <div>Click Here</div>
+                <div>
+                  <Link to="/o/public/share/demo">Click Here</Link>
+                </div>
               </ProfileMb10>
             </Card>
           </div>

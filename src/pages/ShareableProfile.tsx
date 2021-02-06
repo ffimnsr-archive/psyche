@@ -23,6 +23,7 @@ import {
 import { IconNames } from "@blueprintjs/icons";
 import { ContainerRoot, HapButton, ImageAvatar } from "@/components";
 import { generateHash, camelizeKeys } from "@/utils";
+import { AutoSizer, List } from "react-virtualized";
 
 const REQUEST_PROFILE_QUERY = gql`
   query _requestProfile($publicCode: String!) {
@@ -103,6 +104,51 @@ const ProfilePane = styled.div`
     margin-bottom: 10px;
   }
 `;
+
+const list = [
+  "Brian Vaughn",
+  "Brian Vaughn",
+  // And so on...
+];
+
+function rowRenderer({ key, index, style }: any) {
+  return (
+    <div key={key} style={style}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <div>
+            <b>Current Role</b>
+          </div>
+        </div>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "end",
+          }}
+        >
+          <div>Location</div>
+        </div>
+      </div>
+      <div>Organization</div>
+      <div>Mar 2019 - Present . 1 yr 11 mos</div>
+      <div>{list[index]}</div>
+    </div>
+  );
+}
 
 function ShareableProfileLoading(): JSX.Element {
   return (
@@ -248,34 +294,56 @@ function ShareableProfile(): JSX.Element {
               <div className="clearfixr" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Work Experiences</H5>
               </div>
-              <ResponsiveTable condensed={true}>
-                <tbody>
-                  <tr>
-                    <td>Hello</td>
-                    <td>Hello</td>
-                  </tr>
-                </tbody>
-              </ResponsiveTable>
+              <div>
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <List
+                      height={list.length * 100}
+                      rowCount={list.length}
+                      rowHeight={100}
+                      rowRenderer={rowRenderer}
+                      width={width}
+                    />
+                  )}
+                </AutoSizer>
+              </div>
             </Card>
             <Card elevation={Elevation.ONE}>
               <div className="clearfixr" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Work Functions</H5>
               </div>
               <CustomDivider />
-              <p>Hello</p>
+              <div>
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <List
+                      height={list.length * 100}
+                      rowCount={list.length}
+                      rowHeight={100}
+                      rowRenderer={rowRenderer}
+                      width={width}
+                    />
+                  )}
+                </AutoSizer>
+              </div>
             </Card>
             <Card elevation={Elevation.ONE}>
               <div className="clearfixr" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Issues Resolved</H5>
               </div>
-              <ResponsiveTable condensed={true}>
-                <tbody>
-                  <tr>
-                    <td>Hello</td>
-                    <td>Hello</td>
-                  </tr>
-                </tbody>
-              </ResponsiveTable>
+              <div>
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <List
+                      height={list.length * 100}
+                      rowCount={list.length}
+                      rowHeight={100}
+                      rowRenderer={rowRenderer}
+                      width={width}
+                    />
+                  )}
+                </AutoSizer>
+              </div>
             </Card>
           </ProfilePane>
         </ContainerProfile>
