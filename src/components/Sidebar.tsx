@@ -93,11 +93,7 @@ export function Sidebar(): JSX.Element {
         icon={IconNames.VIRUS}
         text="Project Issues"
       />
-      <MenuItem
-        onClick={() => history.push("/u/issues")}
-        icon={IconNames.HELP}
-        text="Help"
-      />
+      <MenuItem onClick={() => history.push("/help")} icon={IconNames.HELP} text="Help" />
     </Menu>
   );
 

@@ -129,7 +129,9 @@ function ProfileContent(): JSX.Element {
   return <ProfileStillEmpty />;
 }
 
-function Home(): JSX.Element {
+function HomeView(): JSX.Element {
+  log.trace("Rendering home view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -144,4 +146,4 @@ function Home(): JSX.Element {
   );
 }
 
-export default Home;
+export default HomeView;

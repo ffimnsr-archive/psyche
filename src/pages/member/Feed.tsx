@@ -1,10 +1,10 @@
 import React from "react";
-// import log from "loglevel";
+import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 // import { useQuery, gql } from "@apollo/client";
 import { AutoSizer, List } from "react-virtualized";
-import { Card } from "@blueprintjs/core";
+import { Card, H5 } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -104,7 +104,9 @@ function rowRenderer({ key, index, style }: any) {
   );
 }
 
-function Feed(): JSX.Element {
+function FeedView(): JSX.Element {
+  log.trace("Rendering feed view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -115,17 +117,20 @@ function Feed(): JSX.Element {
         <NavigationHeader />
         <ContainerNewsFeed>
           <Card>
-            <AutoSizer disableHeight>
-              {({ width }) => (
-                <List
-                  height={list.length * 100}
-                  rowCount={list.length}
-                  rowHeight={100}
-                  rowRenderer={rowRenderer}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
+            <H5>Activity Feed</H5>
+            <div>
+              <AutoSizer disableHeight>
+                {({ width }) => (
+                  <List
+                    height={list.length * 100}
+                    rowCount={list.length}
+                    rowHeight={100}
+                    rowRenderer={rowRenderer}
+                    width={width}
+                  />
+                )}
+              </AutoSizer>
+            </div>
           </Card>
         </ContainerNewsFeed>
       </ContainerRootInner>
@@ -133,4 +138,4 @@ function Feed(): JSX.Element {
   );
 }
 
-export default Feed;
+export default FeedView;

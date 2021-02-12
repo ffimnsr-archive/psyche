@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { Card, Elevation, H5 } from "@blueprintjs/core";
@@ -206,7 +207,9 @@ function ProjectsContent(): JSX.Element {
   );
 }
 
-function Projects(): JSX.Element {
+function ProjectsView(): JSX.Element {
+  log.trace("Rendering projects view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -221,4 +224,4 @@ function Projects(): JSX.Element {
   );
 }
 
-export default Projects;
+export default ProjectsView;

@@ -58,11 +58,13 @@ function Feeds(): JSX.Element {
   return <NewsFeed>{feed}</NewsFeed>;
 }
 
-function Feed(): JSX.Element {
+function IssuesView(): JSX.Element {
+  log.trace("Rendering issues view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Feed</title>
+        <title>Issues</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>
@@ -75,4 +77,4 @@ function Feed(): JSX.Element {
   );
 }
 
-export default Feed;
+export default IssuesView;

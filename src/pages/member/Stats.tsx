@@ -11,15 +11,7 @@ import {
   NavigationHeader,
 } from "@/components";
 
-const FEED_QUERY = gql`
-  query _feed {
-    industries {
-      id
-    }
-  }
-`;
-
-const ContainerNewsFeed = styled.div`
+const ContainerStats = styled.div`
   flex: 1 1 auto;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -28,51 +20,27 @@ const ContainerNewsFeed = styled.div`
   justify-content: center;
 `;
 
-const NewsFeed = styled.div`
-  min-width: 600px;
-  background-color: ${Colors.WHITE};
-
-  & > div.${Classes.CARD}:not(:last-child) {
-    margin-bottom: 10px;
-  }
-`;
-
 function Feeds(): JSX.Element {
-  const { loading, error, data } = useQuery(FEED_QUERY);
-
-  // FZ_TODO
-  if (loading) return <p>Loading</p>;
-  if (error) {
-    log.error(error);
-    return <p>Error</p>;
-  }
-
-  const feed = data.industries.map(({ id }: { id: number }) => (
-    <Card key={id} elevation={Elevation.ONE}>
-      <H5>{id}</H5>
-      <p>Hello</p>
-      <Button text="Explore" />
-    </Card>
-  ));
-
-  return <NewsFeed>{feed}</NewsFeed>;
+  return <div>Hello</div>;
 }
 
-function Feed(): JSX.Element {
+function StatsView(): JSX.Element {
+  log.trace("Rendering stats view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Feed</title>
+        <title>Work Statistics</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>
         <NavigationHeader />
-        <ContainerNewsFeed>
+        <ContainerStats>
           <Feeds />
-        </ContainerNewsFeed>
+        </ContainerStats>
       </ContainerRootInner>
     </ContainerRoot>
   );
 }
 
-export default Feed;
+export default StatsView;

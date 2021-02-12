@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { NonIdealState, Intent } from "@blueprintjs/core";
@@ -15,7 +16,9 @@ const Container = styled.main`
   align-content: stretch;
 `;
 
-function NoMatch(): JSX.Element {
+function NoMatchView(): JSX.Element {
+  log.trace("Rendering no match view");
+
   const description = (
     <div>
       Is probably the most annoying thing to look at, on a screen. This is a page nobody
@@ -46,4 +49,4 @@ function NoMatch(): JSX.Element {
   );
 }
 
-export default NoMatch;
+export default NoMatchView;

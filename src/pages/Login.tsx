@@ -85,7 +85,9 @@ function LoginDispatcherContent(): JSX.Element {
 
 const LoginDispatcher = withRouter(LoginDispatcherContent);
 
-function Login(): JSX.Element {
+function LoginView(): JSX.Element {
+  log.trace("Rendering login view");
+
   return (
     <ContainerRoot>
       <ContainerDesign />
@@ -98,4 +100,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default LoginView;

@@ -99,7 +99,9 @@ function BankAccountsContent(): JSX.Element {
   );
 }
 
-function BankAccounts(): JSX.Element {
+function BankAccountsView(): JSX.Element {
+  log.trace("Rendering bank accounts view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -114,4 +116,4 @@ function BankAccounts(): JSX.Element {
   );
 }
 
-export default BankAccounts;
+export default BankAccountsView;

@@ -11,7 +11,8 @@
     "lint": "eslint */**/*.{ts,tsx}",
     "lint.fix": "eslint */**/*.{ts,tsx} --quiet --fix",
     "lint.full": "tsc --noEmit && eslint */**/*.{ts,tsx} --quiet --fix",
-    "test": "mocha"
+    "test": "mocha",
+    "postinstall": "husky install"
   },
   "author": "ffimnsr",
   "devDependencies": {
@@ -65,7 +66,7 @@
     "google-closure-compiler": "^20210202.0.0",
     "graphql-tag": "^2.11.0",
     "html-webpack-plugin": "^5.0.0-alpha.15",
-    "husky": "^4.3.0",
+    "husky": "^5.0.9",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
     "karma": "^6.0.0",

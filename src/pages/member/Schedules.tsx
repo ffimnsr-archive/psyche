@@ -1,4 +1,5 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import moment from "moment";
 import { Helmet } from "react-helmet-async";
@@ -39,7 +40,9 @@ const events = [
   },
 ];
 
-function Schedules(): JSX.Element {
+function SchedulesView(): JSX.Element {
+  log.trace("Rendering schedules view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -61,4 +64,4 @@ function Schedules(): JSX.Element {
   );
 }
 
-export default Schedules;
+export default SchedulesView;

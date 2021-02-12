@@ -1,7 +1,15 @@
 import React from "react";
+import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { Card, Elevation, H5 } from "@blueprintjs/core";
+import {
+  Breadcrumb,
+  Breadcrumbs,
+  Card,
+  Elevation,
+  H5,
+  IBreadcrumbProps,
+} from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -9,140 +17,83 @@ import {
   NavigationHeader,
 } from "@/components";
 import { AutoSizer, List } from "react-virtualized";
-import { useQuery, gql } from "@apollo/client";
+import { ResponsiveCalendar } from "@nivo/calendar";
+import { DemoCalendarData } from "@/seeds";
+import { IconNames } from "@blueprintjs/icons";
 
-const PROJECTS_QUERY = gql`
-  query _projects {
-    profile: myProfile {
-      id
-      email
-      publicId
-      socialSecurityNumber
-      workPreference {
-        id
-        interests
-        projectLimit
-      }
-      sitePreference {
-        id
-        optInMarketing
-        optInUsageStat
-        experimentalFeatures
-        supportPin
-      }
-      clue {
-        id
-        firstName
-        lastName
-        gender
-        birthDate
-        image
-        bio
-        phoneNumber
-        isReady
-        country {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-const ContainerProjects = styled.div`
-  flex: 1 1 auto;
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-center;
-
-  & > div {
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const list = [
-  "Brian Vaughn",
-  "Brian Vaughn",
-  // And so on...
+const BREADCRUMBS: IBreadcrumbProps[] = [
+  { href: "/", icon: IconNames.HOME, text: "Home" },
+  { href: "/u/projects", icon: IconNames.LIST, text: "Projects" },
+  { href: "/u/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project Details" },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function rowRenderer({ key, index, style }: any) {
+const renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {
+  return <Breadcrumb {...restProps}>{text}</Breadcrumb>;
+};
+
+function ProjectActivityCalendar({ data }: any) {
   return (
-    <div key={key} style={style}>
-      {list[index]}
+    <ResponsiveCalendar
+      data={data}
+      from="2015-03-01"
+      to="2016-07-12"
+      emptyColor="#eeeeee"
+      colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
+      margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+      yearSpacing={40}
+      monthBorderColor="#ffffff"
+      dayBorderWidth={2}
+      dayBorderColor="#ffffff"
+      legends={[
+        {
+          anchor: "bottom-right",
+          direction: "row",
+          translateY: 36,
+          itemCount: 4,
+          itemWidth: 42,
+          itemHeight: 36,
+          itemsSpacing: 14,
+          itemDirection: "right-to-left",
+        },
+      ]}
+    />
+  );
+}
+
+function ProjectDetailsContent(): JSX.Element {
+  return (
+    <div style={{ margin: "20px" }}>
+      <Breadcrumbs
+        currentBreadcrumbRenderer={renderCurrentBreadcrumb}
+        items={BREADCRUMBS}
+      />
+      <div style={{ marginBottom: "1rem" }} />
+      <Card elevation={Elevation.ONE}>
+        <H5>Project Activity</H5>
+        <div style={{ height: "400px" }}>
+          <ProjectActivityCalendar data={DemoCalendarData} />
+        </div>
+        <H5>Project Issues</H5>
+      </Card>
     </div>
   );
 }
 
-function JoinedProjects(): JSX.Element {
-  return (
-    <>
-      <Card elevation={Elevation.ONE}>
-        <H5>Joined Projects</H5>
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <List
-              height={list.length * 30}
-              rowCount={list.length}
-              rowHeight={30}
-              rowRenderer={rowRenderer}
-              width={width}
-            />
-          )}
-        </AutoSizer>
-      </Card>
-    </>
-  );
-}
+function ProjectDetailsView(): JSX.Element {
+  log.trace("Rendering project details view");
 
-function HostedProjects(): JSX.Element {
-  return (
-    <>
-      <Card elevation={Elevation.ONE}>
-        <H5>Hosted Projects</H5>
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <List
-              height={list.length * 30}
-              rowCount={list.length}
-              rowHeight={30}
-              rowRenderer={rowRenderer}
-              width={width}
-            />
-          )}
-        </AutoSizer>
-      </Card>
-    </>
-  );
-}
-
-function ProjectsContent(): JSX.Element {
-  // FZ_TODO: process results
-  useQuery(PROJECTS_QUERY);
-
-  return (
-    <ContainerProjects>
-      <JoinedProjects />
-      <HostedProjects />
-    </ContainerProjects>
-  );
-}
-
-function Projects(): JSX.Element {
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Projects</title>
+        <title>Project Details</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>
         <NavigationHeader />
-        <ProjectsContent />
+        <ProjectDetailsContent />
       </ContainerRootInner>
     </ContainerRoot>
   );
 }
 
-export default Projects;
+export default ProjectDetailsView;

@@ -17,12 +17,11 @@ import {
   Classes,
   Tag,
   Text,
-  HTMLTable,
   Divider,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { ContainerRoot, HapButton, ImageAvatar } from "@/components";
-import { generateHash, camelizeKeys } from "@/utils";
+import { generateHash } from "@/utils";
 import { AutoSizer, List } from "react-virtualized";
 
 const REQUEST_PROFILE_QUERY = gql`
@@ -79,10 +78,6 @@ const ContainerBio = styled.div`
   max-width: 500px;
 `;
 
-const ResponsiveTable = styled(HTMLTable)`
-  width: 100%;
-`;
-
 const Table = styled.table`
   padding: 10px 60px 30px 60px;
   width: 100%;
@@ -111,6 +106,7 @@ const list = [
   // And so on...
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
@@ -202,20 +198,26 @@ interface MyShareableProfile {
   kycState?: string;
 }
 
-function ShareableProfile(): JSX.Element {
-  // const { id } = useParams<{ id: string }>();
-  // const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
-  //   variables: { id },
-  // });
+function ShareableProfileView(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
 
-  // if (loading) return <ShareableProfileLoading />;
-  // if (error) {
-  //   log.error(error);
-  //   return <ShareableProfileError />;
-  // }
+  log.trace("Rendering shareable profile view");
+  log.debug("Loading profile:", id);
 
-  // if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
-  //   return <ShareableProfileError />;
+  const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
+    variables: { id },
+  });
+
+  if (id !== "demo") {
+    if (loading) return <ShareableProfileLoading />;
+    if (error) {
+      log.error(error);
+      return <ShareableProfileError />;
+    }
+
+    if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
+      return <ShareableProfileError />;
+  }
 
   // const { profile } = data.requestProfile;
   // const processedProfile = camelizeKeys(profile);
@@ -352,4 +354,4 @@ function ShareableProfile(): JSX.Element {
   );
 }
 
-export default ShareableProfile;
+export default ShareableProfileView;

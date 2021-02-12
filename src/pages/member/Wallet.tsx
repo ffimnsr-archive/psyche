@@ -95,11 +95,13 @@ function WithdrawalRequestsContent(): JSX.Element {
   );
 }
 
-function WithdrawalRequests(): JSX.Element {
+function WalletView(): JSX.Element {
+  log.trace("Rendering wallet view");
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Withdrawal Requests</title>
+        <title>Wallet</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>
@@ -110,4 +112,4 @@ function WithdrawalRequests(): JSX.Element {
   );
 }
 
-export default WithdrawalRequests;
+export default WalletView;
