@@ -22,9 +22,7 @@ function StatsContent(): JSX.Element {
       <div style={{ marginBottom: "1rem" }} />
       <Card elevation={Elevation.ONE}>
         <H5>Project Activity</H5>
-        <div style={{ height: "400px" }}>
-          
-        </div>
+        <div style={{ height: "400px" }}></div>
       </Card>
     </div>
   );
