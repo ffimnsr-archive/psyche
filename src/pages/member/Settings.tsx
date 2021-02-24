@@ -10,6 +10,7 @@ import {
   Sidebar,
   NavigationHeader,
 } from "@/components";
+import { WORK_FUNCTIONS_QUERY } from "@/operations/queries";
 
 const ContainerSettings = styled.div`
   flex: 1 1 auto;

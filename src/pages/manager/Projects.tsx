@@ -13,7 +13,7 @@ import { Project } from "@/models";
 import { useQuery, gql } from "@apollo/client";
 
 const PROJECTS_QUERY = gql`
-  query _projects {
+  query _projectsQuery {
     project {
       projects {
         id

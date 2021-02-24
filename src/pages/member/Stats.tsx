@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { useQuery, gql } from "@apollo/client";
 import { Card, H5, Button, Elevation, Colors, Classes } from "@blueprintjs/core";
+import { ResponsiveLine } from "@nivo/line";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -11,17 +12,22 @@ import {
   NavigationHeader,
 } from "@/components";
 
-const ContainerStats = styled.div`
-  flex: 1 1 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-function Feeds(): JSX.Element {
-  return <div>Hello</div>;
+function StatsContent(): JSX.Element {
+  return (
+    <div style={{ margin: "20px" }}>
+      {/* <Breadcrumbs
+        currentBreadcrumbRenderer={renderCurrentBreadcrumb}
+        items={BREADCRUMBS}
+      /> */}
+      <div style={{ marginBottom: "1rem" }} />
+      <Card elevation={Elevation.ONE}>
+        <H5>Project Activity</H5>
+        <div style={{ height: "400px" }}>
+          
+        </div>
+      </Card>
+    </div>
+  );
 }
 
 function StatsView(): JSX.Element {
@@ -35,9 +41,7 @@ function StatsView(): JSX.Element {
       <Sidebar />
       <ContainerRootInner>
         <NavigationHeader />
-        <ContainerStats>
-          <Feeds />
-        </ContainerStats>
+        <StatsContent />
       </ContainerRootInner>
     </ContainerRoot>
   );

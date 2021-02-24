@@ -2,7 +2,7 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { HTMLTable, H5, Card, Elevation } from "@blueprintjs/core";
+import { HTMLTable, H5, Card, Elevation, Colors, H3, H2 } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -10,24 +10,7 @@ import {
   NavigationHeader,
 } from "@/components";
 import { WithdrawalRequest } from "@/models";
-import { useQuery, gql } from "@apollo/client";
-
-const WITHDRAWAL_REQUESTS_QUERY = gql`
-  query _withdrawalRequests {
-    withdrawalRequest {
-      withdrawalRequests {
-        id
-        userId
-        amount
-        referenceNo
-        remarks
-        approvedById
-        approvedAt
-        status
-      }
-    }
-  }
-`;
+// import { useQuery } from "@apollo/client";
 
 const ContainerWithdrawalRequests = styled.div`
   flex: 1 1 auto;
@@ -35,12 +18,17 @@ const ContainerWithdrawalRequests = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-center;
+
+  & > div {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const ResponsiveTable = styled(HTMLTable)`
   width: 100%;
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
   const withdrawalRequests = list.map(
     ({
@@ -71,7 +59,7 @@ function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Ele
       <Card elevation={Elevation.ONE}>
         <H5>WALLET</H5>
         <ResponsiveTable condensed={true} striped={true}>
-          <tbody>{withdrawalRequests}</tbody>
+          {/* <tbody>{withdrawalRequests}</tbody> */}
         </ResponsiveTable>
       </Card>
     </>
@@ -79,18 +67,33 @@ function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Ele
 }
 
 function WithdrawalRequestsContent(): JSX.Element {
-  const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
+  // const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);
 
-  if (loading) return <p>Loading</p>;
-  if (error) {
-    log.error(error);
-    return <p>Error</p>;
-  }
+  // if (loading) return <p>Loading</p>;
+  // if (error) {
+  //   log.error(error);
+  //   return <p>Error</p>;
+  // }
 
-  log.info();
   return (
     <ContainerWithdrawalRequests>
-      <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />
+      <Card
+        elevation={Elevation.ONE}
+        style={{
+          backgroundColor: Colors.BLUE3,
+          color: Colors.WHITE,
+          padding: "3rem",
+        }}
+      >
+        <p style={{ color: Colors.WHITE }}>Available Cash</p>
+        <H2 style={{ color: Colors.WHITE }}>P 200,000,000.00</H2>
+        <p style={{ color: Colors.WHITE }}>Total Equity</p>
+        <H2 style={{ color: Colors.WHITE }}>P 200,000,000.00</H2>
+      </Card>
+      <Card elevation={Elevation.ONE}>
+        <H5>Withdrawal Requests</H5>
+        <div style={{ height: "400px" }}></div>
+      </Card>
     </ContainerWithdrawalRequests>
   );
 }

@@ -10,19 +10,8 @@ import {
   NavigationHeader,
 } from "@/components";
 import { WorkFunction } from "@/models/internals";
-import { useQuery, gql } from "@apollo/client";
-
-const WORK_FUNCTIONS_QUERY = gql`
-  query _workFunctions {
-    workFunction {
-      workFunctions {
-        id
-        name
-        description
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
+import { WORK_FUNCTIONS_QUERY } from "@/operations/queries";
 
 const ContainerWorkFunctions = styled.div`
   flex: 1 1 auto;

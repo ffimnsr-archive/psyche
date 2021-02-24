@@ -11,6 +11,14 @@ import {
   NavigationHeader,
 } from "@/components";
 
+const FEED_QUERY = gql`
+  query _feed {
+    industries {
+      id
+    }
+  }
+`;
+
 const ContainerNewsFeed = styled.div`
   flex: 1 1 auto;
   padding-top: 20px;
@@ -30,24 +38,24 @@ const NewsFeed = styled.div`
 `;
 
 function Feeds(): JSX.Element {
-  // const { loading, error, data } = useQuery(FEED_QUERY);
+  const { loading, error, data } = useQuery(FEED_QUERY);
 
-  // // FZ_TODO
-  // if (loading) return <p>Loading</p>;
-  // if (error) {
-  //   log.error(error);
-  //   return <p>Error</p>;
-  // }
+  // FZ_TODO
+  if (loading) return <p>Loading</p>;
+  if (error) {
+    log.error(error);
+    return <p>Error</p>;
+  }
 
-  // const feed = data.industries.map(({ id }: { id: number }) => (
-  //   <Card key={id} elevation={Elevation.ONE}>
-  //     <H5>{id}</H5>
-  //     <p>Hello</p>
-  //     <Button text="Explore" />
-  //   </Card>
-  // ));
+  const feed = data.industries.map(({ id }: { id: number }) => (
+    <Card key={id} elevation={Elevation.ONE}>
+      <H5>{id}</H5>
+      <p>Hello</p>
+      <Button text="Explore" />
+    </Card>
+  ));
 
-  return <NewsFeed>Hello</NewsFeed>;
+  return <NewsFeed>{feed}</NewsFeed>;
 }
 
 function IssuesView(): JSX.Element {

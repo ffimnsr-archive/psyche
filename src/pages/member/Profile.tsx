@@ -62,6 +62,7 @@ const list = [
   // And so on...
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function UserActivityCalendar({ data }: any) {
   return (
     <ResponsiveCalendar

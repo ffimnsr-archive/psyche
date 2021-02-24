@@ -13,7 +13,7 @@ import { BankAccount } from "@/models";
 import { useQuery, gql } from "@apollo/client";
 
 const BANK_ACCOUNTS_QUERY = gql`
-  query _bankAccounts {
+  query _bankAccountsQuery {
     bankAccount {
       bankAccounts {
         id

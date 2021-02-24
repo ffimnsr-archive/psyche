@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
@@ -11,6 +11,7 @@ import {
   NonIdealState,
   Spinner,
   Colors,
+  Alert,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import {
@@ -19,21 +20,8 @@ import {
   Sidebar,
   NavigationHeader,
 } from "@/components";
-import { useQuery, gql } from "@apollo/client";
-
-const HOME_QUERY = gql`
-  query _home {
-    userClue {
-      myProfile {
-        id
-        globalId
-        publicCode
-        username
-        avatar
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
+import { PROFILE_QUERY } from "@/operations/queries";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -61,6 +49,28 @@ const ContainerCallout = styled.div`
   margin-bottom: 10px;
 `;
 
+type JoinConfirmationAlertProps = {
+  isOpen: boolean;
+  onCloseCb: (arg0: boolean) => void;
+};
+
+const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps) => (
+  <Alert
+    confirmButtonText="Join"
+    cancelButtonText="Cancel"
+    loading={false}
+    icon={IconNames.MOUNTAIN}
+    intent={Intent.SUCCESS}
+    isOpen={isOpen}
+    onClose={() => onCloseCb(false)}
+  >
+    <p>
+      By joining the talent pool you agree to the talent terms, conditions and
+      non-disclosure agreement. Are you sure you want to join the talent pool?
+    </p>
+  </Alert>
+);
+
 function HomeLoading(): JSX.Element {
   return (
     <ContainerNonTrivial>
@@ -70,9 +80,16 @@ function HomeLoading(): JSX.Element {
 }
 
 function ProfileStillEmpty(): JSX.Element {
+  const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState(false);
   const action = (
     <>
-      <Button intent={Intent.SUCCESS} fill={true} large={true} text="Join" />
+      <Button
+        intent={Intent.SUCCESS}
+        fill={true}
+        large={true}
+        text="Join"
+        onClick={() => setIsOpenJoinConfirmation(true)}
+      />
       <small>
         We will notify you immediately through SMS and email once a project gets assigned
         to you.
@@ -108,14 +125,17 @@ function ProfileStillEmpty(): JSX.Element {
           />
         </Card>
       </ContainerContent>
+      <JoinConfirmationAlert
+        isOpen={isOpenJoinConfirmation}
+        onCloseCb={setIsOpenJoinConfirmation}
+      />
     </ContainerHome>
   );
 }
 
 function ProfileContent(): JSX.Element {
-  const { loading, error, data } = useQuery(HOME_QUERY);
+  const { loading, error, data } = useQuery(PROFILE_QUERY);
 
-  // FZ_TODO
   if (loading) return <HomeLoading />;
   if (error) {
     log.error(error);

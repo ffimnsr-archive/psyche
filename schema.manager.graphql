@@ -1,0 +1,693 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+  subscription: SubscriptionRoot
+}
+
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type Industry {
+  id: Int!
+  name: String!
+  description: String!
+}
+
+type GraphEntityPayloadInt {
+  id: Int!
+}
+
+type UserClueMutation {
+  """Create a single user clue"""
+  createUserClue(input: UserClueInput!): UserClue!
+  updateUserClue(input: UserClueUpdateInput!): GraphEntityPayloadUuid!
+  deleteUserClue(id: Uuid!): GraphEntityPayloadUuid!
+}
+
+type WithdrawalRequestMutation {
+  createWithdrawalRequest(input: WithdrawalRequestInput!): WithdrawalRequest!
+  updateWithdrawalRequest(input: WithdrawalRequestUpdateInput!): GraphEntityPayloadInt!
+  deleteWithdrawalRequest(id: Int!): GraphEntityPayloadInt!
+}
+
+type ProjectQuery {
+  projects: [Project!]!
+  project(id: Uuid!): Project!
+}
+
+type Rank {
+  id: Int!
+  name: String!
+  description: String!
+}
+
+type ProjectMemberQuery {
+  projectMembers: [ProjectMember!]!
+  projectMember(id: Int!): ProjectMember!
+}
+
+type GraphEntityPayloadUuid {
+  id: Uuid!
+}
+
+"""Bank Account Input"""
+input BankAccountInput {
+  userId: Uuid!
+  accountName: String!
+  accountNo: String!
+  bankAddress: String!
+  bankBranch: String!
+  bankName: String!
+  bankSwiftCode: String!
+  bankRoutingNumber: String!
+}
+
+"""Project Category Input"""
+input ProjectCategoryInput {
+  name: String!
+  description: String!
+}
+
+"""Project Member Update Input"""
+input ProjectMemberUpdateInput {
+  id: Int!
+  userId: Uuid
+  projectId: Uuid
+  workFunctionId: Int
+  startDate: NaiveDate
+  endDate: NaiveDate
+  status: Int
+  remarks: String
+}
+
+"""Project Update Input"""
+input ProjectUpdateInput {
+  id: Uuid!
+  publicCode: String
+  name: String
+  description: String
+  parentOrganizationId: Uuid
+  managedById: Uuid
+  createdById: Uuid
+}
+
+"""Bank Account Update Input"""
+input BankAccountUpdateInput {
+  id: Int!
+  userId: Uuid
+  accountName: String
+  accountNo: String
+  bankAddress: String
+  bankBranch: String
+  bankName: String
+  bankSwiftCode: String
+  bankRoutingNumber: String
+}
+
+type Project {
+  id: Uuid!
+  publicCode: String!
+  name: String!
+  description: String!
+  parentOrganizationId: String!
+  managedById: String!
+  createdById: String!
+  parentOrganization: Organization
+  managedBy: UserClue
+  createdBy: UserClue
+  clue: ProjectClue
+  members: [ProjectMember!]
+}
+
+"""Organization Input"""
+input OrganizationInput {
+  name: String!
+  description: String!
+  managedById: Uuid!
+  createdById: Uuid!
+}
+
+"""User Clue Update Input"""
+input UserClueUpdateInput {
+  id: Uuid!
+  globalId: Uuid
+  username: String
+  avatar: String
+}
+
+type UserClueQuery {
+  """List of all users"""
+  userClues: [UserClue!]!
+
+  """Get single user clue reference by ID"""
+  userClue(id: Uuid!): UserClue!
+
+  """Get multiple user clue reference by their IDs"""
+  userClueMultiple(ids: [Uuid!]!): [UserClue]!
+}
+
+type WithdrawalRequestQuery {
+  withdrawalRequests: [WithdrawalRequest!]!
+  withdrawalRequest(id: Int!): WithdrawalRequest!
+}
+
+"""Industry Input"""
+input IndustryInput {
+  name: String!
+  description: String!
+}
+
+"""Project Category Update Input"""
+input ProjectCategoryUpdateInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+"""Work Function Input"""
+input WorkFunctionInput {
+  name: String!
+  description: String!
+}
+
+"""Organization Update Input"""
+input OrganizationUpdateInput {
+  id: Uuid!
+  name: String
+  description: String
+  managedById: Uuid
+  createdById: Uuid
+}
+
+"""Withdrawal Request Update Input"""
+input WithdrawalRequestUpdateInput {
+  id: Int!
+  userId: Uuid
+  amount: Float
+  referenceNo: String
+  remarks: String
+  approvedById: Uuid
+  approvedAt: NaiveDateTime
+  status: Int
+}
+
+"""Experience Level Update Input"""
+input ExperienceLevelUpdateInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+type WorkExperienceQuery {
+  workExperiences: [WorkExperience!]!
+  workExperience(id: Int!): WorkExperience!
+}
+
+type ProjectClueMutation {
+  createProjectClue(input: ProjectClueInput!): ProjectClue!
+  updateProjectClue(input: ProjectClueUpdateInput!): GraphEntityPayloadInt!
+  deleteProjectClue(id: Int!): GraphEntityPayloadInt!
+}
+
+"""Country Input"""
+input CountryInput {
+  name: String!
+  alpha2: String!
+  alpha3: String!
+  phoneCode: String!
+  currencyCode: String!
+}
+
+"""Site Preference Update Input"""
+input SitePreferenceUpdateInput {
+  id: Int!
+  userId: Uuid
+  isOptInMarketing: Boolean
+  isOptInUsageStatistics: Boolean
+  isOptInExperimental: Boolean
+}
+
+type Country {
+  id: Int!
+  name: String!
+  alpha2: String!
+  alpha3: String!
+  phoneCode: String!
+  currencyCode: String!
+}
+
+"""User Clue Input"""
+input UserClueInput {
+  globalId: Uuid!
+  username: String!
+  avatar: String!
+}
+
+"""Withdrawal Request Input"""
+input WithdrawalRequestInput {
+  userId: Uuid!
+  amount: Float!
+  referenceNo: String!
+  remarks: String!
+  approvedById: Uuid!
+  approvedAt: NaiveDateTime!
+  status: Int!
+}
+
+type WorkPreferenceMutation {
+  createWorkPreference(input: WorkPreferenceInput!): WorkPreference!
+  updateWorkPreference(input: WorkPreferenceUpdateInput!): GraphEntityPayloadInt!
+  deleteWorkPreference(id: Int!): GraphEntityPayloadInt!
+}
+
+"""Project Clue Input"""
+input ProjectClueInput {
+  projectId: Uuid!
+  requirements: String!
+  environments: String!
+  repositoryHttpUrl: String!
+  repositorySshUrl: String!
+}
+
+type WorkPreference {
+  id: Int!
+  userId: String!
+  workFunctionId: Int!
+  user: UserClue
+  workFunction: WorkFunction
+}
+
+"""Uuid"""
+scalar Uuid
+
+"""Experience Level Input"""
+input ExperienceLevelInput {
+  name: String!
+  description: String!
+}
+
+type ExperienceLevel {
+  id: Int!
+  name: String!
+  description: String!
+}
+
+type BankAccountMutation {
+  createBankAccount(input: BankAccountInput!): BankAccount!
+  updateBankAccount(input: BankAccountUpdateInput!): GraphEntityPayloadInt!
+  deleteBankAccount(id: Int!): GraphEntityPayloadInt!
+}
+
+type WorkPreferenceQuery {
+  workPreferences: [WorkPreference!]!
+  workPreference(id: Int!): WorkPreference!
+}
+
+type InternalsQuery {
+  """Represents a country"""
+  countries: [Country!]!
+  country(id: Int!): Country!
+
+  """Represents talent experience level"""
+  experienceLevels: [ExperienceLevel!]!
+  experienceLevel(id: Int!): ExperienceLevel!
+
+  """Reprensents an industry name"""
+  industries: [Industry!]!
+  industry(id: Int!): Industry!
+
+  """Represents project categories"""
+  projectCategories: [ProjectCategory!]!
+  projectCategory(id: Int!): ProjectCategory!
+
+  """Represents talent ranks"""
+  ranks: [Rank!]!
+  rank(id: Int!): Rank!
+
+  """Rerpesents work function that talent puts interest"""
+  workFunctions: [WorkFunction!]!
+  workFunction(id: Int!): WorkFunction!
+}
+
+type SubscriptionRoot {
+  healthCheck: String!
+  users: UserClue!
+}
+
+type WorkExperienceMutation {
+  createWorkExperience(input: WorkExperienceInput!): WorkExperience!
+  updateWorkExperience(input: WorkExperienceUpdateInput!): GraphEntityPayloadInt!
+  deleteWorkExperience(id: Int!): GraphEntityPayloadInt!
+}
+
+"""Site Preference Input"""
+input SitePreferenceInput {
+  userId: Uuid!
+  isOptInMarketing: Boolean!
+  isOptInUsageStatistics: Boolean!
+  isOptInExperimental: Boolean!
+}
+
+"""NaiveDate"""
+scalar NaiveDate
+
+type UserClue {
+  id: Uuid!
+  globalId: Uuid!
+  publicCode: String!
+  username: String!
+  avatar: String!
+  bankAccounts: [BankAccount!]
+  organizations: [Organization!]
+  sitePreference: SitePreference
+  withdrawalRequests: [WithdrawalRequest!]
+  workExperiences: [WorkExperience!]
+  workPreferences: [WorkPreference!]
+}
+
+type WithdrawalRequest {
+  id: Int!
+  userId: String!
+  amount: Float!
+  referenceNo: String!
+  remarks: String!
+  approvedById: String!
+  approvedAt: NaiveDateTime!
+  status: Int!
+  user: UserClue
+  approvedBy: UserClue
+}
+
+type MutationRoot {
+  internals: InternalsMutation!
+  bankAccount: BankAccountMutation!
+  organization: OrganizationMutation!
+  projectClue: ProjectClueMutation!
+  projectMember: ProjectMemberMutation!
+  project: ProjectMutation!
+  sitePreference: SitePreferenceMutation!
+  userClue: UserClueMutation!
+  withdrawalRequest: WithdrawalRequestMutation!
+  workExperience: WorkExperienceMutation!
+  workPreference: WorkPreferenceMutation!
+}
+
+"""Rank Update Input"""
+input RankUpdateInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+type ProjectMemberMutation {
+  createProjectMember(input: ProjectMemberInput!): ProjectMember!
+  updateProjectMember(input: ProjectMemberUpdateInput!): GraphEntityPayloadInt!
+  deleteProjectMember(id: Int!): GraphEntityPayloadInt!
+}
+
+type OrganizationMutation {
+  createOrganization(input: OrganizationInput!): Organization!
+  updateOrganization(input: OrganizationUpdateInput!): GraphEntityPayloadUuid!
+  deleteOrganization(id: Uuid!): GraphEntityPayloadUuid!
+}
+
+type BankAccountQuery {
+  bankAccounts: [BankAccount!]!
+  bankAccount(id: Int!): BankAccount!
+}
+
+type WorkFunction {
+  id: Int!
+  name: String!
+  description: String!
+}
+
+"""NaiveDateTime"""
+scalar NaiveDateTime
+
+"""Industry Update Input"""
+input IndustryUpdateInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+"""Project Clue Update Input"""
+input ProjectClueUpdateInput {
+  id: Int!
+  projectId: Uuid
+  requirements: String
+  environments: String
+  repositoryHttpUrl: String
+  repositorySshUrl: String
+}
+
+type WorkExperience {
+  id: Int!
+  userId: String!
+  title: String!
+  organization: String!
+  location: String!
+  fromDate: NaiveDate!
+  toDate: NaiveDate!
+  description: String!
+  user: UserClue
+}
+
+type InternalsMutation {
+  createCountry(input: CountryInput!): Country!
+  updateCountry(input: CountryUpdateInput!): GraphEntityPayloadInt!
+  deleteCountry(id: Int!): GraphEntityPayloadInt!
+  createExperienceLevel(input: ExperienceLevelInput!): ExperienceLevel!
+  updateExperienceLevel(input: ExperienceLevelUpdateInput!): GraphEntityPayloadInt!
+  deleteExperienceLevel(id: Int!): GraphEntityPayloadInt!
+  createIndustry(input: IndustryInput!): Industry!
+  updateIndustry(input: IndustryUpdateInput!): GraphEntityPayloadInt!
+  deleteIndustry(id: Int!): GraphEntityPayloadInt!
+  createProjectCategory(input: ProjectCategoryInput!): ProjectCategory!
+  updateProjectCategory(input: ProjectCategoryUpdateInput!): GraphEntityPayloadInt!
+  deleteProjectCategory(id: Int!): GraphEntityPayloadInt!
+  createRank(input: RankInput!): Rank!
+  updateRank(input: RankUpdateInput!): GraphEntityPayloadInt!
+  deleteRank(id: Int!): GraphEntityPayloadInt!
+  createWorkFunction(input: WorkFunctionInput!): WorkFunction!
+  updateWorkFunction(input: WorkFunctionUpdateInput!): GraphEntityPayloadInt!
+  deleteWorkFunction(id: Int!): GraphEntityPayloadInt!
+}
+
+type ProjectClue {
+  id: Int!
+  projectId: String!
+  requirements: String!
+  environments: String!
+  repositoryHttpUrl: String!
+  repositorySshUrl: String!
+  project: Project
+}
+
+type SitePreferenceQuery {
+  sitePreferences: [SitePreference!]!
+  sitePreference(id: Int!): SitePreference!
+}
+
+type QueryRoot {
+  """Checks if the server is alive"""
+  healthCheck: String!
+  internals: InternalsQuery!
+  bankAccount: BankAccountQuery!
+  organization: OrganizationQuery!
+  projectClue: ProjectClueQuery!
+  projectMember: ProjectMemberQuery!
+  project: ProjectQuery!
+  sitePreference: SitePreferenceQuery!
+  userClue: UserClueQuery!
+  withdrawalRequest: WithdrawalRequestQuery!
+  workExperience: WorkExperienceQuery!
+  workPreference: WorkPreferenceQuery!
+}
+
+"""Work Preference Input"""
+input WorkPreferenceInput {
+  userId: Uuid!
+  workFunctionId: Int!
+}
+
+"""Project Input"""
+input ProjectInput {
+  publicCode: String!
+  name: String!
+  description: String!
+  parentOrganizationId: Uuid!
+  managedById: Uuid!
+  createdById: Uuid!
+}
+
+type SitePreferenceMutation {
+  createSitePreference(input: SitePreferenceInput!): SitePreference!
+  updateSitePreference(input: SitePreferenceUpdateInput!): GraphEntityPayloadInt!
+  deleteSitePreference(id: Int!): GraphEntityPayloadInt!
+}
+
+type ProjectCategory {
+  id: Int!
+  name: String!
+  description: String!
+}
+
+type OrganizationQuery {
+  organizations: [Organization!]!
+  organization(id: Uuid!): Organization!
+}
+
+"""Rank Input"""
+input RankInput {
+  name: String!
+  description: String!
+}
+
+type Organization {
+  id: Uuid!
+  name: String!
+  description: String!
+  managedById: String!
+  createdById: String!
+  managedBy: UserClue
+  createdBy: UserClue
+  projects: [Project!]
+}
+
+type SitePreference {
+  id: Int!
+  userId: Uuid!
+  isOptInMarketing: Boolean!
+  isOptInUsageStatistics: Boolean!
+  isOptInExperimental: Boolean!
+  user: UserClue
+}
+
+"""Country Update Input"""
+input CountryUpdateInput {
+  id: Int!
+  name: String
+  alpha2: String
+  alpha3: String
+  phoneCode: String
+  currencyCode: String
+}
+
+type ProjectClueQuery {
+  projectClues: [ProjectClue!]!
+  projectClue(id: Int!): ProjectClue!
+}
+
+"""Work Function Update Input"""
+input WorkFunctionUpdateInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+"""Work Experience Update Input"""
+input WorkExperienceUpdateInput {
+  id: Int!
+  userId: Uuid
+  title: String
+  organization: String
+  location: String
+  fromDate: NaiveDate
+  toDate: NaiveDate
+  description: String
+}
+
+type ProjectMember {
+  id: Int!
+  userId: Uuid!
+  projectId: Uuid!
+  workFunctionId: Int!
+  startDate: NaiveDate!
+  endDate: NaiveDate!
+  status: Int!
+  remarks: String!
+  user: UserClue
+  project: Project
+  workFunction: WorkFunction
+}
+
+type ProjectMutation {
+  createProject(input: ProjectInput!): Project!
+  updateProject(input: ProjectUpdateInput!): GraphEntityPayloadUuid!
+  deleteProject(id: Uuid!): GraphEntityPayloadUuid!
+}
+
+type BankAccount {
+  id: Int!
+  userId: String!
+  accountName: String!
+  accountNo: String!
+  bankAddress: String!
+  bankBranch: String!
+  bankName: String!
+  bankSwiftCode: String!
+  bankRoutingNumber: String!
+  user: UserClue
+}
+
+"""Project Member Input"""
+input ProjectMemberInput {
+  userId: Uuid!
+  projectId: Uuid!
+  workFunctionId: Int!
+  startDate: NaiveDate!
+  endDate: NaiveDate!
+  status: Int!
+  remarks: String!
+}
+
+"""Work Experience Input"""
+input WorkExperienceInput {
+  userId: Uuid!
+  title: String!
+  organization: String!
+  location: String!
+  fromDate: NaiveDate!
+  toDate: NaiveDate!
+  description: String!
+}
+
+"""Work Preference Update Input"""
+input WorkPreferenceUpdateInput {
+  id: Int!
+  userId: Uuid
+  workFunctionId: Int
+}

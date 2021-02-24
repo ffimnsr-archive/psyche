@@ -3312,3 +3312,114 @@ export const DemoCalendarData = [
     value: 355,
   },
 ];
+
+export const DemoLineData = [
+  {
+    id: "germany",
+    color: "hsl(148, 70%, 50%)",
+    data: [
+      {
+        x: "plane",
+        y: 265,
+      },
+      {
+        x: "helicopter",
+        y: 229,
+      },
+      {
+        x: "boat",
+        y: 18,
+      },
+      {
+        x: "train",
+        y: 284,
+      },
+      {
+        x: "subway",
+        y: 226,
+      },
+      {
+        x: "bus",
+        y: 45,
+      },
+      {
+        x: "car",
+        y: 64,
+      },
+      {
+        x: "moto",
+        y: 130,
+      },
+      {
+        x: "bicycle",
+        y: 285,
+      },
+      {
+        x: "horse",
+        y: 10,
+      },
+      {
+        x: "skateboard",
+        y: 43,
+      },
+      {
+        x: "others",
+        y: 221,
+      },
+    ],
+  },
+  {
+    id: "norway",
+    color: "hsl(228, 70%, 50%)",
+    data: [
+      {
+        x: "plane",
+        y: 100,
+      },
+      {
+        x: "helicopter",
+        y: 78,
+      },
+      {
+        x: "boat",
+        y: 203,
+      },
+      {
+        x: "train",
+        y: 68,
+      },
+      {
+        x: "subway",
+        y: 154,
+      },
+      {
+        x: "bus",
+        y: 185,
+      },
+      {
+        x: "car",
+        y: 237,
+      },
+      {
+        x: "moto",
+        y: 92,
+      },
+      {
+        x: "bicycle",
+        y: 94,
+      },
+      {
+        x: "horse",
+        y: 97,
+      },
+      {
+        x: "skateboard",
+        y: 13,
+      },
+      {
+        x: "others",
+        y: 204,
+      },
+    ],
+  },
+];
