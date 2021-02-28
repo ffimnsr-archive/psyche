@@ -45,7 +45,7 @@ function LoginDispatcherContent(): JSX.Element {
   }, [keycloak]);
 
   if (keycloak?.authenticated) {
-    log.info("Redirecting to authenticated session");
+    log.trace("LoginDispatcherContent: redirecting to authenticated session");
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return <Redirect to={(currentLocation.state as any)?.from as string} />;
@@ -86,7 +86,7 @@ function LoginDispatcherContent(): JSX.Element {
 const LoginDispatcher = withRouter(LoginDispatcherContent);
 
 function LoginView(): JSX.Element {
-  log.trace("Rendering login view");
+  log.trace("LoginView: rendering component");
 
   return (
     <ContainerRoot>

@@ -91,7 +91,7 @@ export function Router(): JSX.Element {
   const { initialized } = useKeycloak();
 
   if (!initialized) {
-    log.trace("Keycloak loading...");
+    log.trace("Router: keycloak loading");
     return <div>{LoadingPlaceholder}</div>;
   }
 

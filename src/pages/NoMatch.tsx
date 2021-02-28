@@ -17,7 +17,7 @@ const Container = styled.main`
 `;
 
 function NoMatchView(): JSX.Element {
-  log.trace("Rendering no match view");
+  log.trace("NoMatchView: rendering component");
 
   const description = (
     <div>

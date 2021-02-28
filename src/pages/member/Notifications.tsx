@@ -90,7 +90,7 @@ function RecentNotifications(): JSX.Element {
 }
 
 function NotificationsView(): JSX.Element {
-  log.trace("Rendering notifications view");
+  log.trace("NotificationsView: rendering component");
 
   return (
     <ContainerRoot>

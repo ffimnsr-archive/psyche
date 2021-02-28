@@ -87,11 +87,10 @@ function BankAccountsContent(): JSX.Element {
 
   if (loading) return <p>Loading</p>;
   if (error) {
-    log.error(error);
+    log.error("BankAccountsContent: failed call to bank accounts query =", error);
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerBankAccounts>
       <BankAccountList list={data.bankAccount.bankAccounts} />

@@ -133,7 +133,7 @@ function rowRenderer({ key, index, style }: any) {
 }
 
 function ProfileView(): JSX.Element {
-  log.trace("Rendering profile view");
+  log.trace("ProfileView: rendering component");
 
   const emailHash = generateHash("loremipsum");
 

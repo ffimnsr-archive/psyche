@@ -80,7 +80,7 @@ function ProjectDetailsContent(): JSX.Element {
 }
 
 function ProjectDetailsView(): JSX.Element {
-  log.trace("Rendering project details view");
+  log.trace("ProjectDetailsView: rendering component");
 
   return (
     <ContainerRoot>

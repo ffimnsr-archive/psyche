@@ -86,7 +86,6 @@ function ProjectsContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerProjects>
       <ProjectList list={data.project.projects} />

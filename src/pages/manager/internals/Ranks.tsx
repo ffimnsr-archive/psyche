@@ -67,7 +67,6 @@ function RanksContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerRanks>
       <RankList list={data.rank.ranks} />

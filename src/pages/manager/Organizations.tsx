@@ -67,7 +67,6 @@ function OrganizationsContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerOrganizations>
       <OrganizationList list={data.organization.organizations} />

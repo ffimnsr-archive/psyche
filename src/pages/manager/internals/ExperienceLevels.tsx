@@ -67,7 +67,6 @@ function ExperienceLevelsContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerExperienceLevels>
       <ExperienceLevelList list={data.experienceLevel.experienceLevels} />

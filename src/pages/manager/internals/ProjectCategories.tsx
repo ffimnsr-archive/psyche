@@ -67,7 +67,6 @@ function ProjectCategoriesContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerProjectCategories>
       <ProjectCategoryList list={data.projectCategory.projectCategories} />

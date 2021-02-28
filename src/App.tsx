@@ -13,7 +13,7 @@ import keycloak from "@/services/keycloak";
 FocusStyleManager.onlyShowFocusOnTabs();
 
 const eventLogger = (event: unknown, error: unknown) => {
-  log.trace("onKeycloakEvent", event, error);
+  log.trace("eventLogger: onKeycloakEvent =", event, error);
 };
 
 let secureCookies = false;
@@ -55,7 +55,7 @@ export function App(): JSX.Element {
         authClient={keycloak}
         onEvent={eventLogger}
         onTokens={(tokens) => {
-          log.trace("onKeycloakTokens", tokens);
+          log.trace("App: onKeycloakTokens =", tokens);
 
           setRefreshToken(tokens);
           setToken(tokens);

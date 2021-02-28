@@ -87,7 +87,6 @@ function WithdrawalRequestsContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerWithdrawalRequests>
       <WithdrawalRequestList list={data.withdrawalRequest.withdrawalRequests} />

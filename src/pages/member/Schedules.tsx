@@ -41,7 +41,7 @@ const events = [
 ];
 
 function SchedulesView(): JSX.Element {
-  log.trace("Rendering schedules view");
+  log.trace("SchedulesView: rendering component");
 
   return (
     <ContainerRoot>

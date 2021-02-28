@@ -208,7 +208,7 @@ function ProjectsContent(): JSX.Element {
 }
 
 function ProjectsView(): JSX.Element {
-  log.trace("Rendering projects view");
+  log.trace("ProjectsView: rendering component");
 
   return (
     <ContainerRoot>

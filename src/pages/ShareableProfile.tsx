@@ -201,8 +201,8 @@ interface MyShareableProfile {
 function ShareableProfileView(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
-  log.trace("Rendering shareable profile view");
-  log.debug("Loading profile:", id);
+  log.trace("ShareableProfileView: rendering component");
+  log.debug("ShareableProfileView: loading profile =", id);
 
   const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
     variables: { id },
@@ -211,7 +211,7 @@ function ShareableProfileView(): JSX.Element {
   if (id !== "demo") {
     if (loading) return <ShareableProfileLoading />;
     if (error) {
-      log.error(error);
+      log.error("ShareableProfileView: failed call to profile query =", error);
       return <ShareableProfileError />;
     }
 

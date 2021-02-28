@@ -142,7 +142,9 @@ function ProfileContent(): JSX.Element {
     return <ProfileStillEmpty />;
   }
 
-  if (data.userClue.myProfile?.isReady) {
+  log.info("ProfileContent: profile call result =", data);
+
+  if (!data || !data.userClue.myProfile?.isReady) {
     return <ProfileStillEmpty />;
   }
 
@@ -150,7 +152,7 @@ function ProfileContent(): JSX.Element {
 }
 
 function HomeView(): JSX.Element {
-  log.trace("Rendering home view");
+  log.trace("HomeView: rendering component");
 
   return (
     <ContainerRoot>

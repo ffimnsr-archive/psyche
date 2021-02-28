@@ -56,7 +56,6 @@ function WorkFunctionsContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerWorkFunctions>
       <WorkFunctionList list={data.workFunction.workFunctions} />

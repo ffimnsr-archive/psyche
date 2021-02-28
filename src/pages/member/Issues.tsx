@@ -51,7 +51,7 @@ function Feeds(): JSX.Element {
 }
 
 function IssuesView(): JSX.Element {
-  log.trace("Rendering issues view");
+  log.trace("IssuesView: rendering component");
 
   return (
     <ContainerRoot>

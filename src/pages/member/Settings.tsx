@@ -65,7 +65,7 @@ const rowRenderer = ({ key, index, style }: any) => (
 );
 
 function SettingsView(): JSX.Element {
-  log.trace("Rendering settings view");
+  log.trace("SettingsView: rendering component");
 
   return (
     <ContainerRoot>

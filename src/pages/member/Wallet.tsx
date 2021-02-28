@@ -99,7 +99,7 @@ function WithdrawalRequestsContent(): JSX.Element {
 }
 
 function WalletView(): JSX.Element {
-  log.trace("Rendering wallet view");
+  log.trace("WalletView: rendering component");
 
   return (
     <ContainerRoot>

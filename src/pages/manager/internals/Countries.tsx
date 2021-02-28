@@ -72,7 +72,6 @@ function CountriesContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerCountries>
       <CountryList list={data.country.countries} />

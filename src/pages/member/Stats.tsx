@@ -29,7 +29,7 @@ function StatsContent(): JSX.Element {
 }
 
 function StatsView(): JSX.Element {
-  log.trace("Rendering stats view");
+  log.trace("StatsView: rendering component");
 
   return (
     <ContainerRoot>

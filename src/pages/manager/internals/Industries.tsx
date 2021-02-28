@@ -67,7 +67,6 @@ function IndustriesContent(): JSX.Element {
     return <p>Error</p>;
   }
 
-  log.info();
   return (
     <ContainerIndustries>
       <IndustryList list={data.industry.industries} />

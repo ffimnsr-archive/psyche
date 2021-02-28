@@ -105,7 +105,7 @@ function rowRenderer({ key, index, style }: any) {
 }
 
 function FeedView(): JSX.Element {
-  log.trace("Rendering feed view");
+  log.trace("FeedView: rendering component");
 
   return (
     <ContainerRoot>
