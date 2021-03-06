@@ -16,7 +16,6 @@ const TestProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
 describe("<NoMatch>", () => {
   it("render its content correctly", () => {
     const { container } = render(<NoMatch />, { wrapper: TestProvider });
-
     expect(container.innerHTML).contains("Page Not Found");
   });
 });

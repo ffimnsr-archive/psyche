@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+    postgres:
+        image: postgres:13.0
+        container_name: postgres-server
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - "25432:5432/tcp"
+        environment:
+            - POSTGRES_DB=osslocal_keycloak
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        restart: always
+        networks:
+            - sesame-graph
+    keycloak:
+        image: quay.io/keycloak/keycloak-x:12.0.2
+        container_name: keycloak-server
+        command: --auto-config --db=postgres -Dkc.db.url.host=postgres-server -Dkc.db.url.database=osslocal_keycloak --db-username=postgres --db-password=postgres --http-enabled=true
+        ports:
+            - "28080:8080/tcp"
+        environment:
+            - KEYCLOAK_ADMIN=admin
+            - KEYCLOAK_ADMIN_PASSWORD=admin
+            - DB_VENDOR=postgres
+            - DB_ADDR=postgres-server
+            - DB_PORT=5432
+            - DB_USER=postgres
+            - DB_PASSWORD=postgres
+            - DB_DATABASE=osslocal_keycloak
+        cap_drop:
+            - ALL
+        cap_add:
+            - NET_BIND_SERVICE
+        depends_on:
+            - postgres
+        restart: always
+        networks:
+            - sesame-graph
+
+networks:
+    sesame-graph:
+
+volumes:
+    postgres-data:
