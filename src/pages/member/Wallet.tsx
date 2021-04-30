@@ -2,14 +2,13 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { HTMLTable, H5, Card, Elevation, Colors, H3, H2 } from "@blueprintjs/core";
+import { H5, Card, Elevation, Colors, H2 } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
 } from "@/components";
-import { WithdrawalRequest } from "@/models";
 // import { useQuery } from "@apollo/client";
 
 const ContainerWithdrawalRequests = styled.div`
@@ -24,47 +23,43 @@ const ContainerWithdrawalRequests = styled.div`
   }
 `;
 
-const ResponsiveTable = styled(HTMLTable)`
-  width: 100%;
-`;
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
+//   const withdrawalRequests = list.map(
+//     ({
+//       id,
+//       userId,
+//       amount,
+//       referenceNo,
+//       remarks,
+//       approvedById,
+//       approvedAt,
+//       status,
+//     }: WithdrawalRequest) => (
+//       <tr key={id}>
+//         <td>{id}</td>
+//         <td>{userId}</td>
+//         <td>{amount}</td>
+//         <td>{referenceNo}</td>
+//         <td>{remarks}</td>
+//         <td>{approvedById}</td>
+//         <td>{approvedAt}</td>
+//         <td>{status}</td>
+//       </tr>
+//     ),
+//   );
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function WithdrawalRequestList({ list }: { list: WithdrawalRequest[] }): JSX.Element {
-  const withdrawalRequests = list.map(
-    ({
-      id,
-      userId,
-      amount,
-      referenceNo,
-      remarks,
-      approvedById,
-      approvedAt,
-      status,
-    }: WithdrawalRequest) => (
-      <tr key={id}>
-        <td>{id}</td>
-        <td>{userId}</td>
-        <td>{amount}</td>
-        <td>{referenceNo}</td>
-        <td>{remarks}</td>
-        <td>{approvedById}</td>
-        <td>{approvedAt}</td>
-        <td>{status}</td>
-      </tr>
-    ),
-  );
-
-  return (
-    <>
-      <Card elevation={Elevation.ONE}>
-        <H5>WALLET</H5>
-        <ResponsiveTable condensed={true} striped={true}>
-          {/* <tbody>{withdrawalRequests}</tbody> */}
-        </ResponsiveTable>
-      </Card>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <Card elevation={Elevation.ONE}>
+//         <H5>WALLET</H5>
+//         <ResponsiveTable condensed={true} striped={true}>
+//           {/* <tbody>{withdrawalRequests}</tbody> */}
+//         </ResponsiveTable>
+//       </Card>
+//     </>
+//   );
+// }
 
 function WithdrawalRequestsContent(): JSX.Element {
   // const { loading, error, data } = useQuery(WITHDRAWAL_REQUESTS_QUERY);

@@ -1,0 +1,259 @@
+schema {
+  query: QueryRoot
+}
+
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type Industry implements Node {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+type PublicQuery {
+  """Get profile of a user using public code"""
+  profile(publicCode: String!): UserClue!
+}
+
+type TalentPool implements Node {
+  id: ID!
+  user: UserClue
+}
+
+type Offer implements Node {
+  id: ID!
+  user: UserClue
+  employerOrganization: Organization
+  employer: UserClue
+  isAccepted: Boolean!
+}
+
+"""NaiveDate"""
+scalar NaiveDate
+
+type UserClue implements Node {
+  id: ID!
+  globalId: ID!
+  publicCode: String!
+  username: String!
+  avatar: String!
+  email: String!
+  givenName: String!
+  familyName: String!
+  emailVerified: Boolean!
+  bankAccounts: [BankAccount!]
+  organizations: [Organization!]
+  sitePreference: SitePreference
+  withdrawalRequests: [WithdrawalRequest!]
+  workExperiences: [WorkExperience!]
+  workPreferences: [WorkPreference!]
+}
+
+type WithdrawalRequest implements Node {
+  id: ID!
+  user: UserClue
+  amount: Float!
+  referenceNo: String!
+  remarks: String!
+  approvedBy: UserClue
+  approvedAt: NaiveDateTime!
+  status: Int!
+}
+
+type Rank implements Node {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+type Project implements Node {
+  id: ID!
+  publicCode: String!
+  name: String!
+  description: String!
+  parentOrganization: Organization
+  managedBy: UserClue
+  createdBy: UserClue
+  clue: ProjectClue
+  members: [ProjectMember!]
+}
+
+type WorkFunction implements Node {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+"""NaiveDateTime"""
+scalar NaiveDateTime
+
+type WorkExperience implements Node {
+  id: ID!
+  user: UserClue
+  title: String!
+  organization: String!
+  location: String!
+  fromDate: NaiveDate!
+  toDate: NaiveDate!
+  description: String!
+}
+
+type ProjectClue implements Node {
+  id: ID!
+  project: Project
+  requirements: String!
+  environments: String!
+  repositoryHttpUrl: String!
+  repositorySshUrl: String!
+}
+
+type QueryRoot {
+  """Checks if the server is alive"""
+  healthCheck: String!
+  internal: InternalQuery!
+  public: PublicQuery!
+}
+
+type InternalQuery {
+  """List countries"""
+  countries: [Country!]!
+
+  """Get a country by its primary key"""
+  country(id: Uuid!): Country!
+
+  """List experience levels"""
+  experienceLevels: [ExperienceLevel!]!
+
+  """Get experience level by its primary key"""
+  experienceLevel(id: Uuid!): ExperienceLevel!
+
+  """List industries"""
+  industries: [Industry!]!
+
+  """Get a industry by its primary key"""
+  industry(id: Uuid!): Industry!
+
+  """List project categories"""
+  projectCategories: [ProjectCategory!]!
+
+  """Get a project category by its primary key"""
+  projectCategory(id: Uuid!): ProjectCategory!
+
+  """List ranks"""
+  ranks: [Rank!]!
+
+  """Get a rank by its primary key"""
+  rank(id: Uuid!): Rank!
+
+  """List work functions"""
+  workFunctions: [WorkFunction!]!
+
+  """Get a work function by its primary key"""
+  workFunction(id: Uuid!): WorkFunction!
+}
+
+type Country implements Node {
+  id: ID!
+  name: String!
+  alpha2: String!
+  alpha3: String!
+  phoneCode: String!
+  currencyCode: String!
+}
+
+type ProjectCategory implements Node {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+type Organization implements Node {
+  id: ID!
+  name: String!
+  description: String!
+  managedBy: UserClue
+  createdBy: UserClue
+  projects: [Project!]
+}
+
+type SitePreference implements Node {
+  id: ID!
+  user: UserClue
+  isOptInMarketing: Boolean!
+  isOptInUsageStatistics: Boolean!
+  isOptInExperimental: Boolean!
+}
+
+type ProjectMember implements Node {
+  id: ID!
+  user: UserClue
+  project: Project
+  workFunction: WorkFunction
+  startDate: NaiveDate!
+  endDate: NaiveDate!
+  status: Int!
+  remarks: String!
+}
+
+interface Node {
+  id: ID!
+}
+
+type BankAccount implements Node {
+  id: ID!
+  user: UserClue
+  accountName: String!
+  accountNo: String!
+  bankAddress: String!
+  bankBranch: String!
+  bankName: String!
+  bankSwiftCode: String!
+  bankRoutingNumber: String!
+}
+
+type WorkPreference implements Node {
+  id: ID!
+  user: UserClue
+  workFunction: WorkFunction
+}
+
+"""Uuid"""
+scalar Uuid
+
+type ExperienceLevel implements Node {
+  id: ID!
+  name: String!
+  description: String!
+}

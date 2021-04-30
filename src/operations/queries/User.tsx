@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const PROFILE_QUERY = gql`
-  query _ProfileQuery {
+export const MY_PROFILE_QUERY = gql`
+  query _MyProfileQuery {
     userClue {
       myProfile {
         id

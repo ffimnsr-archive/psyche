@@ -18,6 +18,4 @@ export const cache: InMemoryCache = new InMemoryCache({
 
 export const globalStateVar: ReactiveVar<GlobalState> = makeVar<GlobalState>({
   token: Cookies.get("OSSLOCAL_SESSION_TOKEN"),
-  idToken: Cookies.get("OSSLOCAL_SESSION_ID_TOKEN"),
-  refreshToken: Cookies.get("OSSLOCAL_SESSION_REFRESH_TOKEN"),
 });

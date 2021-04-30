@@ -4,16 +4,16 @@ interface Window {
 }
 
 declare module "*.svg" {
-  const content: any;
+  const content: string | undefined;
   export = content;
 }
 
 declare module "*.png" {
-  const content: any;
+  const content: string | undefined;
   export = content;
 }
 
 declare module "*.graphql" {
-  const content: any;
+  const content: string | undefined;
   export = content;
 }

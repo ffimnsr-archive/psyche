@@ -10,19 +10,8 @@ import {
   NavigationHeader,
 } from "@/components";
 import { Country } from "@/models/internals";
-import { useQuery, gql } from "@apollo/client";
-
-const COUNTRIES_QUERY = gql`
-  query _countries {
-    country {
-      countries {
-        id
-        name
-        description
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
+import { COUNTRIES_QUERY } from "@/operations/queries";
 
 const ContainerCountries = styled.div`
   flex: 1 1 auto;

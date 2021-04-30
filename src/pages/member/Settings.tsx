@@ -11,6 +11,8 @@ import {
   NavigationHeader,
 } from "@/components";
 import { WORK_FUNCTIONS_QUERY } from "@/operations/queries";
+import { useQuery } from "@apollo/client";
+import { WorkFunction } from "@/models/internals";
 
 const ContainerSettings = styled.div`
   flex: 1 1 auto;
@@ -67,6 +69,20 @@ const rowRenderer = ({ key, index, style }: any) => (
 function SettingsView(): JSX.Element {
   log.trace("SettingsView: rendering component");
 
+  const { loading, error, data } = useQuery(WORK_FUNCTIONS_QUERY);
+  if (loading) return <div>Loading</div>;
+  if (error) {
+    log.error("SettingsView: failed call to work functions query =", error);
+    return <div>Error</div>;
+  }
+
+  log.debug("SettingsView: profile call result =", data);
+  if (!data || !data.internals.workFunctions) {
+    return <div>Empty</div>;
+  }
+
+  const workFunctions: WorkFunction[] = data.internals.workFunctions;
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -93,18 +109,11 @@ function SettingsView(): JSX.Element {
                   paddingLeft: 5,
                 }}
               >
-                <li>
-                  <Checkbox inline={true} label="hello1" />
-                </li>
-                <li>
-                  <Checkbox inline={true} label="hello2" />
-                </li>
-                <li>
-                  <Checkbox inline={true} label="hello3" />
-                </li>
-                <li>
-                  <Checkbox inline={true} label="hello4" />
-                </li>
+                {workFunctions.map((x) => (
+                  <li key={x.id}>
+                    <Checkbox inline={true} label={x.name} />
+                  </li>
+                ))}
               </ul>
             </div>
             <H5>Site Preferences</H5>
@@ -122,16 +131,13 @@ function SettingsView(): JSX.Element {
                 }}
               >
                 <li>
-                  <Checkbox inline={true} label="hello1" />
+                  <Checkbox inline={true} label="Opt-in personalize marketing" />
                 </li>
                 <li>
-                  <Checkbox inline={true} label="hello2" />
+                  <Checkbox inline={true} label="Opt-in anonymous usage statistics" />
                 </li>
                 <li>
-                  <Checkbox inline={true} label="hello3" />
-                </li>
-                <li>
-                  <Checkbox inline={true} label="hello4" />
+                  <Checkbox inline={true} label="Opt-in experimental beta builds" />
                 </li>
               </ul>
             </div>

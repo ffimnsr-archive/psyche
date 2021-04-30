@@ -1,6 +1,5 @@
 import React from "react";
 import log from "loglevel";
-import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import {
   Breadcrumb,
@@ -16,7 +15,6 @@ import {
   Sidebar,
   NavigationHeader,
 } from "@/components";
-import { AutoSizer, List } from "react-virtualized";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import { DemoCalendarData } from "@/seeds";
 import { IconNames } from "@blueprintjs/icons";

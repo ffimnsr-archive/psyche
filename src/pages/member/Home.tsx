@@ -21,7 +21,7 @@ import {
   NavigationHeader,
 } from "@/components";
 import { useQuery } from "@apollo/client";
-import { PROFILE_QUERY } from "@/operations/queries";
+import { MY_PROFILE_QUERY } from "@/operations/queries";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -134,16 +134,15 @@ function ProfileStillEmpty(): JSX.Element {
 }
 
 function ProfileContent(): JSX.Element {
-  const { loading, error, data } = useQuery(PROFILE_QUERY);
+  const { loading, error, data } = useQuery(MY_PROFILE_QUERY);
 
   if (loading) return <HomeLoading />;
   if (error) {
-    log.error(error);
+    log.error("ProfileContent: failed call to my profile query =", error);
     return <ProfileStillEmpty />;
   }
 
-  log.info("ProfileContent: profile call result =", data);
-
+  log.debug("ProfileContent: profile call result =", data);
   if (!data || !data.userClue.myProfile?.isReady) {
     return <ProfileStillEmpty />;
   }

@@ -2,8 +2,7 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { useQuery, gql } from "@apollo/client";
-import { Card, H5, Button, Elevation, Colors, Classes } from "@blueprintjs/core";
+import { Colors, Classes } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,

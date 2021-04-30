@@ -10,7 +10,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
@@ -20,7 +20,6 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "typeRoots": [
-      "./node_modules/@types",
       "./src/types"
     ],
     "paths": {

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-// import { gql } from "@apollo/client";
 import { AutoSizer, List } from "react-virtualized";
 import { Card, H5 } from "@blueprintjs/core";
 import { ResponsiveCalendar } from "@nivo/calendar";
@@ -16,20 +15,11 @@ import {
 } from "@/components";
 import { generateHash } from "@/utils";
 import { Link } from "react-router-dom";
-
-// const MY_PROFILE_QUERY = gql`
-//   query __myProfile {
-//     userClue {
-//       myProfile {
-//         id
-//         username
-//         organizations {
-//           id
-//         }
-//       }
-//     }
-//   }
-// `;
+import { useQuery } from "@apollo/client";
+import { MY_PROFILE_QUERY } from "@/operations/queries";
+import { UserClue } from "@/models";
+import { useKeycloak } from "@react-keycloak/web";
+import { KeycloakProfile } from "keycloak-js";
 
 const ContainerProfile = styled.div`
   flex: 0 1 auto;
@@ -135,7 +125,34 @@ function rowRenderer({ key, index, style }: any) {
 function ProfileView(): JSX.Element {
   log.trace("ProfileView: rendering component");
 
-  const emailHash = generateHash("loremipsum");
+  const { loading, error, data } = useQuery(MY_PROFILE_QUERY);
+  const { keycloak } = useKeycloak();
+  const [userProfile, setUserProfile] = useState<KeycloakProfile>();
+
+  log.info(keycloak.userInfo);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const temp = await keycloak.loadUserProfile();
+      setUserProfile(temp);
+    };
+
+    fetchUserProfile();
+  }, [keycloak]);
+
+  if (loading) return <div>Loading</div>;
+  if (error) {
+    log.error("ProfileView: failed call to my profile query =", error);
+    return <div>Error</div>;
+  }
+
+  log.debug("ProfileContent: profile call result =", data);
+  if (!data || !data.userClue.myProfile) {
+    return <div>Empty</div>;
+  }
+
+  const profile: UserClue = data.userClue.myProfile;
+  const emailHash = generateHash(userProfile?.email ?? profile.username);
 
   return (
     <ContainerRoot>
@@ -155,7 +172,7 @@ function ProfileView(): JSX.Element {
               <ProfileMb20 />
               <ProfileMb10>
                 <b>Name</b>
-                <div>John Doe</div>
+                <div>{`${userProfile?.firstName} ${userProfile?.lastName}`}</div>
               </ProfileMb10>
               <ProfileMb10>
                 <b>Joined Date</b>
@@ -163,12 +180,12 @@ function ProfileView(): JSX.Element {
               </ProfileMb10>
               <ProfileMb10>
                 <b>Email</b>
-                <div>jd@example.com</div>
+                <div>{userProfile?.email}</div>
               </ProfileMb10>
               <ProfileMb10>
                 <b>Shareable Profile</b>
                 <div>
-                  <Link to="/o/public/share/demo">Click Here</Link>
+                  <Link to={`/o/public/share/${profile.publicCode}`}>Click Here</Link>
                 </div>
               </ProfileMb10>
             </Card>
