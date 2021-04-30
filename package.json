@@ -14,9 +14,9 @@
     "test": "mocha",
     "postinstall": "husky install",
     "mockql": "json-graphql-server ./data/mock-db.js",
-    "schema.manager": "apollo client:download-schema -c apollo.manager.config.js schema.manager.graphql",
-    "schema.member": "apollo client:download-schema -c apollo.member.config.js schema.member.graphql",
-    "schema.anonymous": "apollo client:download-schema -c apollo.anonymous.config.js schema.anonymous.graphql"
+    "schema.manager": "apollo client:download-schema -c ./apollo/apollo.manager.config.js ./apollo/generated_schemas/schema.manager.graphql",
+    "schema.member": "apollo client:download-schema -c ./apollo/apollo.member.config.js ./apollo/generated_schemas/schema.member.graphql",
+    "schema.anonymous": "apollo client:download-schema -c ./apollo/apollo.anonymous.config.js ./apollo/generated_schemas/schema.anonymous.graphql"
   },
   "author": "ffimnsr",
   "devDependencies": {

@@ -17,8 +17,6 @@ module.exports = merge(common, {
     minimizer: [
       new TerserWebpackPlugin({
         parallel: true,
-        cache: true,
-        sourceMap: false,
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],
@@ -31,10 +29,10 @@ module.exports = merge(common, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
     }),
-    new webpack.HashedModuleIdsPlugin({
-      hashFunction: "sha256",
-      hashDigest: "hex",
-      hashDigestLength: 20,
-    }),
+    // new webpack.HashedModuleIdsPlugin({
+    //   hashFunction: "sha256",
+    //   hashDigest: "hex",
+    //   hashDigestLength: 20,
+    // }),
   ],
 });
