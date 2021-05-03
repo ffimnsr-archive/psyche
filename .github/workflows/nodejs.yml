@@ -1,4 +1,4 @@
-name: Node Psyche
+name: psyche
 
 on:
   push:
