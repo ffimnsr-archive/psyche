@@ -2,7 +2,7 @@ import webpack from "webpack";
 import path from "path";
 import merge from "webpack-merge";
 import TerserWebpackPlugin from "terser-webpack-plugin";
-import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import common from "./webpack.common.babel";
 
@@ -18,7 +18,7 @@ module.exports = merge(common, {
       new TerserWebpackPlugin({
         parallel: true,
       }),
-      new OptimizeCSSAssetsPlugin({}),
+      new CssMinimizerPlugin(),
     ],
   },
   output: {

@@ -12,6 +12,7 @@ import {
   Spinner,
   Colors,
   Alert,
+  SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import {
@@ -21,7 +22,7 @@ import {
   NavigationHeader,
 } from "@/components";
 import { useQuery } from "@apollo/client";
-import { MY_PROFILE_QUERY } from "@/operations/queries";
+import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -74,7 +75,7 @@ const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps
 function HomeLoading(): JSX.Element {
   return (
     <ContainerNonTrivial>
-      <Spinner size={Spinner.SIZE_LARGE} />
+      <Spinner size={SpinnerSize.LARGE} />
     </ContainerNonTrivial>
   );
 }
@@ -134,7 +135,7 @@ function ProfileStillEmpty(): JSX.Element {
 }
 
 function ProfileContent(): JSX.Element {
-  const { loading, error, data } = useQuery(MY_PROFILE_QUERY);
+  const { loading, error, data } = useQuery<MyProfileQuery>(MY_PROFILE_QUERY);
 
   if (loading) return <HomeLoading />;
   if (error) {
@@ -143,7 +144,7 @@ function ProfileContent(): JSX.Element {
   }
 
   log.debug("ProfileContent: profile call result =", data);
-  if (!data || !data.userClue.myProfile?.isReady) {
+  if (!data || !data.public.profile) {
     return <ProfileStillEmpty />;
   }
 

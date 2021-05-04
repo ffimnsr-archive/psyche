@@ -77,11 +77,11 @@ function SettingsView(): JSX.Element {
   }
 
   log.debug("SettingsView: profile call result =", data);
-  if (!data || !data.internals.workFunctions) {
+  if (!data || !data.internal.workFunctions) {
     return <div>Empty</div>;
   }
 
-  const workFunctions: WorkFunction[] = data.internals.workFunctions;
+  const workFunctions: WorkFunction[] = data.internal.workFunctions;
 
   return (
     <ContainerRoot>

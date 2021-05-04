@@ -1,4 +1,4 @@
-export type Project = {
+export interface Project {
   id: string;
   publicCode: string;
   name: string;
@@ -6,4 +6,4 @@ export type Project = {
   parentOrganizationId: string;
   managedById: string;
   createdById: string;
-};
+}

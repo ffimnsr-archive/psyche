@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const WORK_FUNCTIONS_QUERY = gql`
   query _WorkFunctionsQuery {
-    internals {
+    internal {
       workFunctions {
         id
         name

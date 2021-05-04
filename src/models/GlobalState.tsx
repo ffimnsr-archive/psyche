@@ -1,3 +1,3 @@
-export type GlobalState = {
+export interface GlobalState {
   token: string | undefined;
-};
+}

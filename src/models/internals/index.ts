@@ -1,6 +1,6 @@
-export type { Country } from "./country";
-export type { ExperienceLevel } from "./experience_level";
-export type { Industry } from "./industry";
-export type { ProjectCategory } from "./project_category";
-export type { Rank } from "./rank";
-export type { WorkFunction } from "./work_function";
+export { Country } from "./country";
+export { ExperienceLevel } from "./experience_level";
+export { Industry } from "./industry";
+export { ProjectCategory } from "./project_category";
+export { Rank } from "./rank";
+export { WorkFunction } from "./work_function";

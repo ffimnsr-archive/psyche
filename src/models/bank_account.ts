@@ -1,4 +1,4 @@
-export type BankAccount = {
+export interface BankAccount {
   id: string;
   userId: string;
   accountName: string;
@@ -8,4 +8,4 @@ export type BankAccount = {
   bankName: string;
   bankSwiftCode: string;
   bankRoutingNumber: string;
-};
+}

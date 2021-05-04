@@ -1,4 +1,4 @@
-export type WithdrawalRequest = {
+export interface WithdrawalRequest {
   id: string;
   userId: string;
   amount: number;
@@ -7,4 +7,4 @@ export type WithdrawalRequest = {
   approvedById: string;
   approvedAt: string;
   status: number;
-};
+}

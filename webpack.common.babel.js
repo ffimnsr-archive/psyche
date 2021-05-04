@@ -36,6 +36,7 @@ const config = {
       {
         test: /\.[tj]sx?$/,
         include: path.resolve(__dirname, "src"),
+        exclude: path.resolve(__dirname, ".pnp.js"),
         use: {
           loader: "babel-loader",
         },

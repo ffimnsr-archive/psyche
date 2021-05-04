@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { useLocation } from "react-router";
 import log from "loglevel";
 import styled from "styled-components";
 import { Colors, Button, Classes } from "@blueprintjs/core";
@@ -37,8 +36,6 @@ const ContainerOptions = styled.div`
 `;
 
 function LoginDispatcherContent(): JSX.Element {
-  const currentLocation = useLocation();
-
   const { keycloak } = useKeycloak();
   const login = useCallback(() => {
     keycloak?.login();
@@ -48,7 +45,7 @@ function LoginDispatcherContent(): JSX.Element {
     log.trace("LoginDispatcherContent: redirecting to authenticated session");
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return <Redirect to={(currentLocation.state as any)?.from as string} />;
+    return <Redirect to="/" />;
   }
 
   return (

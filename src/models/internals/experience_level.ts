@@ -1,5 +1,5 @@
-export type ExperienceLevel = {
+export interface ExperienceLevel {
   id: string;
   name: string;
   description: string;
-};
+}

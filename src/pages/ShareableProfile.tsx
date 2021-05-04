@@ -4,7 +4,7 @@ import styled from "styled-components";
 import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   Card,
   H5,
@@ -18,25 +18,13 @@ import {
   Tag,
   Text,
   Divider,
+  SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { ContainerRoot, HapButton, ImageAvatar } from "@/components";
 import { generateHash } from "@/utils";
 import { AutoSizer, List } from "react-virtualized";
-
-const REQUEST_PROFILE_QUERY = gql`
-  query _requestProfile($publicCode: String!) {
-    userClue {
-      profile(publicCode: $publicCode) {
-        id
-        globalId
-        publicCode
-        username
-        avatar
-      }
-    }
-  }
-`;
+import { RequestProfileQuery, REQUEST_PROFILE_QUERY } from "@/operations/queries";
 
 const ContainerNonTrivial = styled.main`
   height: 100vh;
@@ -149,7 +137,7 @@ function rowRenderer({ key, index, style }: any) {
 function ShareableProfileLoading(): JSX.Element {
   return (
     <ContainerNonTrivial>
-      <Spinner size={Spinner.SIZE_LARGE} />
+      <Spinner size={SpinnerSize.LARGE} />
     </ContainerNonTrivial>
   );
 }
@@ -204,7 +192,7 @@ function ShareableProfileView(): JSX.Element {
   log.trace("ShareableProfileView: rendering component");
   log.debug("ShareableProfileView: loading profile =", id);
 
-  const { loading, error, data } = useQuery(REQUEST_PROFILE_QUERY, {
+  const { loading, error, data } = useQuery<RequestProfileQuery>(REQUEST_PROFILE_QUERY, {
     variables: { id },
   });
 
@@ -214,16 +202,16 @@ function ShareableProfileView(): JSX.Element {
       log.error("ShareableProfileView: failed call to profile query =", error);
       return <ShareableProfileError />;
     }
-
-    if (_.isNil(data.requestProfile) || _.isNil(data.requestProfile.profile))
-      return <ShareableProfileError />;
   }
 
-  // const { profile } = data.requestProfile;
-  // const processedProfile = camelizeKeys(profile);
+  if (!data) {
+    return <ShareableProfileError />;
+  }
+
+  const { profile } = data.public;
 
   const processedProfile: MyShareableProfile = {
-    publicId: "Hello",
+    publicId: profile.publicCode,
     socialSecurityNumber: "string",
     email: "loremipsum",
     joinedAt: "06/11/94",

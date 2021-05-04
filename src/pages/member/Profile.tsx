@@ -16,8 +16,7 @@ import {
 import { generateHash } from "@/utils";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { MY_PROFILE_QUERY } from "@/operations/queries";
-import { UserClue } from "@/models";
+import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
 import { useKeycloak } from "@react-keycloak/web";
 import { KeycloakProfile } from "keycloak-js";
 
@@ -125,7 +124,7 @@ function rowRenderer({ key, index, style }: any) {
 function ProfileView(): JSX.Element {
   log.trace("ProfileView: rendering component");
 
-  const { loading, error, data } = useQuery(MY_PROFILE_QUERY);
+  const { loading, error, data } = useQuery<MyProfileQuery>(MY_PROFILE_QUERY);
   const { keycloak } = useKeycloak();
   const [userProfile, setUserProfile] = useState<KeycloakProfile>();
 
@@ -147,11 +146,11 @@ function ProfileView(): JSX.Element {
   }
 
   log.debug("ProfileContent: profile call result =", data);
-  if (!data || !data.userClue.myProfile) {
+  if (!data || !data.public.profile) {
     return <div>Empty</div>;
   }
 
-  const profile: UserClue = data.userClue.myProfile;
+  const profile = data.public.profile;
   const emailHash = generateHash(userProfile?.email ?? profile.username);
 
   return (

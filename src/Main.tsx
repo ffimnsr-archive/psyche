@@ -1,5 +1,6 @@
 import React from "react";
 import log from "loglevel";
+import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
 import _ from "lodash";
 import { render as Render } from "react-dom";
@@ -29,6 +30,11 @@ enum Role {
   Anonymous = -1,
 }
 
+interface Token {
+  exp: string;
+  // TODO: this here needs to be defined.
+}
+
 const MANAGER_GRAPH_URI = process.env.REACT_APP_RS_URI + "/_/graphql";
 const MEMBER_GRAPH_URI = process.env.REACT_APP_RS_URI + "/u/graphql";
 const ANONYMOUS_GRAPH_URI = process.env.REACT_APP_RS_URI + "/o/graphql";
@@ -48,8 +54,8 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = Cookies.get("OSSLOCAL_SESSION_TOKEN");
-
+  const token = Cookies.get("OSSLOCAL_SESSION_TOKEN") ?? "";
+  const decodedToken = jwtDecode<Token>(token);
   const context = {
     headers: {
       ...headers,

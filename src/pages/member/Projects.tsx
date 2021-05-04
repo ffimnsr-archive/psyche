@@ -14,37 +14,39 @@ import { useQuery, gql } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 const PROJECTS_QUERY = gql`
-  query _projects {
-    profile: myProfile {
-      id
-      email
-      publicId
-      socialSecurityNumber
-      workPreference {
+  query _Projects {
+    public {
+      profile: myProfile {
         id
-        interests
-        projectLimit
-      }
-      sitePreference {
-        id
-        optInMarketing
-        optInUsageStat
-        experimentalFeatures
-        supportPin
-      }
-      clue {
-        id
-        firstName
-        lastName
-        gender
-        birthDate
-        image
-        bio
-        phoneNumber
-        isReady
-        country {
+        email
+        publicId
+        socialSecurityNumber
+        workPreference {
           id
-          name
+          interests
+          projectLimit
+        }
+        sitePreference {
+          id
+          optInMarketing
+          optInUsageStat
+          experimentalFeatures
+          supportPin
+        }
+        clue {
+          id
+          firstName
+          lastName
+          gender
+          birthDate
+          image
+          bio
+          phoneNumber
+          isReady
+          country {
+            id
+            name
+          }
         }
       }
     }

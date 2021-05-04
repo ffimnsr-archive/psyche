@@ -1,4 +1,4 @@
-export type ProjectMember = {
+export interface ProjectMember {
   id: string;
   userId: string;
   projectId: string;
@@ -7,4 +7,4 @@ export type ProjectMember = {
   endDate: string;
   status: number;
   remarks: string;
-};
+}

@@ -1,4 +1,4 @@
-export type WorkExperience = {
+export interface WorkExperience {
   id: string;
   userId: string;
   title: string;
@@ -7,4 +7,4 @@ export type WorkExperience = {
   from_date: string;
   to_date: string;
   description: string;
-};
+}
