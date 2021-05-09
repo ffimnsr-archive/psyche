@@ -40,7 +40,7 @@ const ContainerNewsFeed = styled.div`
 // function Feeds(): JSX.Element {
 //   // const { loading, error, data } = useQuery(FEED_QUERY);
 
-//   // // FZ_TODO
+//   // // TODO
 //   // if (loading) return <p>Loading</p>;
 //   // if (error) {
 //   //   log.error(error);

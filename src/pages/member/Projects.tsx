@@ -198,7 +198,7 @@ function HostedProjects(): JSX.Element {
 }
 
 function ProjectsContent(): JSX.Element {
-  // FZ_TODO: process results
+  // TODO: process results
   useQuery(PROJECTS_QUERY);
 
   return (

@@ -1,15 +1,27 @@
+import { Project } from "@/models";
 import { gql } from "@apollo/client";
+
+export interface ProjectsQuery {
+  internal: {
+    projects: Project[];
+  };
+}
 
 export const PROJECTS_QUERY = gql`
   query _ProjectsQuery {
-    internals {
-      countries {
+    public {
+      projects {
         id
+        publicCode
         name
-        alpha2
-        alpha3
-        phoneCode
-        currencyCode
+        description
+        parentOrganization
+        managedBy {
+          id
+        }
+        createdBy {
+          id
+        }
       }
     }
   }

@@ -43,7 +43,6 @@ const LoadingPlaceholder = (
   </Container>
 );
 
-
 const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));

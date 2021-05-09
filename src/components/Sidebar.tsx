@@ -58,6 +58,11 @@ interface SidebarNavigator {
   to: string;
 }
 
+/**
+ * This component is the sidebar displayed at the
+ * left-hand side of the page.
+ * @returns The renderable react component
+ */
 export function Sidebar(): JSX.Element {
   const history = useHistory();
 

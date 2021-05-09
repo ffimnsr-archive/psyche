@@ -2,14 +2,14 @@ import { Country } from "@/models/internals";
 import { gql } from "@apollo/client";
 
 export interface CountriesQuery {
-  internals: {
+  internal: {
     countries: Country[];
   };
 }
 
 export const COUNTRIES_QUERY = gql`
   query _CountriesQuery {
-    internals {
+    internal {
       countries {
         id
         name

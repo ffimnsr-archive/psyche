@@ -2,14 +2,14 @@ import { WorkFunction } from "@/models/internals";
 import { gql } from "@apollo/client";
 
 export interface WorkFunctionsQuery {
-  internals: {
+  internal: {
     workFunctions: WorkFunction[];
   };
 }
 
 export const WORK_FUNCTIONS_QUERY = gql`
   query _WorkFunctionsQuery {
-    internals {
+    internal {
       workFunctions {
         id
         name
