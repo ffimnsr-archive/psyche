@@ -2,6 +2,7 @@ import merge from "webpack-merge";
 import webpack from "webpack";
 import path from "path";
 import DotenvWebpack from "dotenv-webpack";
+import CopyPlugin from "copy-webpack-plugin";
 import common from "./webpack.common.babel";
 
 module.exports = merge(common, {
@@ -20,6 +21,14 @@ module.exports = merge(common, {
   },
   plugins: [
     new DotenvWebpack(),
+    new CopyPlugin({
+      patterns: [
+        { 
+          from: path.resolve(__dirname, "./src/assets/images/apple-touch-icon.png"),
+          to: path.resolve(__dirname, "./dist/debug/"),
+        },
+      ],
+    }),    
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
     }),

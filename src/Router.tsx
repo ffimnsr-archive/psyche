@@ -13,6 +13,11 @@ import NoMatch from "@/pages/NoMatch";
 import logoIcon from "@/assets/images/logo_icon.png";
 import { useKeycloak } from "@react-keycloak/web";
 
+// Disable lazy loads for this components as this needs
+// quick load times.
+import Login from "@/pages/Login";
+import Home from "@/pages/member/Home";
+
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
@@ -38,10 +43,8 @@ const LoadingPlaceholder = (
   </Container>
 );
 
-const LazyLogin = React.lazy(() => import("@/pages/Login"));
-const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 
-const LazyMemberMain = React.lazy(() => import("@/pages/member/Home"));
+const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
 const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
 const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));
 const LazyMemberProjectDetails = React.lazy(
@@ -98,7 +101,7 @@ export function Router(): JSX.Element {
   return (
     <React.Suspense fallback={LoadingPlaceholder}>
       <Switch>
-        <AuthRoute exact path="/" component={LazyMemberMain} />
+        <AuthRoute exact path="/" component={Home} />
         <AuthRoute path="/u/notifications" component={LazyMemberNotifications} />
         <AuthRoute path="/u/notification/:id" component={LazyMemberNotifications} />
         <AuthRoute path="/u/schedules" component={LazyMemberSchedules} />
@@ -126,7 +129,7 @@ export function Router(): JSX.Element {
         <AuthRoute path="/_/withdrawal_requests" component={LazyWithdrawalRequests} />
         <AuthRoute path="/_/withdrawal_request/:id" component={LazyWithdrawalRequests} />
         <AuthRoute path="/docs/help" component={LazyWithdrawalRequests} />
-        <OpenRoute path="/login" component={LazyLogin} />
+        <OpenRoute path="/login" component={Login} />
         <OpenRoute path="/o/public/share/:id" component={LazyShareableProfile} />
         <OpenRoute component={NoMatch} />
       </Switch>

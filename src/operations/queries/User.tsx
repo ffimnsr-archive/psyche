@@ -21,19 +21,16 @@ export const MY_PROFILE_QUERY = gql`
   }
 `;
 
+export interface UserClueExt extends UserClue {
+  email: string;
+  givenName: string;
+  familyName: string;
+  emailVerified: boolean;
+}
+
 export interface RequestProfileQuery {
   public: {
-    profile: {
-      id: string;
-      globalId: string;
-      publicCode: string;
-      username: string;
-      avatar: string;
-      email: string;
-      givenName: string;
-      familyName: string;
-      emailVerified: boolean;
-    };
+    profile: UserClueExt;
   };
 }
 

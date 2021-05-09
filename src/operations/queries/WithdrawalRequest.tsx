@@ -1,8 +1,15 @@
+import { WithdrawalRequest } from "@/models";
 import { gql } from "@apollo/client";
+
+export interface WithdrawalRequestsQuery {
+  public: {
+    withdrawalRequests: WithdrawalRequest[];
+  };
+}
 
 export const WITHDRAWAL_REQUESTS_QUERY = gql`
   query _WithdrawalRequestsQuery {
-    withdrawalRequest {
+    public {
       withdrawalRequests {
         id
         userId

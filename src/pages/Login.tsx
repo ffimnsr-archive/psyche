@@ -43,7 +43,6 @@ function LoginDispatcherContent(): JSX.Element {
 
   if (keycloak?.authenticated) {
     log.trace("LoginDispatcherContent: redirecting to authenticated session");
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return <Redirect to="/" />;
   }

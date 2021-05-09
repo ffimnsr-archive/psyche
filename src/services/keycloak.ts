@@ -10,6 +10,10 @@ const keycloak = Keycloak({
   clientId: "rusty",
 });
 
+keycloak.init({
+  pkceMethod: "S256",
+});
+
 keycloak.onTokenExpired = () => {
   log.info("Token is expired");
   keycloak.updateToken(MINIMUM_TOKEN_VALIDITY).then(
