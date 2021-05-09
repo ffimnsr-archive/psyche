@@ -5,7 +5,7 @@ import { render as Render } from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { App } from "@/App";
 import "@/assets/styles/main.scss";
-import { GraphQLClient } from "@/services/apollo";
+import { ApolloClientInstance } from "@/services/apollo";
 
 const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
 
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== "production") {
  */
 function main(): void {
   Render(
-    <ApolloProvider client={GraphQLClient}>
+    <ApolloProvider client={ApolloClientInstance}>
       <App />
     </ApolloProvider>,
     document.getElementById("root"),

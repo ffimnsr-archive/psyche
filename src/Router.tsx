@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import {
   Route,
   Redirect,
@@ -43,28 +43,23 @@ const LoadingPlaceholder = (
   </Container>
 );
 
-const LazyShareableProfile = React.lazy(() => import("@/pages/ShareableProfile"));
-const LazyMemberNotifications = React.lazy(() => import("@/pages/member/Notifications"));
-const LazyMemberProjects = React.lazy(() => import("@/pages/member/Projects"));
-const LazyMemberProjectDetails = React.lazy(
-  () => import("@/pages/member/ProjectDetails"),
-);
-const LazyMemberSchedules = React.lazy(() => import("@/pages/member/Schedules"));
-const LazyMemberBankAccounts = React.lazy(() => import("@/pages/member/BankAccounts"));
-const LazyMemberIssues = React.lazy(() => import("@/pages/member/Issues"));
-const LazyMemberStats = React.lazy(() => import("@/pages/member/Stats"));
-const LazyMemberWallet = React.lazy(() => import("@/pages/member/Wallet"));
-const LazyMemberProfile = React.lazy(() => import("@/pages/member/Profile"));
-const LazyMemberFeed = React.lazy(() => import("@/pages/member/Feed"));
-const LazyMemberSettings = React.lazy(() => import("@/pages/member/Settings"));
-
-const LazyBankAccounts = React.lazy(() => import("@/pages/manager/BankAccounts"));
-const LazyOrganizations = React.lazy(() => import("@/pages/manager/Organizations"));
-const LazyProjects = React.lazy(() => import("@/pages/manager/Projects"));
-const LazyUsers = React.lazy(() => import("@/pages/manager/Users"));
-const LazyWithdrawalRequests = React.lazy(
-  () => import("@/pages/manager/WithdrawalRequests"),
-);
+const LazyShareableProfile = lazy(() => import("@/pages/ShareableProfile"));
+const LazyMemberNotifications = lazy(() => import("@/pages/member/Notifications"));
+const LazyMemberProjects = lazy(() => import("@/pages/member/Projects"));
+const LazyMemberProjectDetails = lazy(() => import("@/pages/member/ProjectDetails"));
+const LazyMemberSchedules = lazy(() => import("@/pages/member/Schedules"));
+const LazyMemberBankAccounts = lazy(() => import("@/pages/member/BankAccounts"));
+const LazyMemberIssues = lazy(() => import("@/pages/member/Issues"));
+const LazyMemberStats = lazy(() => import("@/pages/member/Stats"));
+const LazyMemberWallet = lazy(() => import("@/pages/member/Wallet"));
+const LazyMemberProfile = lazy(() => import("@/pages/member/Profile"));
+const LazyMemberFeed = lazy(() => import("@/pages/member/Feed"));
+const LazyMemberSettings = lazy(() => import("@/pages/member/Settings"));
+const LazyBankAccounts = lazy(() => import("@/pages/manager/BankAccounts"));
+const LazyOrganizations = lazy(() => import("@/pages/manager/Organizations"));
+const LazyProjects = lazy(() => import("@/pages/manager/Projects"));
+const LazyUsers = lazy(() => import("@/pages/manager/Users"));
+const LazyWithdrawalRequests = lazy(() => import("@/pages/manager/WithdrawalRequests"));
 
 const OpenRoute = Route;
 
@@ -73,7 +68,13 @@ interface AuthRouteProps extends RouteProps {
   component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
-function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
+/**
+ * Renders a component if user is authenticated
+ * otherwise redirect to login.
+ * @param param0 Contains a react component with some unknown args.
+ * @returns React component
+ */
+function AuthRoute({ component: Component, ...rest }: AuthRouteProps): JSX.Element {
   const { keycloak } = useKeycloak();
   return (
     <Route
@@ -89,6 +90,11 @@ function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
   );
 }
 
+/**
+ * Renders the router that will switch based on
+ * url pathname.
+ * @returns React component
+ */
 export function Router(): JSX.Element {
   const { initialized } = useKeycloak();
 

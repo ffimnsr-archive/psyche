@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
-import { RouterProps } from "react-router";
+import { useHistory } from "react-router-dom";
 import {
   Alignment,
   AnchorButton,
@@ -16,7 +15,7 @@ import {
   Position,
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
-import { IconNames } from "@blueprintjs/icons";
+import { IconName, IconNames } from "@blueprintjs/icons";
 import { useKeycloak } from "@react-keycloak/web";
 
 const NoShadowNavbar = styled(Navbar)`
@@ -28,47 +27,69 @@ const CustomNavbarHeading = styled(NavbarHeading)`
   margin-right: 8px;
 `;
 
-function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
+interface MenuDetail {
+  icon: IconName;
+  text: string;
+  handler: () => void;
+}
+
+function NavigationHeaderContent(): JSX.Element {
   const { keycloak } = useKeycloak();
+  const history = useHistory();
+
+  const menus: MenuDetail[] = [
+    {
+      icon: IconNames.PERSON,
+      text: "Account Settings",
+      handler: () => {
+        keycloak?.accountManagement();
+      },
+    },
+    {
+      icon: IconNames.ID_NUMBER,
+      text: "My Profile",
+      handler: () => {
+        history.push("/u/profile");
+      },
+    },
+    {
+      icon: IconNames.PROJECTS,
+      text: "Projects",
+      handler: () => {
+        history.push("/u/projects");
+      },
+    },
+    {
+      icon: IconNames.SETTINGS,
+      text: "Settings",
+      handler: () => {
+        history.push("/u/settings");
+      },
+    },
+    {
+      icon: IconNames.DELTA,
+      text: "Divider",
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      handler: () => {},
+    },
+    {
+      icon: IconNames.LOG_OUT,
+      text: "Sign out",
+      handler: () => {
+        keycloak?.logout();
+      },
+    },
+  ];
 
   const userMenu = (
     <Menu>
-      <MenuItem
-        onClick={(): void => {
-          keycloak?.accountManagement();
-        }}
-        icon={IconNames.PERSON}
-        text="Account Settings"
-      />
-      <MenuItem
-        onClick={(): void => {
-          history.push("/u/profile");
-        }}
-        icon={IconNames.ID_NUMBER}
-        text="My Profile"
-      />
-      <MenuItem
-        onClick={(): void => {
-          history.push("/u/projects");
-        }}
-        icon={IconNames.PROJECTS}
-        text="Projects"
-      />
-      <MenuItem
-        onClick={(): void => {
-          history.push("/u/settings");
-        }}
-        icon={IconNames.SETTINGS}
-        text="Settings"
-      />
-      <MenuDivider />
-      <MenuItem
-        onClick={(): void => {
-          keycloak?.logout();
-        }}
-        icon={IconNames.LOG_OUT}
-        text="Sign out"
-      />
+      {menus.map(({ icon, text, handler }: MenuDetail, index: number) => {
+        if (text === "Divider") {
+          return <MenuDivider key={index} />;
+        }
+
+        return <MenuItem key={index} onClick={handler} icon={icon} text={text} />;
+      })}
     </Menu>
   );
 
@@ -78,7 +99,7 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
         <CustomNavbarHeading>Open Sesame</CustomNavbarHeading>
         <NavbarDivider />
         <AnchorButton
-          href="http://docs.se-same.com/"
+          href="https://docs.se-same.com/"
           text="Docs"
           target="_blank"
           minimal={true}
@@ -93,4 +114,4 @@ function NavigationHeaderContent({ history }: RouterProps): JSX.Element {
   );
 }
 
-export const NavigationHeader = withRouter(NavigationHeaderContent);
+export const NavigationHeader = NavigationHeaderContent;

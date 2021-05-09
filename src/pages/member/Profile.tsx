@@ -12,6 +12,7 @@ import {
   Sidebar,
   NavigationHeader,
   ImageAvatar,
+  FullPageLoader,
 } from "@/components";
 import { generateHash } from "@/utils";
 import { Link } from "react-router-dom";
@@ -139,7 +140,7 @@ function ProfileView(): JSX.Element {
     fetchUserProfile();
   }, [keycloak]);
 
-  if (loading) return <div>Loading</div>;
+  if (loading) return <FullPageLoader />;
   if (error) {
     log.error("ProfileView: failed call to my profile query =", error);
     return <div>Error</div>;

@@ -7,7 +7,7 @@ import {
   Card,
   Elevation,
   H5,
-  IBreadcrumbProps,
+  BreadcrumbProps,
 } from "@blueprintjs/core";
 import {
   ContainerRoot,
@@ -19,13 +19,13 @@ import { ResponsiveCalendar } from "@nivo/calendar";
 import { DemoCalendarData } from "@/seeds";
 import { IconNames } from "@blueprintjs/icons";
 
-const BREADCRUMBS: IBreadcrumbProps[] = [
+const BREADCRUMBS: BreadcrumbProps[] = [
   { href: "/", icon: IconNames.HOME, text: "Home" },
   { href: "/u/projects", icon: IconNames.LIST, text: "Projects" },
   { href: "/u/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project Details" },
 ];
 
-const renderCurrentBreadcrumb = ({ text, ...restProps }: IBreadcrumbProps) => {
+const renderCurrentBreadcrumb = ({ text, ...restProps }: BreadcrumbProps) => {
   return <Breadcrumb {...restProps}>{text}</Breadcrumb>;
 };
 

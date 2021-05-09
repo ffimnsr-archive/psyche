@@ -15,6 +15,12 @@ const eventLogger = (event: unknown, error: unknown) => {
   log.trace("eventLogger: onKeycloakEvent =", event, error);
 };
 
+/**
+ * Renders the app that contains the browser router
+ * and router component. This also initialize the helmet
+ * provider and keycloak provider.
+ * @returns React component
+ */
 export function App(): JSX.Element {
   return (
     <HelmetProvider>

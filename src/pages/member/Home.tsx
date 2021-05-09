@@ -9,10 +9,8 @@ import {
   Callout,
   Intent,
   NonIdealState,
-  Spinner,
   Colors,
   Alert,
-  SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import {
@@ -20,6 +18,7 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
+  FullPageLoader,
 } from "@/components";
 import { useQuery } from "@apollo/client";
 import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
@@ -32,16 +31,6 @@ const ContainerHome = styled.div`
   justify-content: flex-start;
 `;
 
-const ContainerNonTrivial = styled.div`
-  height: 80vh;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
-  align-content: stretch;
-`;
-
 const ContainerContent = styled.div`
   background-color: ${Colors.WHITE};
 `;
@@ -50,10 +39,10 @@ const ContainerCallout = styled.div`
   margin-bottom: 10px;
 `;
 
-type JoinConfirmationAlertProps = {
+interface JoinConfirmationAlertProps {
   isOpen: boolean;
   onCloseCb: (arg0: boolean) => void;
-};
+}
 
 const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps) => (
   <Alert
@@ -71,14 +60,6 @@ const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps
     </p>
   </Alert>
 );
-
-function HomeLoading(): JSX.Element {
-  return (
-    <ContainerNonTrivial>
-      <Spinner size={SpinnerSize.LARGE} />
-    </ContainerNonTrivial>
-  );
-}
 
 function ProfileStillEmpty(): JSX.Element {
   const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState(false);
@@ -137,7 +118,7 @@ function ProfileStillEmpty(): JSX.Element {
 function ProfileContent(): JSX.Element {
   const { loading, error, data } = useQuery<MyProfileQuery>(MY_PROFILE_QUERY);
 
-  if (loading) return <HomeLoading />;
+  if (loading) return <FullPageLoader />;
   if (error) {
     log.error("ProfileContent: failed call to my profile query =", error);
     return <ProfileStillEmpty />;

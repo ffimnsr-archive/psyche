@@ -3,18 +3,18 @@ import { HapButton } from "@/components/HapButton";
 import { Intent, NonIdealState } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
-type Props = {
+interface Props {
   children?: React.ReactNode;
   onError?: (error: Error | null, componentStack: string) => void;
-};
+}
 
-type State = {
+interface State {
   hasError: boolean;
-};
+}
 
-type ErrorInfo = {
+interface ErrorInfo {
   componentStack: string;
-};
+}
 
 function ErrorBoundaryContent(): JSX.Element {
   const description = <div>Oops! Something went wrong.</div>;

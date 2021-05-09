@@ -84,10 +84,10 @@ const apolloLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 }).split(isManager, managerHttpLink, redirectCheckMember);
 
-const GraphQLClient = new ApolloClient({
+const ApolloClientInstance = new ApolloClient({
   link: ApolloLink.from([errorLink, authLink, apolloLink]),
   cache,
   resolvers,
 });
 
-export { GraphQLClient };
+export { ApolloClientInstance };

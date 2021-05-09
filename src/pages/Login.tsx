@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Colors, Button, Classes } from "@blueprintjs/core";
-import { Redirect, withRouter } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import bgPattern from "@/assets/images/pattern.svg";
 import logo from "@/assets/images/logo.png";
+import { useHistory } from "react-router";
 
 const ContainerRoot = styled.main`
   min-height: 100vh;
@@ -35,17 +35,20 @@ const ContainerOptions = styled.div`
   margin-top: 3em;
 `;
 
-function LoginDispatcherContent(): JSX.Element {
+function LoginDispatcherContent(): JSX.Element | null {
   const { keycloak } = useKeycloak();
+  const history = useHistory();
   const login = useCallback(() => {
     keycloak?.login();
   }, [keycloak]);
 
-  if (keycloak?.authenticated) {
-    log.trace("LoginDispatcherContent: redirecting to authenticated session");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return <Redirect to="/" />;
-  }
+  useEffect(() => {
+    if (keycloak?.authenticated) {
+      log.trace("LoginDispatcherContent: redirecting to authenticated session");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      history.push("/");
+    }
+  }, [history, keycloak]);
 
   return (
     <>
@@ -79,8 +82,10 @@ function LoginDispatcherContent(): JSX.Element {
   );
 }
 
-const LoginDispatcher = withRouter(LoginDispatcherContent);
-
+/**
+ * Renders the main login view.
+ * @returns React component
+ */
 function LoginView(): JSX.Element {
   log.trace("LoginView: rendering component");
 
@@ -89,7 +94,7 @@ function LoginView(): JSX.Element {
       <ContainerDesign />
       <ContainerSidePane>
         <ContainerDispatcher>
-          <LoginDispatcher />
+          <LoginDispatcherContent />
         </ContainerDispatcher>
       </ContainerSidePane>
     </ContainerRoot>
