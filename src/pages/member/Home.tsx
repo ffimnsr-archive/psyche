@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
@@ -22,6 +22,8 @@ import {
 } from "@/components";
 import { useQuery } from "@apollo/client";
 import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
+import { useKeycloak } from "@react-keycloak/web";
+import type { KeycloakProfile } from "keycloak-js";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -62,7 +64,19 @@ const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps
 );
 
 function ProfileStillEmpty(): JSX.Element {
-  const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState(false);
+  const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState<boolean>(false);
+  const { keycloak } = useKeycloak();
+  const [userProfile, setUserProfile] = useState<KeycloakProfile>();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const temp = await keycloak.loadUserProfile();
+      setUserProfile(temp);
+    };
+
+    fetchUserProfile();
+  }, [keycloak]);
+
   const action = (
     <>
       <Button
@@ -91,7 +105,10 @@ function ProfileStillEmpty(): JSX.Element {
   return (
     <ContainerHome>
       <ContainerCallout>
-        <Callout intent={Intent.WARNING} title="Fill up your profile!">
+        <Callout
+          intent={Intent.WARNING}
+          title={`Hey ${userProfile?.firstName ?? ""}, fill up your profile!`}
+        >
           In order to use our services you need to complete your initial private profile.
           Your profile will not be shared with any of the clients nor other third party
           services.

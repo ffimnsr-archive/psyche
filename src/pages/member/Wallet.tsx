@@ -2,7 +2,7 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { H5, Card, Elevation, Colors, H2 } from "@blueprintjs/core";
+import { H5, Card, Elevation, H2 } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -72,22 +72,15 @@ function WithdrawalRequestsContent(): JSX.Element {
 
   return (
     <ContainerWithdrawalRequests>
-      <Card
-        elevation={Elevation.ONE}
-        style={{
-          backgroundColor: Colors.BLUE3,
-          color: Colors.WHITE,
-          padding: "3rem",
-        }}
-      >
-        <p style={{ color: Colors.WHITE }}>Available Cash</p>
-        <H2 style={{ color: Colors.WHITE }}>P 200,000,000.00</H2>
-        <p style={{ color: Colors.WHITE }}>Total Equity</p>
-        <H2 style={{ color: Colors.WHITE }}>P 200,000,000.00</H2>
+      <Card elevation={Elevation.ONE} className="text-white bg-blue-700 p-11">
+        <p className="text-white">Available Cash</p>
+        <H2 className="text-white">P 200,000,000.00</H2>
+        <p className="text-white">Total Equity</p>
+        <H2 className="text-white">P 200,000,000.00</H2>
       </Card>
       <Card elevation={Elevation.ONE}>
         <H5>Withdrawal Requests</H5>
-        <div style={{ height: "400px" }}></div>
+        <div className="h-25"></div>
       </Card>
     </ContainerWithdrawalRequests>
   );

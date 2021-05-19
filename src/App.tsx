@@ -32,6 +32,12 @@ export function App(): JSX.Element {
           setToken(tokens);
           globalStateVar({ token: tokens.token });
         }}
+        initOptions={{
+          checkLoginIframe: false,
+          useNonce: true,
+          pkceMethod: "S256",
+          enableLogging: true,
+        }}
       >
         <BrowserRouter>
           <Router />

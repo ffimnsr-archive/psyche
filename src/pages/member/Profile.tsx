@@ -29,14 +29,6 @@ const ContainerProfile = styled.div`
   grid-gap: 10px;
 `;
 
-const ProfileMb10 = styled.div`
-  margin-bottom: 10px;
-`;
-
-const ProfileMb20 = styled.div`
-  margin-bottom: 20px;
-`;
-
 const ProfileMiddleContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,8 +121,6 @@ function ProfileView(): JSX.Element {
   const { keycloak } = useKeycloak();
   const [userProfile, setUserProfile] = useState<KeycloakProfile>();
 
-  log.info(keycloak.userInfo);
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       const temp = await keycloak.loadUserProfile();
@@ -154,6 +144,38 @@ function ProfileView(): JSX.Element {
   const profile = data.public.profile;
   const emailHash = generateHash(userProfile?.email ?? profile.username);
 
+  const info = [
+    { name: "Name", data: `${userProfile?.firstName} ${userProfile?.lastName}` },
+    { name: "Joined Date", data: "June 10, 1994" },
+    { name: "Email", data: userProfile?.email },
+    {
+      name: "Shareable Profile",
+      data: <Link to={`/o/public/share/${profile.publicCode}`}>Click Here</Link>,
+    },
+  ];
+
+  const infoComponents = info.map((x, i) => (
+    <div className="mb-1" key={i}>
+      <b>{x.name}</b>
+      <div>{x.data ?? "None"}</div>
+    </div>
+  ));
+
+  const connect = [
+    { name: "LinkedIn", profileUrl: profile.socialLinkedIn },
+    { name: "Facebook", profileUrl: profile.socialFacebook },
+    { name: "Github", profileUrl: profile.socialGithub },
+    { name: "Dribble", profileUrl: profile.socialDribble },
+    { name: "Blog / Website", profileUrl: profile.socialBlog },
+  ];
+
+  const connectComponents = connect.map((x, i) => (
+    <div className="mb-1" key={i}>
+      <b>{x.name}</b>
+      <div>{x.profileUrl ?? "None"}</div>
+    </div>
+  ));
+
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -169,25 +191,8 @@ function ProfileView(): JSX.Element {
                 src={`https://www.gravatar.com/avatar/${emailHash}?s=210&d=robohash`}
                 alt="avatar"
               />
-              <ProfileMb20 />
-              <ProfileMb10>
-                <b>Name</b>
-                <div>{`${userProfile?.firstName} ${userProfile?.lastName}`}</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Joined Date</b>
-                <div>June 10, 1994</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Email</b>
-                <div>{userProfile?.email}</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Shareable Profile</b>
-                <div>
-                  <Link to={`/o/public/share/${profile.publicCode}`}>Click Here</Link>
-                </div>
-              </ProfileMb10>
+              <div className="mb-4" />
+              {infoComponents}
             </Card>
           </div>
           <ProfileMiddleContainer>
@@ -233,27 +238,8 @@ function ProfileView(): JSX.Element {
           <div>
             <Card>
               <H5>Connect</H5>
-              <ProfileMb20 />
-              <ProfileMb10>
-                <b>LinkedIn</b>
-                <div>None</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Facebook</b>
-                <div>None</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Github</b>
-                <div>None</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Dribble</b>
-                <div>None</div>
-              </ProfileMb10>
-              <ProfileMb10>
-                <b>Blog / Website</b>
-                <div>None</div>
-              </ProfileMb10>
+              <div className="mb-4" />
+              {connectComponents}
             </Card>
           </div>
         </ContainerProfile>

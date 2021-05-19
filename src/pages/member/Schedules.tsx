@@ -3,7 +3,6 @@ import log from "loglevel";
 import styled from "styled-components";
 import moment from "moment";
 import { Helmet } from "react-helmet-async";
-// import { Card, H5, Button, Elevation } from "@blueprintjs/core";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import {
   ContainerRoot,

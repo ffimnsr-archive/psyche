@@ -1,9 +1,17 @@
 import { UserClue } from "@/models";
 import { gql } from "@apollo/client";
 
+export interface UserClueExt1 extends UserClue {
+  socialLinkedIn: string;
+  socialFacebook: string;
+  socialGithub: string;
+  socialDribble: string;
+  socialBlog: string;
+}
+
 export interface MyProfileQuery {
   public: {
-    profile: UserClue;
+    profile: UserClueExt1;
   };
 }
 
@@ -21,7 +29,7 @@ export const MY_PROFILE_QUERY = gql`
   }
 `;
 
-export interface UserClueExt extends UserClue {
+export interface UserClueExt2 extends UserClue {
   email: string;
   givenName: string;
   familyName: string;
@@ -30,7 +38,7 @@ export interface UserClueExt extends UserClue {
 
 export interface RequestProfileQuery {
   public: {
-    profile: UserClueExt;
+    profile: UserClueExt2;
   };
 }
 

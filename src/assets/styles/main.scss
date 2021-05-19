@@ -5,6 +5,10 @@
 @import "~react-big-calendar/lib/css/react-big-calendar.css";
 @import "~react-virtualized/styles.css";
 
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
 .clearfixr::after {
   content: "";
   clear: both;
