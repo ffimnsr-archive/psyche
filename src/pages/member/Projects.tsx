@@ -75,34 +75,15 @@ const list = [
 function joinedProjectsRowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
+      <div className="flex flex-row">
+        <div className="flex-1 flex flex-col items-start">
           <div>
             <Link to="/u/project/12313">
               <b>Project Name</b>
             </Link>
           </div>
         </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
+        <div className="flex-1 flex flex-col items-end">
           <div>Active</div>
         </div>
       </div>
@@ -117,34 +98,15 @@ function joinedProjectsRowRenderer({ key, index, style }: any) {
 function hostedProjectsRowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
+      <div className="flex flex-row">
+        <div className="flex-1 flex flex-col items-start">
           <div>
             <a href="#">
               <b>Project Name</b>
             </a>
           </div>
         </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
+        <div className="flex-1 flex flex-col items-end">
           <div>Active</div>
         </div>
       </div>

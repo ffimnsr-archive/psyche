@@ -68,8 +68,8 @@ export function Sidebar(): JSX.Element {
 
   const navs: SidebarNavigator[] = [
     { icon: IconNames.HOME, display: "Home", to: "/" },
-    { icon: IconNames.SATELLITE, display: "Feed", to: "/u/feed" },
-    { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/u/notifications" },
+    // { icon: IconNames.SATELLITE, display: "Feed", to: "/u/feed" },
+    // { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/u/notifications" },
     { icon: IconNames.PROJECTS, display: "Projects", to: "/u/projects" },
     { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/u/schedules" },
     { icon: IconNames.BANK_ACCOUNT, display: "Wallet", to: "/u/wallet" },

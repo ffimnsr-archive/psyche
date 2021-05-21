@@ -22,7 +22,7 @@ import { IconNames } from "@blueprintjs/icons";
 const BREADCRUMBS: BreadcrumbProps[] = [
   { href: "/", icon: IconNames.HOME, text: "Home" },
   { href: "/u/projects", icon: IconNames.LIST, text: "Projects" },
-  { href: "/u/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project Details" },
+  { href: "/u/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project: Demo" },
 ];
 
 const renderCurrentBreadcrumb = ({ text, ...restProps }: BreadcrumbProps) => {
@@ -83,7 +83,7 @@ function ProjectDetailsView(): JSX.Element {
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>Project Details</title>
+        <title>Project: Demo</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>

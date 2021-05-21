@@ -57,13 +57,7 @@ function SettingsView(): JSX.Element {
                 columnGap: "1em",
               }}
             >
-              <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  paddingLeft: 5,
-                }}
-              >
+              <ul className="list-none m-0 pl-1.5">
                 {workFunctions.map((x) => (
                   <li key={x.id}>
                     <Checkbox inline={true} label={x.name} />
@@ -78,13 +72,7 @@ function SettingsView(): JSX.Element {
                 columnGap: "1em",
               }}
             >
-              <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  paddingLeft: 5,
-                }}
-              >
+              <ul className="list-none m-0 pl-1.5">
                 <li>
                   <Checkbox inline={true} label="Opt-in personalize marketing" />
                 </li>

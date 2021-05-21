@@ -68,32 +68,13 @@ const list = [
 function rowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
+      <div className="flex flex-row">
+        <div className="flex-1 flex flex-col items-start">
           <div>
             <b>Current Role</b>
           </div>
         </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
+        <div className="flex-1 flex flex-col items-end">
           <div>Location</div>
         </div>
       </div>

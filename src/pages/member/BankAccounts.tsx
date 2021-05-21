@@ -104,7 +104,7 @@ function BankAccountsView(): JSX.Element {
   return (
     <ContainerRoot>
       <Helmet titleTemplate="%s | Open Sesame">
-        <title>BankAccounts</title>
+        <title>Bank Accounts</title>
       </Helmet>
       <Sidebar />
       <ContainerRootInner>

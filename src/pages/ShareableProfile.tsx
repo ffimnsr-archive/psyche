@@ -1,7 +1,6 @@
 import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
-import _ from "lodash";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@apollo/client";
@@ -98,32 +97,13 @@ const list = [
 function rowRenderer({ key, index, style }: any) {
   return (
     <div key={key} style={style}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
+      <div className="flex flex-row">
+        <div className="flex-1 flex flex-col items-start">
           <div>
             <b>Current Role</b>
           </div>
         </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
-        >
+        <div className="flex-1 flex flex-col items-end">
           <div>Location</div>
         </div>
       </div>
@@ -228,12 +208,8 @@ function ShareableProfileView(): JSX.Element {
     kycState: "Valid",
   };
 
-  const {
-    publicId,
-    isAccountVerified,
-    email,
-    clue,
-  } = processedProfile as MyShareableProfile;
+  const { publicId, isAccountVerified, email, clue } =
+    processedProfile as MyShareableProfile;
   const emailHash = generateHash(email);
 
   return (
@@ -254,7 +230,7 @@ function ShareableProfileView(): JSX.Element {
                     />
                   </td>
                   <td>
-                    <div style={{ float: "right" }}>Hello</div>
+                    <div className="float-right">Hello</div>
                     <div>
                       <H1>
                         {clue?.firstName} {clue?.lastName}

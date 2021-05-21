@@ -6,6 +6,7 @@ import { useKeycloak } from "@react-keycloak/web";
 import bgPattern from "@/assets/images/pattern.svg";
 import logo from "@/assets/images/logo.png";
 import { useHistory } from "react-router";
+import classNames from "classnames";
 
 const ContainerRoot = styled.main`
   min-height: 100vh;
@@ -52,21 +53,10 @@ function LoginDispatcherContent(): JSX.Element | null {
 
   return (
     <>
-      <img
-        src={logo}
-        alt="logo"
-        width={286}
-        style={{
-          marginLeft: "8px",
-          marginBottom: "1rem",
-        }}
-      />
+      <img src={logo} alt="logo" width={286} className="mb-4 ml-1" />
       <p
-        className={Classes.RUNNING_TEXT}
-        style={{
-          textAlign: "justify",
-          textJustify: "inter-word",
-        }}
+        className={classNames(Classes.RUNNING_TEXT, "text-justify")}
+        style={{ textJustify: "inter-word" }}
       >
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ullamcorper
         sapien ac dolor ultrices, eget convallis dui fermentum. Donec imperdiet iaculis
