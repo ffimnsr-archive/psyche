@@ -29,8 +29,8 @@ const list = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rowRenderer = ({ key, index, style }: any) => (
   <div key={key} style={style}>
-      <div className="flex flex-row">
-        <div className="flex-1 flex flex-col items-start">
+    <div className="flex flex-row">
+      <div className="flex-1 flex flex-col items-start">
         <div>
           <Link to="/u/project/12313">
             <b>Project Name</b>

@@ -1,7 +1,7 @@
 import log from "loglevel";
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
-import { ApolloClient, ApolloLink, Operation, HttpLink } from "@apollo/client";
+import { ApolloClient, ApolloLink, Operation, HttpLink, NextLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { cache } from "@/Cache";
@@ -25,6 +25,10 @@ const ANONYMOUS_GRAPH_URI = process.env.REACT_APP_RS_URI + "/o/graphql";
  * @returns Returns true if the role is manager.
  */
 function isManager(o: Operation) {
+  log.trace("isManager: operation name =", o.operationName);
+
+  if (o.operationName === "_RequestProfileQuery") return false;
+
   return o.getContext().role === Role.Manager;
 }
 
@@ -34,6 +38,10 @@ function isManager(o: Operation) {
  * @returns Returns true if the role is member.
  */
 function isMember(o: Operation) {
+  log.trace("isMember: operation name =", o.operationName);
+
+  if (o.operationName === "_RequestProfileQuery") return false;
+
   return o.getContext().role === Role.Member;
 }
 
@@ -76,11 +84,11 @@ const managerHttpLink = new HttpLink({ uri: MANAGER_GRAPH_URI });
 const memberHttpLink = new HttpLink({ uri: MEMBER_GRAPH_URI });
 const anonHttpLink = new HttpLink({ uri: ANONYMOUS_GRAPH_URI });
 
-const redirectCheckMember = new ApolloLink((operation, forward) => {
+const redirectCheckMember = new ApolloLink((operation: Operation, forward: NextLink) => {
   return forward(operation);
 }).split(isMember, memberHttpLink, anonHttpLink);
 
-const apolloLink = new ApolloLink((operation, forward) => {
+const apolloLink = new ApolloLink((operation: Operation, forward: NextLink) => {
   return forward(operation);
 }).split(isManager, managerHttpLink, redirectCheckMember);
 

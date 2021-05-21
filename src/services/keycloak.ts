@@ -11,13 +11,13 @@ const keycloak = Keycloak({
 });
 
 keycloak.onTokenExpired = () => {
-  log.info("Token is expired");
+  log.info("onTokenExpired: token is expired");
   keycloak.updateToken(MINIMUM_TOKEN_VALIDITY).then(
     () => {
-      log.info("Successfully refreshed token");
+      log.info("onTokenExpired: successfully refreshed token");
     },
     (reason) => {
-      log.info("Failed to refreshed token", reason);
+      log.error("onTokenExpired: failed to refreshed token =", reason);
     },
   );
 };

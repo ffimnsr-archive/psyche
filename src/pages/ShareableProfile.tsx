@@ -173,7 +173,7 @@ function ShareableProfileView(): JSX.Element {
   log.debug("ShareableProfileView: loading profile =", id);
 
   const { loading, error, data } = useQuery<RequestProfileQuery>(REQUEST_PROFILE_QUERY, {
-    variables: { id },
+    variables: { publicCode: id },
   });
 
   if (id !== "demo") {
@@ -237,7 +237,7 @@ function ShareableProfileView(): JSX.Element {
                       </H1>
                       <ContainerTag>
                         <Tag
-                          icon={isAccountVerified ? IconNames.ENDORSED : IconNames.BLANK}
+                          icon={isAccountVerified ? IconNames.ENDORSED : null}
                           large={true}
                           minimal={true}
                           intent={Intent.SUCCESS}
@@ -260,6 +260,8 @@ function ShareableProfileView(): JSX.Element {
               <div className="clearfixr" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Work Experiences</H5>
               </div>
+              <CustomDivider />
+              <br />
               <div>
                 <AutoSizer disableHeight>
                   {({ width }) => (
@@ -279,6 +281,7 @@ function ShareableProfileView(): JSX.Element {
                 <H5 style={{ display: "inline" }}>Work Functions</H5>
               </div>
               <CustomDivider />
+              <br />
               <div>
                 <AutoSizer disableHeight>
                   {({ width }) => (
@@ -297,6 +300,8 @@ function ShareableProfileView(): JSX.Element {
               <div className="clearfixr" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Issues Resolved</H5>
               </div>
+              <CustomDivider />
+              <br />
               <div>
                 <AutoSizer disableHeight>
                   {({ width }) => (
