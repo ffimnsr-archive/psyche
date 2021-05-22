@@ -10,48 +10,9 @@ import {
   NavigationHeader,
 } from "@/components";
 import { AutoSizer, List } from "react-virtualized";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
-
-const PROJECTS_QUERY = gql`
-  query _Projects {
-    public {
-      profile: myProfile {
-        id
-        email
-        publicId
-        socialSecurityNumber
-        workPreference {
-          id
-          interests
-          projectLimit
-        }
-        sitePreference {
-          id
-          optInMarketing
-          optInUsageStat
-          experimentalFeatures
-          supportPin
-        }
-        clue {
-          id
-          firstName
-          lastName
-          gender
-          birthDate
-          image
-          bio
-          phoneNumber
-          isReady
-          country {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
+import { PROJECTS_QUERY } from "@/operations/queries";
 
 const ContainerProjects = styled.div`
   flex: 1 1 auto;
