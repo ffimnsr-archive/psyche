@@ -46,7 +46,7 @@ const list = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function UserActivityCalendar({ data }: any) {
   return (
-    <div>Hello</div>
+    <div>Hello {data}</div>
     // <ResponsiveCalendar
     //   data={data}
     //   from="2015-03-01"
