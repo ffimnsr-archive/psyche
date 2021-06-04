@@ -1,11 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { expect } from "chai";
 import { render } from "@testing-library/react";
 import NoMatch from "../../src/pages/NoMatch";
 
-const TestProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+interface Props {
+  children?: React.ReactNode;
+}
+
+const TestProvider: FC = ({ children }: Props) => {
   return (
     <HelmetProvider>
       <MemoryRouter>{children}</MemoryRouter>
@@ -14,8 +17,8 @@ const TestProvider = ({ children }: { children: React.ReactNode }): JSX.Element 
 };
 
 describe("<NoMatch>", () => {
-  it("render its content correctly", () => {
+  test("render its content correctly", () => {
     const { container } = render(<NoMatch />, { wrapper: TestProvider });
-    expect(container.innerHTML).contains("Page Not Found");
+    expect(container.innerHTML).toContain("Page Not Found");
   });
 });
