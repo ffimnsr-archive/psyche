@@ -23,12 +23,12 @@ module.exports = merge(common, {
     new DotenvWebpack(),
     new CopyPlugin({
       patterns: [
-        { 
+        {
           from: path.resolve(__dirname, "./src/assets/images/apple-touch-icon.png"),
           to: path.resolve(__dirname, "./dist/debug/"),
         },
       ],
-    }),    
+    }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
     }),

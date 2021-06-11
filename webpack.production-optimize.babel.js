@@ -26,12 +26,12 @@ module.exports = merge(common, {
     new CleanWebpackPlugin(),
     new CopyPlugin({
       patterns: [
-        { 
+        {
           from: path.resolve(__dirname, "./src/assets/images/apple-touch-icon.png"),
           to: path.resolve(__dirname, "./dist/release/"),
         },
       ],
-    }),        
+    }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
     }),
