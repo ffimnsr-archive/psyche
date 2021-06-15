@@ -1,0 +1,14 @@
+version: "3"
+services: 
+  node_docker:
+    image: node:fermium-buster
+    container_name: node-docker
+    entrypoint: /bin/bash
+    working_dir: /app
+    ports: 
+      - 127.0.0.1:8080:8080/tcp
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes: 
+      - .:/app
