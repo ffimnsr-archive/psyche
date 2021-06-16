@@ -2,7 +2,23 @@
 
 ![Workflow](https://github.com/ffimnsr/psyche/workflows/psyche/badge.svg)
 
-### Typescript Basic Types
+## Development
+
+To run this in development, first pull the node LTS (currently its fermium) docker images.
+
+```bash
+docker pull node:fermium-buster
+```
+
+Then run node container service:
+
+```bash
+docker-compose run --rm --service-ports node_docker
+```
+
+On the container terminal, run `yarn start`.
+
+## Typescript Basic Types
 
 Listed below are basic types that can be use on typescript for reference.
 
@@ -17,7 +33,7 @@ Listed below are basic types that can be use on typescript for reference.
 - `null` and `undefined`
 - `never` (e.g. exceptions throws)
 
-### Extra Polyfill Package (Fallbacks)
+## Extra Polyfill Package (Fallbacks)
 
 - stream-browserify
 - browserify-zlib
