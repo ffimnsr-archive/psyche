@@ -57,10 +57,8 @@ function LoginDispatcherContent(): JSX.Element | null {
         className={classNames(Classes.RUNNING_TEXT, "text-justify")}
         style={{ textJustify: "inter-word" }}
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ullamcorper
-        sapien ac dolor ultrices, eget convallis dui fermentum. Donec imperdiet iaculis
-        elit quis placerat. Aliquam nec mattis urna. Sed egestas nunc vitae tellus rutrum
-        aliquam.
+        By logging in, you agree to this platform <a href="#">terms of service</a> and
+        user <a href="#">privacy policy</a>.
       </p>
       <ContainerOptions>
         <Button large={false} fill={true} outlined={true} onClick={login}>
