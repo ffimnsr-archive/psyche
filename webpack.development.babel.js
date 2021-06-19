@@ -14,6 +14,19 @@ module.exports = merge(common, {
     hot: true,
     host: "0.0.0.0",
     port: 8080,
+    public: "http://localhost:8080",
+    static: path.resolve(__dirname, "./dist/debug"),
+    client: {
+      overlay: true,
+      progress: true,
+    },
+    webSocketServer: {
+      options: {
+        host: "localhost",
+        port: 8080,
+        path: "/ws",
+      },
+    },
   },
   stats: "normal",
   output: {
