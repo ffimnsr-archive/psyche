@@ -7,13 +7,9 @@ import { App } from "@/App";
 import "@/assets/styles/main.scss";
 import { ApolloClientInstance } from "@/services/apollo";
 
-const WHITELIST_DOMAINS = ["localhost", "open.se-same.com"];
+const WHITELIST_DOMAINS = ["localhost", "sesame.7f000001.nip.io", "open.se-same.com"];
 
-if (process.env.NODE_ENV !== "production") {
-  log.setLevel(log.levels.INFO);
-} else {
-  log.setLevel(log.levels.INFO);
-}
+log.setLevel(process.env.NODE_ENV !== "production" ? log.levels.DEBUG : log.levels.INFO);
 
 /**
  * Renders the app virtual dom to the root container of

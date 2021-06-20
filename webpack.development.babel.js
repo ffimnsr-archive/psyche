@@ -14,17 +14,16 @@ module.exports = merge(common, {
     hot: true,
     host: "0.0.0.0",
     port: 8080,
-    public: "http://localhost:8080",
+    public: "sesame.7f000001.nip.io",
     static: path.resolve(__dirname, "./dist/debug"),
     client: {
       overlay: true,
       progress: true,
     },
-    webSocketServer: {
-      options: {
-        host: "localhost",
-        port: 8080,
-        path: "/ws",
+    static: {
+      watch: {
+        aggregateTimeout: 500, // delay before reloading
+        poll: 1000, // enable polling since fsevents are not supported in docker
       },
     },
   },

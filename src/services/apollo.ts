@@ -69,6 +69,7 @@ const authLink = setContext((_, { headers }) => {
     role = Role.Member;
   }
 
+  log.trace(`Bearer ${token}`);
   const context = {
     role,
     headers: {

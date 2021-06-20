@@ -5,10 +5,7 @@ import md5 from "blueimp-md5";
 import Cookies from "js-cookie";
 import type { AuthClientTokens } from "@react-keycloak/core";
 
-let secureCookies = false;
-if (process.env.NODE_ENV !== "production") {
-  secureCookies = true;
-}
+const secureCookies = process.env.NODE_ENV !== "production" ? false : true;
 
 export function generateHash(email: string): string {
   return md5(_.toLower(_.trim(email)));
