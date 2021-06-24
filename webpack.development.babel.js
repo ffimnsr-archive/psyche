@@ -20,19 +20,6 @@ module.exports = merge(common, {
       overlay: true,
       progress: true,
     },
-    watchFiles: {
-      options: {
-        usePolling: true,
-        interval: 500,
-        poll: 1000,
-      },
-    },
-    static: {
-      watch: {
-        aggregateTimeout: 500, // delay before reloading
-        poll: 1000, // enable polling since fsevents are not supported in docker
-      },
-    },
   },
   stats: "normal",
   output: {
