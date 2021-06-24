@@ -7,7 +7,12 @@ import { App } from "@/App";
 import "@/assets/styles/main.scss";
 import { ApolloClientInstance } from "@/services/apollo";
 
-const WHITELIST_DOMAINS = ["localhost", "sesame.7f000001.nip.io", "open.se-same.com"];
+const WHITELIST_DOMAINS = [
+  "localhost",
+  "sesame.7f000001.nip.io",
+  "sesame.ac12ee4e.nip.io",
+  "open.se-same.com",
+];
 
 log.setLevel(process.env.NODE_ENV !== "production" ? log.levels.DEBUG : log.levels.INFO);
 
