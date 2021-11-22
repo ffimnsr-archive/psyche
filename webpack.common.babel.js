@@ -105,7 +105,7 @@ const config = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundle.css",

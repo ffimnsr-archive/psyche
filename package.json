@@ -1,6 +1,7 @@
 {
   "name": "psyche",
   "version": "1.1.0",
+  "author": "ffimnsr",
   "private": true,
   "scripts": {
     "start": "yarn run watch",
@@ -17,7 +18,6 @@
     "schema.member": "apollo client:download-schema -c ./.apollo/apollo.member.config.js ./.apollo/generated_schemas/schema.member.graphql",
     "schema.anonymous": "apollo client:download-schema -c ./.apollo/apollo.anonymous.config.js ./.apollo/generated_schemas/schema.anonymous.graphql"
   },
-  "author": "ffimnsr",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
@@ -120,7 +120,7 @@
     "styled-components": "^5.3.3"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "browserslist": [
     ">0.2%",
