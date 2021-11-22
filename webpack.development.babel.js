@@ -14,7 +14,7 @@ module.exports = merge(common, {
     hot: true,
     host: "0.0.0.0",
     port: 8080,
-    public: "sesame.7f000001.nip.io",
+    // public: "sesame.7f000001.nip.io",
     static: path.resolve(__dirname, "./dist/debug"),
     client: {
       overlay: true,
