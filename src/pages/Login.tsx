@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Colors, Button, Classes } from "@blueprintjs/core";
-import { useKeycloak } from "@react-keycloak/web";
+import { useAuth0 } from "@auth0/auth0-react";
 import bgPattern from "@/assets/images/pattern.svg";
 import logo from "@/assets/images/logo.png";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import classNames from "classnames";
 
 const ContainerRoot = styled.main`
@@ -37,18 +37,15 @@ const ContainerOptions = styled.div`
 `;
 
 function LoginDispatcherContent(): JSX.Element | null {
-  const { keycloak } = useKeycloak();
-  const history = useHistory();
-  const login = useCallback(() => {
-    keycloak?.login();
-  }, [keycloak]);
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (keycloak?.authenticated) {
-      log.trace("LoginDispatcherContent: redirecting to authenticated session");
-      history.push("/");
+    if (isAuthenticated) {
+      log.info("LoginDispatcherContent: redirecting to authenticated session");
+      navigate("/");
     }
-  }, [history, keycloak]);
+  }, [navigate, isAuthenticated]);
 
   return (
     <>
@@ -61,7 +58,12 @@ function LoginDispatcherContent(): JSX.Element | null {
         user <a href="#">privacy policy</a>.
       </p>
       <ContainerOptions>
-        <Button large={false} fill={true} outlined={true} onClick={login}>
+        <Button
+          large={false}
+          fill={true}
+          outlined={true}
+          onClick={() => loginWithRedirect({ redirectUri: "http://localhost:8080" })}
+        >
           Login
         </Button>
       </ContainerOptions>

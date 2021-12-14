@@ -22,8 +22,8 @@ import {
 } from "@/components";
 import { useQuery } from "@apollo/client";
 import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
-import { useKeycloak } from "@react-keycloak/web";
-import type { KeycloakProfile } from "keycloak-js";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { PrivRoute } from "@/Router";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -65,17 +65,16 @@ const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps
 
 function ProfileStillEmpty(): JSX.Element {
   const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState<boolean>(false);
-  const { keycloak } = useKeycloak();
-  const [userProfile, setUserProfile] = useState<KeycloakProfile>();
+  const { user } = useAuth0();
+  const [userProfile, setUserProfile] = useState<User>();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const temp = await keycloak.loadUserProfile();
-      setUserProfile(temp);
+      setUserProfile(user);
     };
 
     fetchUserProfile();
-  }, [keycloak]);
+  }, [user]);
 
   const action = (
     <>
@@ -153,16 +152,18 @@ function HomeView(): JSX.Element {
   log.trace("HomeView: rendering component");
 
   return (
-    <ContainerRoot>
-      <Helmet titleTemplate="%s | Open Sesame">
-        <title>Home</title>
-      </Helmet>
-      <Sidebar />
-      <ContainerRootInner>
-        <NavigationHeader />
-        <ProfileContent />
-      </ContainerRootInner>
-    </ContainerRoot>
+    <PrivRoute>
+      <ContainerRoot>
+        <Helmet titleTemplate="%s | Open Sesame">
+          <title>Home</title>
+        </Helmet>
+        <Sidebar />
+        <ContainerRootInner>
+          <NavigationHeader />
+          <ProfileContent />
+        </ContainerRootInner>
+      </ContainerRoot>
+    </PrivRoute>
   );
 }
 

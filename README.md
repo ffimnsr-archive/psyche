@@ -16,7 +16,7 @@ Then run node container service:
 docker-compose run --rm --service-ports node_docker
 ```
 
-On the container terminal, run `yarn start`.
+On the container terminal, run `pnpm start`.
 
 ## Typescript Basic Types
 

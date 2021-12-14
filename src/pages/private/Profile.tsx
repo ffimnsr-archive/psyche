@@ -17,8 +17,8 @@ import { generateHash } from "@/utils";
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { MyProfileQuery, MY_PROFILE_QUERY } from "@/operations/queries";
-import { useKeycloak } from "@react-keycloak/web";
-import { KeycloakProfile } from "keycloak-js";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { PrivRoute } from "@/Router";
 
 const ContainerProfile = styled.div`
   flex: 0 1 auto;
@@ -99,17 +99,16 @@ function ProfileView(): JSX.Element {
   log.trace("ProfileView: rendering component");
 
   const { loading, error, data } = useQuery<MyProfileQuery>(MY_PROFILE_QUERY);
-  const { keycloak } = useKeycloak();
-  const [userProfile, setUserProfile] = useState<KeycloakProfile>();
+  const { user } = useAuth0();
+  const [userProfile, setUserProfile] = useState<User>();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const temp = await keycloak.loadUserProfile();
-      setUserProfile(temp);
+      setUserProfile(user);
     };
 
     fetchUserProfile();
-  }, [keycloak]);
+  }, [user]);
 
   if (loading) return <FullPageLoader />;
   if (error) {
@@ -158,74 +157,76 @@ function ProfileView(): JSX.Element {
   ));
 
   return (
-    <ContainerRoot>
-      <Helmet titleTemplate="%s | Open Sesame">
-        <title>Profile</title>
-      </Helmet>
-      <Sidebar />
-      <ContainerRootInner>
-        <NavigationHeader />
-        <ContainerProfile>
-          <div>
-            <Card>
-              <ImageAvatar
-                src={`https://www.gravatar.com/avatar/${emailHash}?s=210&d=robohash`}
-                alt="avatar"
-              />
-              <div className="mb-4" />
-              {infoComponents}
-            </Card>
-          </div>
-          <ProfileMiddleContainer>
-            <Card>
-              <H5>Work Experience</H5>
-              <div>
-                <AutoSizer disableHeight>
-                  {({ width }) => (
-                    <List
-                      height={list.length * 100}
-                      rowCount={list.length}
-                      rowHeight={100}
-                      rowRenderer={rowRenderer}
-                      width={width}
-                    />
-                  )}
-                </AutoSizer>
-              </div>
-            </Card>
-            <Card>
-              <H5>User Activity</H5>
-              <div style={{ height: "400px" }}>
-                {/* <UserActivityCalendar data={DemoCalendarData} /> */}
-              </div>
-            </Card>
-            <Card>
-              <H5>Work Status</H5>
-              <div>
-                <AutoSizer disableHeight>
-                  {({ width }) => (
-                    <List
-                      height={list.length * 100}
-                      rowCount={list.length}
-                      rowHeight={100}
-                      rowRenderer={rowRenderer}
-                      width={width}
-                    />
-                  )}
-                </AutoSizer>
-              </div>
-            </Card>
-          </ProfileMiddleContainer>
-          <div>
-            <Card>
-              <H5>Connect</H5>
-              <div className="mb-4" />
-              {connectComponents}
-            </Card>
-          </div>
-        </ContainerProfile>
-      </ContainerRootInner>
-    </ContainerRoot>
+    <PrivRoute>
+      <ContainerRoot>
+        <Helmet titleTemplate="%s | Open Sesame">
+          <title>Profile</title>
+        </Helmet>
+        <Sidebar />
+        <ContainerRootInner>
+          <NavigationHeader />
+          <ContainerProfile>
+            <div>
+              <Card>
+                <ImageAvatar
+                  src={`https://www.gravatar.com/avatar/${emailHash}?s=210&d=robohash`}
+                  alt="avatar"
+                />
+                <div className="mb-4" />
+                {infoComponents}
+              </Card>
+            </div>
+            <ProfileMiddleContainer>
+              <Card>
+                <H5>Work Experience</H5>
+                <div>
+                  <AutoSizer disableHeight>
+                    {({ width }) => (
+                      <List
+                        height={list.length * 100}
+                        rowCount={list.length}
+                        rowHeight={100}
+                        rowRenderer={rowRenderer}
+                        width={width}
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+              </Card>
+              <Card>
+                <H5>User Activity</H5>
+                <div style={{ height: "400px" }}>
+                  {/* <UserActivityCalendar data={DemoCalendarData} /> */}
+                </div>
+              </Card>
+              <Card>
+                <H5>Work Status</H5>
+                <div>
+                  <AutoSizer disableHeight>
+                    {({ width }) => (
+                      <List
+                        height={list.length * 100}
+                        rowCount={list.length}
+                        rowHeight={100}
+                        rowRenderer={rowRenderer}
+                        width={width}
+                      />
+                    )}
+                  </AutoSizer>
+                </div>
+              </Card>
+            </ProfileMiddleContainer>
+            <div>
+              <Card>
+                <H5>Connect</H5>
+                <div className="mb-4" />
+                {connectComponents}
+              </Card>
+            </div>
+          </ContainerProfile>
+        </ContainerRootInner>
+      </ContainerRoot>
+    </PrivRoute>
   );
 }
 

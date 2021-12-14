@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Alignment,
   AnchorButton,
@@ -16,7 +16,7 @@ import {
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { IconName, IconNames } from "@blueprintjs/icons";
-import { useKeycloak } from "@react-keycloak/web";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
@@ -34,36 +34,35 @@ interface MenuDetail {
 }
 
 function NavigationHeaderContent(): JSX.Element {
-  const { keycloak } = useKeycloak();
-  const history = useHistory();
+  const { logout } = useAuth0();
+  const navigate = useNavigate();
 
   const menus: MenuDetail[] = [
     {
       icon: IconNames.PERSON,
       text: "Account Settings",
-      handler: () => {
-        keycloak?.accountManagement();
-      },
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      handler: () => {},
     },
     {
       icon: IconNames.ID_NUMBER,
       text: "My Profile",
       handler: () => {
-        history.push("/u/profile");
+        navigate("/u/profile");
       },
     },
     {
       icon: IconNames.PROJECTS,
       text: "Projects",
       handler: () => {
-        history.push("/u/projects");
+        navigate("/u/projects");
       },
     },
     {
       icon: IconNames.SETTINGS,
       text: "Settings",
       handler: () => {
-        history.push("/u/settings");
+        navigate("/u/settings");
       },
     },
     {
@@ -76,7 +75,7 @@ function NavigationHeaderContent(): JSX.Element {
       icon: IconNames.LOG_OUT,
       text: "Sign out",
       handler: () => {
-        keycloak?.logout();
+        logout({ returnTo: window.location.origin });
       },
     },
   ];

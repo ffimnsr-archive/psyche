@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { HapButton } from "@/components/HapButton";
-import { Intent, NonIdealState } from "@blueprintjs/core";
+import { NonIdealState } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
+import { GoBackHomeButton } from "./GoBackHomeButton";
 
 interface Props {
   children?: React.ReactNode;
@@ -19,18 +19,12 @@ interface ErrorInfo {
 function ErrorBoundaryContent(): JSX.Element {
   const description = <div>Oops! Something went wrong.</div>;
 
-  const action = (
-    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
-      Go Back Home
-    </HapButton>
-  );
-
   return (
     <NonIdealState
       icon={IconNames.WARNING_SIGN}
       title="Component Error!"
       description={description}
-      action={action}
+      action={<GoBackHomeButton />}
     />
   );
 }

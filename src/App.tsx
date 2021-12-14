@@ -1,48 +1,29 @@
 import React from "react";
-import log from "loglevel";
 import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { Auth0Provider } from "@auth0/auth0-react";
 import { FocusStyleManager } from "@blueprintjs/core";
 import { Router } from "@/Router";
-import { globalStateVar } from "@/Cache";
-import keycloak from "@/services/keycloak";
-import { setToken } from "@/utils";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
-const eventLogger = (event: unknown, error: unknown) => {
-  log.trace("eventLogger: keycloak event =", event, error);
-};
-
 /**
- * Renders the app that contains the browser router
- * and router component. This also initialize the helmet
- * provider and keycloak provider.
+ * Renders the app that contains the browser router and router component. This
+ * also initialize the helmet provider and auth provider.
  * @returns React component
  */
 export function App(): JSX.Element {
   return (
     <HelmetProvider>
-      <ReactKeycloakProvider
-        authClient={keycloak}
-        onEvent={eventLogger}
-        onTokens={(tokens) => {
-          log.trace("App: tokens =", tokens);
-          setToken(tokens);
-          globalStateVar({ token: tokens.token });
-        }}
-        initOptions={{
-          checkLoginIframe: false,
-          useNonce: true,
-          pkceMethod: "S256",
-          enableLogging: true,
-        }}
+      <Auth0Provider
+        domain="staging-sesame.us.auth0.com"
+        clientId="8QaVNdVlPPcZGU2ttYck9QNj6ZyVK9fC"
+        redirectUri={window.location.origin}
       >
         <BrowserRouter>
           <Router />
         </BrowserRouter>
-      </ReactKeycloakProvider>
+      </Auth0Provider>
     </HelmetProvider>
   );
 }

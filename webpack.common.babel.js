@@ -36,7 +36,6 @@ const config = {
       {
         test: /\.[tj]sx?$/,
         include: path.resolve(__dirname, "src"),
-        exclude: path.resolve(__dirname, ".pnp.js"),
         use: {
           loader: "babel-loader",
         },
@@ -47,10 +46,6 @@ const config = {
         use: {
           loader: "graphql-tag/loader",
         },
-      },
-      {
-        test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
@@ -105,7 +100,6 @@ const config = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].bundle.css",
