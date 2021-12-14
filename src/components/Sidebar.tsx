@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import {
   Alignment,
+  AnchorButton,
   Button,
   ButtonGroup,
   Colors,
@@ -12,7 +13,6 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 import { IconName, IconNames } from "@blueprintjs/icons";
-import { HapButton } from "@/components/HapButton";
 import logoIcon from "@/assets/images/logo_icon.png";
 
 const ContainerSidebar = styled.div`
@@ -44,7 +44,7 @@ const SharedCss = css`
   }
 `;
 
-const PaleWhiteHapButton = styled(HapButton)`
+const PaleWhiteAnchorButton = styled(AnchorButton)`
   ${SharedCss}
 `;
 
@@ -64,7 +64,7 @@ interface SidebarNavigator {
  * @returns React component
  */
 export function Sidebar(): JSX.Element {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const navs: SidebarNavigator[] = [
     { icon: IconNames.HOME, display: "Home", to: "/" },
@@ -77,28 +77,32 @@ export function Sidebar(): JSX.Element {
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
     <Tooltip2 key={i} content={<span>{v.display}</span>} placement={Position.RIGHT}>
-      <PaleWhiteHapButton to={v.to} icon={v.icon} />
+      <PaleWhiteAnchorButton
+        onClick={() => navigate(v.to)}
+        href="javascript:;"
+        icon={v.icon}
+      />
     </Tooltip2>
   ));
 
   const moreMenu = (
     <Menu>
       <MenuItem
-        onClick={() => history.push("/u/stats")}
+        onClick={() => navigate("/u/stats")}
         icon={IconNames.CHART}
         text="Work Statistics"
       />
       <MenuItem
-        onClick={() => history.push("/u/profile")}
+        onClick={() => navigate("/u/profile")}
         icon={IconNames.ID_NUMBER}
         text="My Profile"
       />
       <MenuItem
-        onClick={() => history.push("/u/issues")}
+        onClick={() => navigate("/u/issues")}
         icon={IconNames.VIRUS}
         text="Project Issues"
       />
-      <MenuItem onClick={() => history.push("/help")} icon={IconNames.HELP} text="Help" />
+      <MenuItem onClick={() => navigate("/help")} icon={IconNames.HELP} text="Help" />
     </Menu>
   );
 

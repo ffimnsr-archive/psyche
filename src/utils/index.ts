@@ -1,36 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import _ from "lodash";
 import md5 from "blueimp-md5";
-import Cookies from "js-cookie";
-import type { AuthClientTokens } from "@react-keycloak/core";
 
-const secureCookies = process.env.NODE_ENV !== "production" ? false : true;
+function isPlainObject(obj: unknown): boolean {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    obj.constructor === Object &&
+    Object.prototype.toString.call(obj) === "[object Object]"
+  );
+}
+
+function camelize(str: string): string {
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    })
+    .replace(/\s+/g, "");
+}
 
 export function generateHash(email: string): string {
-  return md5(_.toLower(_.trim(email)));
+  return md5(email.trim().toLowerCase());
 }
 
 export function camelizeKeys(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.map((v) => camelizeKeys(v));
-  } else if (_.isPlainObject(obj)) {
+  } else if (isPlainObject(obj)) {
     return Object.keys(obj).reduce(
       (result, key) => ({
         ...result,
-        [_.camelCase(key)]: camelizeKeys(obj[key]),
+        [camelize(key)]: camelizeKeys(obj[key]),
       }),
       {},
     );
   }
   return obj;
-}
-
-export function setToken(tokens: AuthClientTokens) {
-  if (tokens.token !== undefined) {
-    Cookies.set("OSSLOCAL_SESSION_TOKEN", tokens.token, {
-      sameSite: "Strict",
-      secure: secureCookies,
-    });
-  }
 }

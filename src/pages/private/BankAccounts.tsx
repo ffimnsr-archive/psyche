@@ -11,6 +11,7 @@ import {
 } from "@/components";
 import { BankAccount } from "@/models";
 import { useQuery, gql } from "@apollo/client";
+import { PrivRoute } from "@/Router";
 
 const BANK_ACCOUNTS_QUERY = gql`
   query _bankAccountsQuery {
@@ -102,16 +103,18 @@ function BankAccountsView(): JSX.Element {
   log.trace("BankAccountsView: rendering component");
 
   return (
-    <ContainerRoot>
-      <Helmet titleTemplate="%s | Open Sesame">
-        <title>Bank Accounts</title>
-      </Helmet>
-      <Sidebar />
-      <ContainerRootInner>
-        <NavigationHeader />
-        <BankAccountsContent />
-      </ContainerRootInner>
-    </ContainerRoot>
+    <PrivRoute>
+      <ContainerRoot>
+        <Helmet titleTemplate="%s | Open Sesame">
+          <title>Bank Accounts</title>
+        </Helmet>
+        <Sidebar />
+        <ContainerRootInner>
+          <NavigationHeader />
+          <BankAccountsContent />
+        </ContainerRootInner>
+      </ContainerRoot>
+    </PrivRoute>
   );
 }
 

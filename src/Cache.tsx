@@ -1,6 +1,5 @@
 import { InMemoryCache, ReactiveVar, makeVar } from "@apollo/client";
-import Cookies from "js-cookie";
-import { GlobalState } from "@/models/GlobalState";
+import { GlobalState } from "@/models/global_state";
 
 export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
@@ -17,5 +16,5 @@ export const cache: InMemoryCache = new InMemoryCache({
 });
 
 export const globalStateVar: ReactiveVar<GlobalState> = makeVar<GlobalState>({
-  token: Cookies.get("OSSLOCAL_SESSION_TOKEN"),
+  token: "",
 });

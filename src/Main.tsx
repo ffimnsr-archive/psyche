@@ -1,11 +1,11 @@
 import React from "react";
 import log from "loglevel";
-import _ from "lodash";
 import { render as Render } from "react-dom";
 import { ApolloProvider } from "@apollo/client";
 import { App } from "@/App";
-import "@/assets/styles/main.scss";
 import { ApolloClientInstance } from "@/services/apollo";
+import { isProduction } from "@/utils/globals";
+import "@/assets/styles/main.css";
 
 const WHITELIST_DOMAINS = [
   "localhost",
@@ -14,7 +14,7 @@ const WHITELIST_DOMAINS = [
   "open.se-same.com",
 ];
 
-log.setLevel(process.env.NODE_ENV !== "production" ? log.levels.DEBUG : log.levels.INFO);
+log.setLevel(isProduction() ? log.levels.DEBUG : log.levels.INFO);
 
 /**
  * Renders the app virtual dom to the root container of
@@ -29,7 +29,7 @@ function main(): void {
   );
 }
 
-if (_.includes(WHITELIST_DOMAINS, window.location.hostname)) {
+if (WHITELIST_DOMAINS.includes(window.location.hostname)) {
   main();
 
   if (module.hot) {

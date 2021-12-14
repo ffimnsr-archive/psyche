@@ -45,6 +45,8 @@ type Industry implements Node {
 type PublicQuery {
   """Get profile of a user using public code"""
   profile(publicCode: String!): UserClue!
+
+  myProfile: UserClue!
 }
 
 type TalentPool implements Node {

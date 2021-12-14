@@ -20,7 +20,7 @@ import {
   SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { ContainerRoot, HapButton, ImageAvatar } from "@/components";
+import { ContainerRoot, GoBackHomeButton, ImageAvatar } from "@/components";
 import { generateHash } from "@/utils";
 import { AutoSizer, List } from "react-virtualized";
 import { RequestProfileQuery, REQUEST_PROFILE_QUERY } from "@/operations/queries";
@@ -130,19 +130,13 @@ function ShareableProfileError(): JSX.Element {
     </div>
   );
 
-  const action = (
-    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
-      Go Back Home
-    </HapButton>
-  );
-
   return (
     <ContainerNonTrivial>
       <NonIdealState
         icon={IconNames.WARNING_SIGN}
         title="Profile Not Found!"
         description={description}
-        action={action}
+        action={<GoBackHomeButton />}
       />
     </ContainerNonTrivial>
   );
@@ -167,7 +161,7 @@ interface MyShareableProfile {
 }
 
 function ShareableProfileView(): JSX.Element {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
 
   log.trace("ShareableProfileView: rendering component");
   log.debug("ShareableProfileView: loading profile =", id);

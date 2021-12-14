@@ -2,9 +2,9 @@ import React from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { NonIdealState, Intent } from "@blueprintjs/core";
+import { NonIdealState } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { HapButton } from "@/components";
+import { GoBackHomeButton } from "@/components";
 
 const Container = styled.main`
   height: 100vh;
@@ -28,12 +28,6 @@ function NoMatchView(): JSX.Element {
     </div>
   );
 
-  const action = (
-    <HapButton to="/" intent={Intent.PRIMARY} large={true}>
-      Go Back Home
-    </HapButton>
-  );
-
   return (
     <Container>
       <Helmet titleTemplate="%s | Open Sesame">
@@ -43,7 +37,7 @@ function NoMatchView(): JSX.Element {
         icon={IconNames.PATH_SEARCH}
         title="Page Not Found"
         description={description}
-        action={action}
+        action={<GoBackHomeButton />}
       />
     </Container>
   );
