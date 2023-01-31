@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { Rank } from "@/models/internals";
+} from "../../../components";
+import { Rank } from "../../../models/internals";
 
 const ContainerRanks = styled.div`
   flex: 1 1 auto;

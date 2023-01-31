@@ -3,8 +3,8 @@ import log from "loglevel";
 import styled from "styled-components";
 import { Colors, Button, Classes } from "@blueprintjs/core";
 import { useAuth0 } from "@auth0/auth0-react";
-import bgPattern from "@/assets/images/pattern.svg";
-import logo from "@/assets/images/logo.png";
+import bgPattern from "../assets/images/pattern.svg";
+import logo from "../assets/images/logo.png";
 import { useNavigate } from "react-router";
 import classNames from "classnames";
 
@@ -62,7 +62,11 @@ function LoginDispatcherContent(): JSX.Element | null {
           large={false}
           fill={true}
           outlined={true}
-          onClick={() => loginWithRedirect({ redirectUri: "http://localhost:8080" })}
+          onClick={() =>
+            loginWithRedirect({
+              authorizationParams: { redirect_uri: "http://localhost:8080" },
+            })
+          }
         >
           Login
         </Button>

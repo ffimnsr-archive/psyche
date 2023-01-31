@@ -13,7 +13,7 @@ import {
 } from "@blueprintjs/core";
 import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 import { IconName, IconNames } from "@blueprintjs/icons";
-import logoIcon from "@/assets/images/logo_icon.png";
+import logoIcon from "../assets/images/logo_icon.png";
 
 const ContainerSidebar = styled.div`
   min-width: 60px;
@@ -70,9 +70,9 @@ export function Sidebar(): JSX.Element {
     { icon: IconNames.HOME, display: "Home", to: "/" },
     // { icon: IconNames.SATELLITE, display: "Feed", to: "/u/feed" },
     // { icon: IconNames.NOTIFICATIONS, display: "Notifications", to: "/u/notifications" },
-    { icon: IconNames.PROJECTS, display: "Projects", to: "/u/projects" },
-    { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/u/schedules" },
-    { icon: IconNames.BANK_ACCOUNT, display: "Wallet", to: "/u/wallet" },
+    { icon: IconNames.PROJECTS, display: "Projects", to: "/user/projects" },
+    { icon: IconNames.TIMELINE_EVENTS, display: "Schedules", to: "/user/schedules" },
+    { icon: IconNames.BANK_ACCOUNT, display: "Wallet", to: "/user/wallet" },
   ];
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
@@ -88,17 +88,17 @@ export function Sidebar(): JSX.Element {
   const moreMenu = (
     <Menu>
       <MenuItem
-        onClick={() => navigate("/u/stats")}
+        onClick={() => navigate("/user/stats")}
         icon={IconNames.CHART}
         text="Work Statistics"
       />
       <MenuItem
-        onClick={() => navigate("/u/profile")}
+        onClick={() => navigate("/user/profile")}
         icon={IconNames.ID_NUMBER}
         text="My Profile"
       />
       <MenuItem
-        onClick={() => navigate("/u/issues")}
+        onClick={() => navigate("/user/issues")}
         icon={IconNames.VIRUS}
         text="Project Issues"
       />

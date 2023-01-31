@@ -8,7 +8,7 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
+} from "../../components";
 
 const ContainerNewsFeed = styled.div`
   flex: 1 1 auto;

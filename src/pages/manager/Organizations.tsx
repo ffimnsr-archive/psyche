@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { Organization } from "@/models";
+} from "../../components";
+import { Organization } from "../../models";
 
 const ContainerOrganizations = styled.div`
   flex: 1 1 auto;

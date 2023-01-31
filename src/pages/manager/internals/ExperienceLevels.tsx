@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { ExperienceLevel } from "@/models/internals";
+} from "../../../components";
+import { ExperienceLevel } from "../../../models/internals";
 
 const ContainerExperienceLevels = styled.div`
   flex: 1 1 auto;

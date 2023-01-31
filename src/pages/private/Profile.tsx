@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { AutoSizer, List } from "react-virtualized";
 import { Card, H5 } from "@blueprintjs/core";
 import {
   ContainerRoot,
@@ -11,11 +10,11 @@ import {
   NavigationHeader,
   ImageAvatar,
   FullPageLoader,
-} from "@/components";
-import { generateHash } from "@/utils";
+} from "../../components";
+import { generateHash } from "../../utils";
 import { Link } from "react-router-dom";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { PrivRoute } from "@/Router";
+import { PrivRoute } from "../../Router";
 
 const ContainerProfile = styled.div`
   flex: 0 1 auto;
@@ -33,64 +32,6 @@ const ProfileMiddleContainer = styled.div`
     margin-bottom: 10px;
   }
 `;
-
-const list = [
-  "Brian Vaughn",
-  "Brian Vaughn",
-  // And so on...
-];
-
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// function UserActivityCalendar({ data }: any) {
-//   return (
-//     <div>Hello {data}</div>
-//     // <ResponsiveCalendar
-//     //   data={data}
-//     //   from="2015-03-01"
-//     //   to="2016-07-12"
-//     //   emptyColor="#eeeeee"
-//     //   colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
-//     //   margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
-//     //   yearSpacing={40}
-//     //   monthBorderColor="#ffffff"
-//     //   dayBorderWidth={2}
-//     //   dayBorderColor="#ffffff"
-//     //   legends={[
-//     //     {
-//     //       anchor: "bottom-right",
-//     //       direction: "row",
-//     //       translateY: 36,
-//     //       itemCount: 4,
-//     //       itemWidth: 42,
-//     //       itemHeight: 36,
-//     //       itemsSpacing: 14,
-//     //       itemDirection: "right-to-left",
-//     //     },
-//     //   ]}
-//     // />
-//   );
-// }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function rowRenderer({ key, index, style }: any) {
-  return (
-    <div key={key} style={style}>
-      <div className="flex flex-row">
-        <div className="flex-1 flex flex-col items-start">
-          <div>
-            <b>Current Role</b>
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col items-end">
-          <div>Location</div>
-        </div>
-      </div>
-      <div>Organization</div>
-      <div>Mar 2019 - Present . 1 yr 11 mos</div>
-      <div>{list[index]}</div>
-    </div>
-  );
-}
 
 function ProfileView(): JSX.Element {
   log.trace("ProfileView: rendering component");

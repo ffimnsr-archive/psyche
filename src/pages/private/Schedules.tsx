@@ -9,7 +9,7 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
+} from "../../components";
 
 const localizer = momentLocalizer(moment);
 

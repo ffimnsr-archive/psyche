@@ -19,9 +19,9 @@ import {
   Sidebar,
   NavigationHeader,
   FullPageLoader,
-} from "@/components";
+} from "../../components";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { PrivRoute } from "@/Router";
+import { PrivRoute } from "../../Router";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;

@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { BankAccount } from "@/models";
+} from "../../components";
+import { BankAccount } from "../../models";
 
 const ContainerBankAccounts = styled.div`
   flex: 1 1 auto;

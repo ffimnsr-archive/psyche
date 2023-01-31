@@ -7,7 +7,7 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
+} from "../../components";
 
 function StatsContent(): JSX.Element {
   return (

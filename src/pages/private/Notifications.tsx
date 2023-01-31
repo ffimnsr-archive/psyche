@@ -8,8 +8,7 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { Link } from "react-router-dom";
+} from "../../components";
 
 const ContainerNotifications = styled.div`
   flex: 1 1 auto;
@@ -18,33 +17,6 @@ const ContainerNotifications = styled.div`
   flex-direction: column;
   justify-content: flex-center;
 `;
-
-const list = [
-  "Brian Vaughn",
-  "Brian Vaughn",
-  // And so on...
-];
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rowRenderer = ({ key, index, style }: any) => (
-  <div key={key} style={style}>
-    <div className="flex flex-row">
-      <div className="flex-1 flex flex-col items-start">
-        <div>
-          <Link to="/u/project/12313">
-            <b>Project Name</b>
-          </Link>
-        </div>
-      </div>
-      <div className="flex-1 flex flex-col items-end">
-        <div>Active</div>
-      </div>
-    </div>
-    <div>Current Role</div>
-    <div>Mar 2019 - Present . 1 yr 11 mos</div>
-    <div>{list[index]}</div>
-  </div>
-);
 
 function RecentNotifications(): JSX.Element {
   return (

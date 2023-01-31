@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { WorkFunction } from "@/models/internals";
+} from "../../components";
+import { WorkFunction } from "../../models/internals";
 
 const ContainerSettings = styled.div`
   flex: 1 1 auto;

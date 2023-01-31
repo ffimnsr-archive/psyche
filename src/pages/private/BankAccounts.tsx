@@ -8,9 +8,9 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { BankAccount } from "@/models";
-import { PrivRoute } from "@/Router";
+} from "../../components";
+import { BankAccount } from "../../models";
+import { PrivRoute } from "../../Router";
 
 const ContainerBankAccounts = styled.div`
   flex: 1 1 auto;

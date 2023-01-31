@@ -3,13 +3,13 @@ import { Route, Routes, Navigate, useLocation, RouteProps } from "react-router-d
 import log from "loglevel";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import NoMatch from "@/pages/NoMatch";
-import logoIcon from "@/assets/images/logo_icon.png";
 import { useAuth0 } from "@auth0/auth0-react";
+import NoMatch from "./pages/NoMatch";
+import logoIcon from "./assets/images/logo_icon.png";
 
 // Disable lazy loads for this components as this needs quick load times.
-import Login from "@/pages/Login";
-import Home from "@/pages/private/Home";
+import Login from "./pages/Login";
+import Home from "./pages/private/Home";
 
 const Container = styled.div`
   height: 100vh;
@@ -36,25 +36,25 @@ const LoadingPlaceholder = (
   </Container>
 );
 
-const ShareableProfile = lazy(() => import("@/pages/ShareableProfile"));
-const AccountProfile = lazy(() => import("@/pages/private/Profile"));
-// const MemberNotifications = lazy(() => import("@/pages/private/Notifications"));
-// const MemberProjects = lazy(() => import("@/pages/private/Projects"));
-// const MemberProjectDetails = lazy(() => import("@/pages/private/ProjectDetails"));
-// const MemberSchedules = lazy(() => import("@/pages/private/Schedules"));
-// const MemberBankAccounts = lazy(() => import("@/pages/private/BankAccounts"));
-// const MemberIssues = lazy(() => import("@/pages/private/Issues"));
-// const MemberStats = lazy(() => import("@/pages/private/Stats"));
-// const MemberWallet = lazy(() => import("@/pages/private/Wallet"));
+const ShareableProfile = lazy(() => import("./pages/ShareableProfile"));
+const AccountProfile = lazy(() => import("./pages/private/Profile"));
+// const MemberNotifications = lazy(() => import("./pages/private/Notifications"));
+// const MemberProjects = lazy(() => import("./pages/private/Projects"));
+// const MemberProjectDetails = lazy(() => import("./pages/private/ProjectDetails"));
+// const MemberSchedules = lazy(() => import("./pages/private/Schedules"));
+// const MemberBankAccounts = lazy(() => import("./pages/private/BankAccounts"));
+// const MemberIssues = lazy(() => import("./pages/private/Issues"));
+// const MemberStats = lazy(() => import("./pages/private/Stats"));
+// const MemberWallet = lazy(() => import("./pages/private/Wallet"));
 
-// const MemberFeed = lazy(() => import("@/pages/private/Feed"));
-// const MemberSettings = lazy(() => import("@/pages/private/Settings"));
+// const MemberFeed = lazy(() => import("./pages/private/Feed"));
+// const MemberSettings = lazy(() => import("./pages/private/Settings"));
 
-// const BankAccounts = lazy(() => import("@/pages/manager/BankAccounts"));
-// const Organizations = lazy(() => import("@/pages/manager/Organizations"));
-// const Projects = lazy(() => import("@/pages/manager/Projects"));
-// const Users = lazy(() => import("@/pages/manager/Users"));
-// const WithdrawalRequests = lazy(() => import("@/pages/manager/WithdrawalRequests"));
+// const BankAccounts = lazy(() => import("./pages/manager/BankAccounts"));
+// const Organizations = lazy(() => import("./pages/manager/Organizations"));
+// const Projects = lazy(() => import("./pages/manager/Projects"));
+// const Users = lazy(() => import("./pages/manager/Users"));
+// const WithdrawalRequests = lazy(() => import("./pages/manager/WithdrawalRequests"));
 
 /**
  * Renders a component if user is authenticated otherwise redirect to login.
@@ -116,7 +116,7 @@ export function Router(): ReactElement {
         <AuthRoute path="/_/withdrawal_request/:id" element={<WithdrawalRequests />} />
         <AuthRoute path="/docs/help" element={<WithdrawalRequests />} /> */}
         <Route path="/" element={<Home />} />
-        <Route path="/u/profile" element={<AccountProfile />} />
+        <Route path="/user/profile" element={<AccountProfile />} />
         <Route path="/o/public/share/:id" element={<ShareableProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NoMatch />} />

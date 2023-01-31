@@ -14,14 +14,14 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
+} from "../../components";
 import { IconNames } from "@blueprintjs/icons";
-import BarChart from "@/components/BarChart";
+import BarChart from "../../components/BarChart";
 
 const BREADCRUMBS: BreadcrumbProps[] = [
   { href: "/", icon: IconNames.HOME, text: "Home" },
-  { href: "/u/projects", icon: IconNames.LIST, text: "Projects" },
-  { href: "/u/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project: Demo" },
+  { href: "/user/projects", icon: IconNames.LIST, text: "Projects" },
+  { href: "/user/project/demo", icon: IconNames.LIST_DETAIL_VIEW, text: "Project: Demo" },
 ];
 
 const renderCurrentBreadcrumb = ({ text, ...restProps }: BreadcrumbProps) => {

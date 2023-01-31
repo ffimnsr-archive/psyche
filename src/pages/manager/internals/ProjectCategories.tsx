@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { ProjectCategory } from "@/models/internals";
+} from "../../../components";
+import { ProjectCategory } from "../../../models/internals";
 
 const ContainerProjectCategories = styled.div`
   flex: 1 1 auto;

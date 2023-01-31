@@ -9,8 +9,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { UserClue } from "@/models";
+} from "../../components";
+import { UserClue } from "../../models";
 
 const ContainerUsers = styled.div`
   flex: 1 1 auto;

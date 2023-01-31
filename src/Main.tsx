@@ -1,9 +1,9 @@
 import React from "react";
 import log from "loglevel";
-import { render as Render } from "react-dom";
-import { App } from "@/App";
-import { isProduction } from "@/utils/globals";
-import "@/assets/styles/main.css";
+import { createRoot } from "react-dom/client";
+import { App } from "./App";
+import { isProduction } from "./utils/globals";
+import "./assets/styles/main.css";
 
 const WHITELIST_DOMAINS = [
   "localhost",
@@ -19,14 +19,20 @@ log.setLevel(isProduction() ? log.levels.DEBUG : log.levels.INFO);
  * HTML template.
  */
 function main(): void {
-  Render(<App />, document.getElementById("root"));
+  const container = document.getElementById("root");
+  if (!container) {
+    return;
+  }
+
+  const root = createRoot(container);
+  root.render(<App />);
 }
 
 if (WHITELIST_DOMAINS.includes(window.location.hostname)) {
   main();
 
   if (module.hot) {
-    module.hot.accept("@/App", () => {
+    module.hot.accept("./App", () => {
       main();
     });
   }

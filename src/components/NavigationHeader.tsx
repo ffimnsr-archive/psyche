@@ -48,21 +48,21 @@ function NavigationHeaderContent(): JSX.Element {
       icon: IconNames.ID_NUMBER,
       text: "My Profile",
       handler: () => {
-        navigate("/u/profile");
+        navigate("/user/profile");
       },
     },
     {
       icon: IconNames.PROJECTS,
       text: "Projects",
       handler: () => {
-        navigate("/u/projects");
+        navigate("/user/projects");
       },
     },
     {
       icon: IconNames.SETTINGS,
       text: "Settings",
       handler: () => {
-        navigate("/u/settings");
+        navigate("/user/settings");
       },
     },
     {
@@ -75,7 +75,7 @@ function NavigationHeaderContent(): JSX.Element {
       icon: IconNames.LOG_OUT,
       text: "Sign out",
       handler: () => {
-        logout({ returnTo: window.location.origin });
+        logout({ logoutParams: { returnTo: window.location.origin } });
       },
     },
   ];

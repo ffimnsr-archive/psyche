@@ -19,9 +19,8 @@ import {
   SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
-import { ContainerRoot, GoBackHomeButton, ImageAvatar } from "@/components";
-import { generateHash } from "@/utils";
-import { AutoSizer, List } from "react-virtualized";
+import { ContainerRoot, GoBackHomeButton, ImageAvatar } from "../components";
+import { generateHash } from "../utils";
 
 const ContainerNonTrivial = styled.main`
   height: 100vh;
@@ -84,33 +83,6 @@ const ProfilePane = styled.div`
     margin-bottom: 10px;
   }
 `;
-
-const list = [
-  "Brian Vaughn",
-  "Brian Vaughn",
-  // And so on...
-];
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function rowRenderer({ key, index, style }: any) {
-  return (
-    <div key={key} style={style}>
-      <div className="flex flex-row">
-        <div className="flex-1 flex flex-col items-start">
-          <div>
-            <b>Current Role</b>
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col items-end">
-          <div>Location</div>
-        </div>
-      </div>
-      <div>Organization</div>
-      <div>Mar 2019 - Present . 1 yr 11 mos</div>
-      <div>{list[index]}</div>
-    </div>
-  );
-}
 
 function ShareableProfileLoading(): JSX.Element {
   return (

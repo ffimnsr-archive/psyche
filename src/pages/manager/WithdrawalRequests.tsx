@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { WithdrawalRequest } from "@/models";
+} from "../../components";
+import { WithdrawalRequest } from "../../models";
 
 const ContainerWithdrawalRequests = styled.div`
   flex: 1 1 auto;

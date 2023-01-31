@@ -8,8 +8,8 @@ import {
   ContainerRootInner,
   Sidebar,
   NavigationHeader,
-} from "@/components";
-import { Country } from "@/models/internals";
+} from "../../../components";
+import { Country } from "../../../models/internals";
 
 const ContainerCountries = styled.div`
   flex: 1 1 auto;
