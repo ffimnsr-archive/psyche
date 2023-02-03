@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,6 @@ import {
   H5,
   H1,
   Elevation,
-  Spinner,
   Intent,
   NonIdealState,
   Colors,
@@ -16,11 +15,11 @@ import {
   Tag,
   Text,
   Divider,
-  SpinnerSize,
 } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 import { ContainerRoot, GoBackHomeButton, ImageAvatar } from "../components";
 import { generateHash } from "../utils";
+import { UserProfile } from "./private/Profile";
 
 const ContainerNonTrivial = styled.main`
   height: 100vh;
@@ -84,14 +83,6 @@ const ProfilePane = styled.div`
   }
 `;
 
-function ShareableProfileLoading(): JSX.Element {
-  return (
-    <ContainerNonTrivial>
-      <Spinner size={SpinnerSize.LARGE} />
-    </ContainerNonTrivial>
-  );
-}
-
 function ShareableProfileError(): JSX.Element {
   const description = (
     <div>
@@ -112,14 +103,8 @@ function ShareableProfileError(): JSX.Element {
   );
 }
 
-interface MyShareableProfile {
-  publicId: string;
-  socialSecurityNumber: string;
-  email: string;
-  joinedAt: string;
+interface ShareableUserProfile extends UserProfile {
   clue?: {
-    firstName: string;
-    lastName: string;
     bio: string;
     country?: {
       name: string;
@@ -131,48 +116,28 @@ interface MyShareableProfile {
 }
 
 function ShareableProfileView(): JSX.Element {
+  log.trace("ShareableProfileView: rendering component");
+
+  const [profile, setProfile] = useState<ShareableUserProfile | undefined>(undefined);
   const { id } = useParams();
 
-  log.trace("ShareableProfileView: rendering component");
   log.debug("ShareableProfileView: loading profile =", id);
 
-  const { loading, error, data } = {} as any;
+  useEffect(() => {
+    const fetchData = async () => {
+      const resp = await fetch(`http://localhost:8080/api/user/${id}/extended`);
+      const data = await resp.json();
+      setProfile(data);
+    };
 
-  if (id !== "demo") {
-    if (loading) return <ShareableProfileLoading />;
-    if (error) {
-      log.error("ShareableProfileView: failed call to profile query =", error);
-      return <ShareableProfileError />;
-    }
-  }
+    fetchData();
+  });
 
-  if (!data) {
+  if (!profile) {
     return <ShareableProfileError />;
   }
 
-  const { profile } = data.public;
-
-  const processedProfile: MyShareableProfile = {
-    publicId: profile.publicCode,
-    socialSecurityNumber: "string",
-    email: "loremipsum",
-    joinedAt: "06/11/94",
-    clue: {
-      firstName: "John",
-      lastName: "Doe",
-      bio: "Lorem Ipsum",
-      country: {
-        name: "Philippines",
-      },
-    },
-    isAccountVerified: false,
-    workExperiences: "Hello",
-    kycState: "Valid",
-  };
-
-  const { publicId, isAccountVerified, email, clue } =
-    processedProfile as MyShareableProfile;
-  const emailHash = generateHash(email);
+  const emailHash = generateHash(profile.email);
 
   return (
     <ContainerRoot>
@@ -195,23 +160,25 @@ function ShareableProfileView(): JSX.Element {
                     <div className="float-right">Hello</div>
                     <div>
                       <H1>
-                        {clue?.firstName} {clue?.lastName}
+                        {profile.firstName} {profile.lastName}
                       </H1>
                       <ContainerTag>
                         <Tag
-                          icon={isAccountVerified ? IconNames.ENDORSED : null}
+                          icon={profile.isAccountVerified ? IconNames.ENDORSED : null}
                           large={true}
                           minimal={true}
                           intent={Intent.SUCCESS}
                         >
-                          {publicId}
+                          {profile.publicCode}
                         </Tag>
                         <Tag icon={IconNames.PATH_SEARCH} large={true} minimal={true}>
-                          {clue?.country?.name ?? "Unknown Location"}
+                          {profile.clue?.country?.name ?? "Unknown Location"}
                         </Tag>
                       </ContainerTag>
                       <ContainerBio>
-                        <Text ellipsize={true}>{clue?.bio ?? "A Great Talent"}</Text>
+                        <Text ellipsize={true}>
+                          {profile.clue?.bio ?? "A Great Talent"}
+                        </Text>
                       </ContainerBio>
                     </div>
                   </td>

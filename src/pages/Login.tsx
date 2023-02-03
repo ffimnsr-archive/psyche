@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
-import { Colors, Button, Classes } from "@blueprintjs/core";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Colors, Button, Classes, Callout, Intent } from "@blueprintjs/core";
+import classNames from "classnames";
+import { useNavigate } from "react-router";
 import bgPattern from "../assets/images/pattern.svg";
 import logo from "../assets/images/logo.png";
-import { useNavigate } from "react-router";
-import classNames from "classnames";
+import { getProvider, PhantomProvider } from "../utils/phantom";
+import { authState, walletState } from "../utils/atom";
+import { useRecoilState } from "recoil";
 
 const ContainerRoot = styled.main`
   min-height: 100vh;
@@ -37,15 +39,39 @@ const ContainerOptions = styled.div`
 `;
 
 function LoginDispatcherContent(): JSX.Element | null {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
+  const [isAuthenticated, setUsAuthenticated] = useRecoilState(authState);
+  const [walletKey, setWalletKey] = useRecoilState(walletState);
+
+  const [provider, setProvider] = useState<PhantomProvider | undefined>(undefined);
+
+  const connectWallet = async (): Promise<void> => {
+    const solana = getProvider();
+    if (!solana) {
+      return;
+    }
+
+    try {
+      const response = await solana.connect();
+      setUsAuthenticated(true);
+      setWalletKey(response.publicKey.toBase58());
+    } catch (err) {
+      log.error(err);
+    }
+  };
+
   useEffect(() => {
-    if (isAuthenticated) {
+    const provider = getProvider();
+    if (provider) {
+      setProvider(provider);
+    }
+
+    if (provider && isAuthenticated) {
       log.info("LoginDispatcherContent: redirecting to authenticated session");
       navigate("/");
     }
-  }, [navigate, isAuthenticated]);
+  }, [navigate, setProvider, isAuthenticated]);
 
   return (
     <>
@@ -58,18 +84,17 @@ function LoginDispatcherContent(): JSX.Element | null {
         user <a href="#">privacy policy</a>.
       </p>
       <ContainerOptions>
-        <Button
-          large={false}
-          fill={true}
-          outlined={true}
-          onClick={() =>
-            loginWithRedirect({
-              authorizationParams: { redirect_uri: "http://localhost:8080" },
-            })
-          }
-        >
-          Login
-        </Button>
+        {provider && !walletKey && (
+          <Button outlined={true} fill={true} onClick={connectWallet}>
+            Login with Phantom Wallet
+          </Button>
+        )}
+        {!provider && (
+          <Callout intent={Intent.WARNING}>
+            No provider found. Install <a href="https://phantom.app/">Phantom Browser</a>{" "}
+            extension.
+          </Callout>
+        )}
       </ContainerOptions>
     </>
   );

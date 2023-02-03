@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 import { Helmet } from "react-helmet-async";
 import { Card, H5 } from "@blueprintjs/core";
+import { Link } from "react-router-dom";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -12,9 +14,8 @@ import {
   FullPageLoader,
 } from "../../components";
 import { generateHash } from "../../utils";
-import { Link } from "react-router-dom";
-import { useAuth0, User } from "@auth0/auth0-react";
 import { PrivRoute } from "../../Router";
+import { walletState } from "../../utils/atom";
 
 const ContainerProfile = styled.div`
   flex: 0 1 auto;
@@ -33,49 +34,58 @@ const ProfileMiddleContainer = styled.div`
   }
 `;
 
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  joinedDate: string;
+  email: string;
+  publicCode: string;
+  socialSecurityNumber?: string;
+  socialLinkedIn?: string;
+  socialFacebook?: string;
+  socialGithub?: string;
+  socialDribble?: string;
+  socialBlog?: string;
+}
+
 function ProfileView(): JSX.Element {
   log.trace("ProfileView: rendering component");
+  const walletKey = useRecoilValue(walletState);
 
-  const { loading, error, data } = {} as any;
-  const { user } = useAuth0();
-  const [userProfile, setUserProfile] = useState<User>();
+  const [profile, setProfile] = useState<UserProfile | undefined>(undefined);
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      setUserProfile(user);
+    const fetchData = async () => {
+      const resp = await fetch(`http://localhost:8080/api/me`);
+      const data = await resp.json();
+      setProfile(data);
     };
 
-    fetchUserProfile();
-  }, [user]);
+    fetchData();
+  });
 
-  if (loading) return <FullPageLoader />;
-  if (error) {
-    log.error("ProfileView: failed call to my profile query =", error);
-    return <div>Error</div>;
+  log.debug("ProfileView: profile call result =", profile);
+  if (!profile) {
+    return <FullPageLoader />;
   }
 
-  log.debug("ProfileContent: profile call result =", data);
-  if (!data || !data.public.profile) {
-    return <div>Empty</div>;
-  }
-
-  const profile = data.public.profile;
-  const emailHash = generateHash(userProfile?.email ?? profile.username);
+  const emailHash = generateHash(profile.email);
 
   const info = [
-    { name: "Name", data: `${userProfile?.firstName} ${userProfile?.lastName}` },
-    { name: "Joined Date", data: "June 10, 1994" },
-    { name: "Email", data: userProfile?.email },
+    { name: "Wallet", data: `${walletKey}` },
+    { name: "Name", data: `${profile.firstName} ${profile.lastName}` },
+    { name: "Joined Date", data: profile.joinedDate },
+    { name: "Email", data: profile.email },
     {
       name: "Shareable Profile",
-      data: <Link to={`/o/public/share/${profile.publicCode}`}>Click Here</Link>,
+      data: <Link to={`/_/public/share/${profile.publicCode}`}>Click Here</Link>,
     },
   ];
 
   const infoComponents = info.map((x, i) => (
     <div className="mb-1" key={i}>
       <b>{x.name}</b>
-      <div>{x.data ?? "None"}</div>
+      <div style={{ overflow: "hidden" }}>{x.data ?? "None"}</div>
     </div>
   ));
 
@@ -121,9 +131,7 @@ function ProfileView(): JSX.Element {
               </Card>
               <Card>
                 <H5>User Activity</H5>
-                <div style={{ height: "400px" }}>
-                  {/* <UserActivityCalendar data={DemoCalendarData} /> */}
-                </div>
+                <div style={{ height: "400px" }}></div>
               </Card>
               <Card>
                 <H5>Work Status</H5>

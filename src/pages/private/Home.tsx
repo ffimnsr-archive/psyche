@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 import { Helmet } from "react-helmet-async";
 import {
   Card,
@@ -20,8 +21,8 @@ import {
   NavigationHeader,
   FullPageLoader,
 } from "../../components";
-import { useAuth0, User } from "@auth0/auth0-react";
 import { PrivRoute } from "../../Router";
+import { walletState } from "../../utils/atom";
 
 const ContainerHome = styled.div`
   flex: 0 1 auto;
@@ -63,16 +64,7 @@ const JoinConfirmationAlert = ({ isOpen, onCloseCb }: JoinConfirmationAlertProps
 
 function ProfileStillEmpty(): JSX.Element {
   const [isOpenJoinConfirmation, setIsOpenJoinConfirmation] = useState<boolean>(false);
-  const { user } = useAuth0();
-  const [userProfile, setUserProfile] = useState<User>();
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      setUserProfile(user);
-    };
-
-    fetchUserProfile();
-  }, [user]);
+  const walletKey = useRecoilValue(walletState);
 
   const action = (
     <>
@@ -104,7 +96,7 @@ function ProfileStillEmpty(): JSX.Element {
       <ContainerCallout>
         <Callout
           intent={Intent.WARNING}
-          title={`Hey ${userProfile?.firstName ?? ""}, fill up your profile!`}
+          title={`Hey ${walletKey ?? ""}, fill up your profile!`}
         >
           In order to use our services you need to complete your initial private profile.
           Your profile will not be shared with any of the clients nor other third party

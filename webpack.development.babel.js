@@ -20,6 +20,53 @@ module.exports = merge(common, {
       overlay: true,
       progress: true,
     },
+    onBeforeSetupMiddleware: (devServer) => {
+      if (!devServer) {
+        throw new Error("webpack-dev-server is not defined");
+      }
+
+      devServer.app.get("/api", (_, res) => {
+        res.status(200).json({
+          msg: "How long is forever?",
+        });
+      });
+
+      devServer.app.get("/api/hello", (_, res) => {
+        res.status(200).json({
+          msg: "Hello, World!",
+        });
+      });
+
+      devServer.app.get("/api/me", (_, res) => {
+        res.status(200).json({
+          firstName: "Juan",
+          lastName: "Dela Cruz",
+          joinedDate: "1994-06-04",
+          email: "juan@example.com",
+          publicCode: "test",
+        });
+      });
+
+      devServer.app.get("/api/user/:id/extended", (_, res) => {
+        res.status(200).json({
+          firstName: "Juan",
+          lastName: "Dela Cruz",
+          joinedDate: "1994-06-04",
+          email: "juan@example.com",
+          publicCode: "test",
+          socialSecurityNumber: "122-2227",
+          clue: {
+            bio: "Hello, World!",
+            country: {
+              name: "PH",
+            },
+          },
+          isAccountVerified: true,
+          workExperiences: undefined,
+          kycState: undefined,
+        });
+      });
+    },
   },
   stats: "normal",
   output: {

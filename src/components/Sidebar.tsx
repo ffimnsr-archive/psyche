@@ -77,11 +77,7 @@ export function Sidebar(): JSX.Element {
 
   const navButtons = navs.map((v: SidebarNavigator, i: number) => (
     <Tooltip2 key={i} content={<span>{v.display}</span>} placement={Position.RIGHT}>
-      <PaleWhiteAnchorButton
-        onClick={() => navigate(v.to)}
-        href="javascript:;"
-        icon={v.icon}
-      />
+      <PaleWhiteAnchorButton onClick={() => navigate(v.to)} href="#" icon={v.icon} />
     </Tooltip2>
   ));
 

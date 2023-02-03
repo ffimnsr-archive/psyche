@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { RecoilRoot } from "recoil";
 import { FocusStyleManager } from "@blueprintjs/core";
+import { BrowserRouter } from "react-router-dom";
 import { Router } from "./Router";
 
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -14,18 +14,14 @@ FocusStyleManager.onlyShowFocusOnTabs();
  */
 export function App(): JSX.Element {
   return (
-    <HelmetProvider>
-      <Auth0Provider
-        domain="dev-sesame.eu.auth0.com"
-        clientId="aGybMZW8GSePfI6meANg2bEUz7RetN5U"
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-        }}
-      >
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
-      </Auth0Provider>
-    </HelmetProvider>
+    <React.StrictMode>
+      <RecoilRoot>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </HelmetProvider>
+      </RecoilRoot>
+    </React.StrictMode>
   );
 }

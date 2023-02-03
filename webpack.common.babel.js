@@ -41,41 +41,22 @@ const config = {
         },
       },
       {
-        test: /\.(graphql|gql)$/,
-        include: path.resolve(__dirname, "src"),
-        use: {
-          loader: "graphql-tag/loader",
-        },
-      },
-      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "assets/images/",
-              publicPath: "/assets/images/",
-            },
-          },
-        ],
+        type: "asset/resource",
+        generator: {
+          filename: "assets/images/[hash][ext][query]",
+        },
       },
       {
         test: /\.(eot|ttf|otf|woff(2)?)(\?[a-z0-9]+)?$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "assets/fonts/",
-              publicPath: "/assets/fonts/",
-            },
-          },
-        ],
+        type: "asset/resource",
+        generator: {
+          filename: "assets/fonts/[hash][ext][query]",
+        },
       },
     ],
   },

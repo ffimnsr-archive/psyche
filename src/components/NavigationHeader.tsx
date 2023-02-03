@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import log from "loglevel";
+import { useSetRecoilState } from "recoil";
 import {
   Alignment,
   AnchorButton,
@@ -16,7 +18,8 @@ import {
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { IconName, IconNames } from "@blueprintjs/icons";
-import { useAuth0 } from "@auth0/auth0-react";
+import { getProvider } from "../utils/phantom";
+import { authState } from "../utils/atom";
 
 const NoShadowNavbar = styled(Navbar)`
   box-shadow: none;
@@ -34,8 +37,23 @@ interface MenuDetail {
 }
 
 function NavigationHeaderContent(): JSX.Element {
-  const { logout } = useAuth0();
+  const setIsAuthenticated = useSetRecoilState(authState);
   const navigate = useNavigate();
+
+  const disconnectWallet = async (): Promise<void> => {
+    const solana = getProvider();
+    if (!solana) {
+      return;
+    }
+
+    try {
+      await solana.disconnect();
+      setIsAuthenticated(false);
+      navigate("/");
+    } catch (err) {
+      log.error(err);
+    }
+  };
 
   const menus: MenuDetail[] = [
     {
@@ -75,7 +93,7 @@ function NavigationHeaderContent(): JSX.Element {
       icon: IconNames.LOG_OUT,
       text: "Sign out",
       handler: () => {
-        logout({ logoutParams: { returnTo: window.location.origin } });
+        disconnectWallet();
       },
     },
   ];

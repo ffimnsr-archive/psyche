@@ -11,16 +11,16 @@ function isPlainObject(obj: unknown): boolean {
   );
 }
 
+export function generateHash(email: string): string {
+  return md5(email.trim().toLowerCase());
+}
+
 function camelize(str: string): string {
   return str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
       return index === 0 ? word.toLowerCase() : word.toUpperCase();
     })
     .replace(/\s+/g, "");
-}
-
-export function generateHash(email: string): string {
-  return md5(email.trim().toLowerCase());
 }
 
 export function camelizeKeys(obj: any): any {
