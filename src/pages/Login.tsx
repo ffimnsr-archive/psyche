@@ -41,7 +41,7 @@ const ContainerOptions = styled.div`
 function LoginDispatcherContent(): JSX.Element | null {
   const navigate = useNavigate();
 
-  const [isAuthenticated, setUsAuthenticated] = useRecoilState(authState);
+  const [isAuthenticated, setIsAuthenticated] = useRecoilState(authState);
   const [walletKey, setWalletKey] = useRecoilState(walletState);
 
   const [provider, setProvider] = useState<PhantomProvider | undefined>(undefined);
@@ -54,7 +54,7 @@ function LoginDispatcherContent(): JSX.Element | null {
 
     try {
       const response = await solana.connect();
-      setUsAuthenticated(true);
+      setIsAuthenticated(true);
       setWalletKey(response.publicKey.toBase58());
     } catch (err) {
       log.error(err);

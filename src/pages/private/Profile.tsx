@@ -69,7 +69,7 @@ function ProfileView(): JSX.Element {
     return <FullPageLoader />;
   }
 
-  const emailHash = generateHash(profile.email);
+  const emailHash = generateHash(walletKey);
 
   const info = [
     { name: "Wallet", data: `${walletKey}` },

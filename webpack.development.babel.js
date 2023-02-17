@@ -5,6 +5,24 @@ import DotenvWebpack from "dotenv-webpack";
 import CopyPlugin from "copy-webpack-plugin";
 import common from "./webpack.common.babel";
 
+let userObject = {
+  firstName: "John",
+  lastName: "Smith",
+  joinedDate: "1994-06-10",
+  email: "juan@example.com",
+  publicCode: "PhkLLuFfaCapAi66WPkXVm2dbDN69zR7QLWqJp2efGf",
+  socialSecurityNumber: "122-2227",
+  clue: {
+    bio: "Hello, World!",
+    country: {
+      name: "Philippines",
+    },
+  },
+  isAccountVerified: true,
+  workExperiences: undefined,
+  kycState: undefined,
+};
+
 module.exports = merge(common, {
   mode: "development",
   devtool: "source-map",
@@ -14,7 +32,6 @@ module.exports = merge(common, {
     hot: true,
     host: "0.0.0.0",
     port: 8080,
-    // public: "sesame.7f000001.nip.io",
     static: path.resolve(__dirname, "./dist/debug"),
     client: {
       overlay: true,
@@ -39,32 +56,25 @@ module.exports = merge(common, {
 
       devServer.app.get("/api/me", (_, res) => {
         res.status(200).json({
-          firstName: "Juan",
-          lastName: "Dela Cruz",
-          joinedDate: "1994-06-04",
-          email: "juan@example.com",
-          publicCode: "test",
+          firstName: userObject.firstName,
+          lastName: userObject.lastName,
+          joinedDate: userObject.joinedDate,
+          email: userObject.email,
+          publicCode: userObject.publicCode,
         });
       });
 
       devServer.app.get("/api/user/:id/extended", (_, res) => {
-        res.status(200).json({
-          firstName: "Juan",
-          lastName: "Dela Cruz",
-          joinedDate: "1994-06-04",
-          email: "juan@example.com",
-          publicCode: "test",
-          socialSecurityNumber: "122-2227",
-          clue: {
-            bio: "Hello, World!",
-            country: {
-              name: "PH",
-            },
-          },
-          isAccountVerified: true,
-          workExperiences: undefined,
-          kycState: undefined,
-        });
+        res.status(200).json(userObject);
+      });
+
+      devServer.app.get("/api/work-functions", (_, res) => {
+        res.status(200).json([
+            "Web Developer",
+            "User Experience",
+            "Graphic Artist",
+          ]
+        );
       });
     },
   },

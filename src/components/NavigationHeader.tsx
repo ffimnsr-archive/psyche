@@ -57,31 +57,19 @@ function NavigationHeaderContent(): JSX.Element {
 
   const menus: MenuDetail[] = [
     {
-      icon: IconNames.PERSON,
-      text: "Account Settings",
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      handler: () => {},
-    },
-    {
       icon: IconNames.ID_NUMBER,
       text: "My Profile",
-      handler: () => {
-        navigate("/user/profile");
-      },
+      handler: () => navigate("/user/profile"),
     },
     {
       icon: IconNames.PROJECTS,
       text: "Projects",
-      handler: () => {
-        navigate("/user/projects");
-      },
+      handler: () => navigate("/user/projects"),
     },
     {
       icon: IconNames.SETTINGS,
       text: "Settings",
-      handler: () => {
-        navigate("/user/settings");
-      },
+      handler: () => navigate("/user/settings"),
     },
     {
       icon: IconNames.DELTA,
@@ -92,9 +80,7 @@ function NavigationHeaderContent(): JSX.Element {
     {
       icon: IconNames.LOG_OUT,
       text: "Sign out",
-      handler: () => {
-        disconnectWallet();
-      },
+      handler: () => disconnectWallet(),
     },
   ];
 
@@ -113,7 +99,9 @@ function NavigationHeaderContent(): JSX.Element {
   return (
     <NoShadowNavbar>
       <NavbarGroup align={Alignment.LEFT}>
-        <CustomNavbarHeading>Open Sesame</CustomNavbarHeading>
+        <CustomNavbarHeading>
+          Open Sesame
+        </CustomNavbarHeading>
         <NavbarDivider />
         <AnchorButton
           href="https://docs.se-same.com/"

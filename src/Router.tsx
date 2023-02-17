@@ -39,6 +39,7 @@ const LoadingPlaceholder = (
 
 const ShareableProfile = lazy(() => import("./pages/ShareableProfile"));
 const AccountProfile = lazy(() => import("./pages/private/Profile"));
+const AccountSettings = lazy(() => import("./pages/private/Settings"));
 // const MemberNotifications = lazy(() => import("./pages/private/Notifications"));
 // const MemberProjects = lazy(() => import("./pages/private/Projects"));
 // const MemberProjectDetails = lazy(() => import("./pages/private/ProjectDetails"));
@@ -49,7 +50,7 @@ const AccountProfile = lazy(() => import("./pages/private/Profile"));
 // const MemberWallet = lazy(() => import("./pages/private/Wallet"));
 
 // const MemberFeed = lazy(() => import("./pages/private/Feed"));
-// const MemberSettings = lazy(() => import("./pages/private/Settings"));
+
 
 // const BankAccounts = lazy(() => import("./pages/manager/BankAccounts"));
 // const Organizations = lazy(() => import("./pages/manager/Organizations"));
@@ -65,6 +66,8 @@ const AccountProfile = lazy(() => import("./pages/private/Profile"));
 export function PrivRoute({ children }: RouteProps): ReactElement {
   const isAuthenticated = useRecoilValue(authState);
   const location = useLocation();
+
+  log.info(isAuthenticated);
 
   return isAuthenticated ? (
     (children as ReactElement)
@@ -90,6 +93,7 @@ export function Router(): ReactElement {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/user/profile" element={<AccountProfile />} />
+        <Route path="/user/settings" element={<AccountSettings />} />
         <Route path="/_/public/share/:id" element={<ShareableProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NoMatch />} />

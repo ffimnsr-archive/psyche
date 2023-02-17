@@ -133,11 +133,11 @@ function ShareableProfileView(): JSX.Element {
     fetchData();
   });
 
-  if (!profile) {
+  if (!profile || !id) {
     return <ShareableProfileError />;
   }
 
-  const emailHash = generateHash(profile.email);
+  const emailHash = generateHash(id);
 
   return (
     <ContainerRoot>
@@ -157,7 +157,7 @@ function ShareableProfileView(): JSX.Element {
                     />
                   </td>
                   <td>
-                    <div className="float-right">Hello</div>
+                    <div className="float-right">Hey there!</div>
                     <div>
                       <H1>
                         {profile.firstName} {profile.lastName}

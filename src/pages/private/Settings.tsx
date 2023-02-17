@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
@@ -9,7 +9,6 @@ import {
   Sidebar,
   NavigationHeader,
 } from "../../components";
-import { WorkFunction } from "../../models/internals";
 
 const ContainerSettings = styled.div`
   flex: 1 1 auto;
@@ -22,19 +21,21 @@ const ContainerSettings = styled.div`
 function SettingsView(): JSX.Element {
   log.trace("SettingsView: rendering component");
 
-  const { loading, error, data } = {} as any;
-  if (loading) return <div>Loading</div>;
-  if (error) {
-    log.error("SettingsView: failed call to work functions query =", error);
-    return <div>Error</div>;
-  }
+  const [workFunctions, setWorkFunctions] = useState<string[] | undefined>(undefined);
 
-  log.debug("SettingsView: profile call result =", data);
-  if (!data || !data.internal.workFunctions) {
+  useEffect(() => {
+    const fetchData = async () => {
+      const resp = await fetch(`http://localhost:8080/api/work-functions`);
+      const data = await resp.json();
+      setWorkFunctions(data);
+    };
+
+    fetchData();
+  });  
+  
+  if (!workFunctions) {
     return <div>Empty</div>;
   }
-
-  const workFunctions: WorkFunction[] = data.internal.workFunctions;
 
   return (
     <ContainerRoot>
@@ -55,10 +56,10 @@ function SettingsView(): JSX.Element {
                 columnGap: "1em",
               }}
             >
-              <ul className="list-none m-0 pl-1.5">
-                {workFunctions.map((x) => (
-                  <li key={x.id}>
-                    <Checkbox inline={true} label={x.name} />
+              <ul className="bp4-list-unstyled m-0 pl-1.5">
+                {workFunctions?.map((x) => (
+                  <li>
+                    <Checkbox inline={true} label={x} />
                   </li>
                 ))}
               </ul>
@@ -70,7 +71,7 @@ function SettingsView(): JSX.Element {
                 columnGap: "1em",
               }}
             >
-              <ul className="list-none m-0 pl-1.5">
+              <ul className="bp4-list-unstyled m-0 pl-1.5">
                 <li>
                   <Checkbox inline={true} label="Opt-in personalize marketing" />
                 </li>

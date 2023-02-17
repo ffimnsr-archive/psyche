@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import {
   Alignment,
@@ -89,11 +89,6 @@ export function Sidebar(): JSX.Element {
         text="Work Statistics"
       />
       <MenuItem
-        onClick={() => navigate("/user/profile")}
-        icon={IconNames.ID_NUMBER}
-        text="My Profile"
-      />
-      <MenuItem
         onClick={() => navigate("/user/issues")}
         icon={IconNames.VIRUS}
         text="Project Issues"
@@ -111,7 +106,9 @@ export function Sidebar(): JSX.Element {
   return (
     <ContainerSidebar>
       <ContainerLogo>
-        <img src={logoIcon} alt="logo" width="40" />
+        <Link to="/">
+          <img src={logoIcon} alt="logo" width="40" />
+        </Link>
       </ContainerLogo>
       <Spacer />
       <ContainerNav>
