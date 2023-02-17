@@ -66,7 +66,7 @@ const Table = styled.table`
   width: 100%;
 
   & > tbody > tr > td:first-child {
-    width: 40%;
+    width: 25%;
     text-align: center;
   }
 `;
@@ -147,7 +147,7 @@ function ShareableProfileView(): JSX.Element {
       <ContainerMain>
         <ContainerProfile>
           <ProfilePane>
-            <Table>
+            <Table style={{ marginBottom: "30px" }}>
               <tbody>
                 <tr>
                   <td>
@@ -157,7 +157,7 @@ function ShareableProfileView(): JSX.Element {
                     />
                   </td>
                   <td>
-                    <div className="float-right">Hey there!</div>
+                    <div>Hey there!</div>
                     <div>
                       <H1>
                         {profile.firstName} {profile.lastName}
@@ -186,7 +186,7 @@ function ShareableProfileView(): JSX.Element {
               </tbody>
             </Table>
             <Card elevation={Elevation.ONE}>
-              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+              <div className="clearfix" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Work Experiences</H5>
               </div>
               <CustomDivider />
@@ -194,7 +194,7 @@ function ShareableProfileView(): JSX.Element {
               <div></div>
             </Card>
             <Card elevation={Elevation.ONE}>
-              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+              <div className="clearfix" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Work Functions</H5>
               </div>
               <CustomDivider />
@@ -202,7 +202,7 @@ function ShareableProfileView(): JSX.Element {
               <div></div>
             </Card>
             <Card elevation={Elevation.ONE}>
-              <div className="clearfixr" style={{ marginBottom: "10px" }}>
+              <div className="clearfix" style={{ marginBottom: "10px" }}>
                 <H5 style={{ display: "inline" }}>Issues Resolved</H5>
               </div>
               <CustomDivider />

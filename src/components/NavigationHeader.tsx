@@ -99,9 +99,7 @@ function NavigationHeaderContent(): JSX.Element {
   return (
     <NoShadowNavbar>
       <NavbarGroup align={Alignment.LEFT}>
-        <CustomNavbarHeading>
-          Open Sesame
-        </CustomNavbarHeading>
+        <CustomNavbarHeading>Open Sesame</CustomNavbarHeading>
         <NavbarDivider />
         <AnchorButton
           href="https://docs.se-same.com/"

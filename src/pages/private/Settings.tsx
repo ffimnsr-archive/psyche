@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import log from "loglevel";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-import { Card, Checkbox, Classes, H4, H5 } from "@blueprintjs/core";
+import { Button, Card, Checkbox, Classes, H4, H5 } from "@blueprintjs/core";
 import {
   ContainerRoot,
   ContainerRootInner,
@@ -50,13 +50,17 @@ function SettingsView(): JSX.Element {
             <H4>Settings</H4>
             <p className={Classes.TEXT_SMALL}>Contains current user settings.</p>
             <H5>Work Interests</H5>
+            <div>
+              <Button>Update User Profile</Button>
+            </div>
+            <H5>Work Interests</H5>
             <div
               style={{
                 columnCount: 2,
                 columnGap: "1em",
               }}
             >
-              <ul className="bp4-list-unstyled m-0 pl-1.5">
+              <ul className={Classes.LIST_UNSTYLED}>
                 {workFunctions?.map((x) => (
                   <li>
                     <Checkbox inline={true} label={x} />
@@ -71,7 +75,7 @@ function SettingsView(): JSX.Element {
                 columnGap: "1em",
               }}
             >
-              <ul className="bp4-list-unstyled m-0 pl-1.5">
+              <ul className={Classes.LIST_UNSTYLED}>
                 <li>
                   <Checkbox inline={true} label="Opt-in personalize marketing" />
                 </li>
